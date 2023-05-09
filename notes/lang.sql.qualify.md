@@ -2,7 +2,7 @@
 id: g8zt990xk39wsmi5bbo54n0
 title: Qualify
 desc: ''
-updated: 1670682196507
+updated: 1682985585947
 created: 1666745761454
 ---
 
@@ -59,4 +59,10 @@ WHERE cat_id IN (SELECT cat_id FROM cat_dupes);
 -- With Qualify
 SELECT * FROM cat_table
 QUALIFY COUNT(*) OVER (PARTITION BY cat_id) > 1;
+```
+
+``` sql
+SELECT *
+FROM my_table
+QUALIFY COUNT(*) = 0
 ```

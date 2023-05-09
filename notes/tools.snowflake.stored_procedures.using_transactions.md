@@ -2,7 +2,7 @@
 id: wdimmn449pscesl96nnu3yn
 title: Using_transactions
 desc: ''
-updated: 1670680804224
+updated: 1678258769729
 created: 1670680804224
 ---
 
@@ -14,9 +14,10 @@ created: 1670680804224
 - A good practice is to make procedures more transactions and avoid partial input
 - The procedure either completes successfully or revert back to original state when procedure fails.
 - To do so, we can use these SQL statements: 'BEGIN WORK;', 'COMMIT WORK;', 'ROLLBACK WORK;'
+  
 <br/>
 
-  ```javascript
+```javascript
 CREATE OR REPLACE PROCEDURE column_fill_Rate(TABLE_NAME varchar)
     returns VARIANT
     language Javascript
