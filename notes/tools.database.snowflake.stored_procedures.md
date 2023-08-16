@@ -6,7 +6,7 @@ updated: 1670681344077
 created: 1665820960974
 ---
 
-Back to Main Topic: [[tools.snowflake]]
+Back to Main Topic: [[tools.database.snowflake]]
 
 
 # Stored Procedures

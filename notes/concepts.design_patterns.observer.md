@@ -2,11 +2,14 @@
 id: b57axvy2ul1q8vu8gheybqt
 title: Observer
 desc: ''
-updated: 1680349398897
+updated: 1692132545100
 created: 1680349170488
 ---
 
 ### Observer
+
+Event-based programming works amazingly well with micro services and allows you to super easily scale asymmetrically
+
 
 ``` python
 

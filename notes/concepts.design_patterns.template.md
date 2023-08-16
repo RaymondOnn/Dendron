@@ -2,7 +2,7 @@
 id: iyfpxe2cq9besyztatd71ft
 title: Template
 desc: ''
-updated: 1680528085080
+updated: 1691706604823
 created: 1680527871966
 ---
 # Template
@@ -59,7 +59,7 @@ def main():
 
 if __name__ == "__main__":
     main()
-    ```
+```
 
 References:
 - https://www.youtube.com/watch?v=t0mCrXHsLbI&t=200s

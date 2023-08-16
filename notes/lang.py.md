@@ -1,8 +1,8 @@
 ---
 id: mlzian0ayu0qzng6xt1kk5w
-title: Py
+title: PY
 desc: ''
-updated: 1680506775895
+updated: 1692127252288
 created: 1666472517896
 ---
 For doing designs in printout:
