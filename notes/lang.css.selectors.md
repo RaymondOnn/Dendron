@@ -2,7 +2,7 @@
 id: 0a3f9sjv9z89e4gaa63tm76
 title: Selectors
 desc: ''
-updated: 1677919573347
+updated: 1694415712816
 created: 1677323520595
 ---
 
@@ -49,12 +49,21 @@ Suppose you have this in your html script
 <br>
 
 ## Combining selectors
+```html
+<foo> <!-- parent -->
+  <bar> <!-- child of foo, descendant of foo -->
+    <baz> <!-- descendant of foo -->
+    </baz>
+  </bar>
+</foo>
+```
 - Select elements that are  `<div>` **AND** `class="red"` : `div.red` 
 - Select elements that `<div class="red">` elements **OR** `<span>` elements : `div.red, span`
-- Select `<li>` elements that are **INSIDE** of a `<ul>` element : `ul li`
+- Select `<li>` elements that are **DESCENDANTS** of a `<ul>` element : `ul li`
 - Select `<li>` elements that are **CHILD** of a `<ul>` element : `ul > li`
 - Select `<li>` elements that are **AFTER AND SIBLING** of a `<li class="red">` element : `li.red ~ li`
 - Select `<li class="green">` elements that are **DIRECTLY AFTER AND SIBLING** of a `<li class="red">` element : `li.red + li.green`
+
 
 <br>
 
@@ -81,6 +90,8 @@ Suppose you have this in your html script
 <br>
 
 ## Attribute Selectors
+
+- Any E elements with `data="red"` attributes: `E[data="red"]` 
 - Elements with `data` attributes: `[data]`
 - Elements with `data="red"` attributes: `[data="red"]`
 - Elements with value of `data` **BEGINS WITH** "x" : `[data^="x"]`

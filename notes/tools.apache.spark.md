@@ -2,7 +2,7 @@
 id: uus67uozis910s6idj3d96n
 title: Spark
 desc: ''
-updated: 1691816214868
+updated: 1694654351510
 created: 1691351110602
 ---
 
@@ -10,20 +10,21 @@ Documentation: https://spark.apache.org/docs/2.1.0/api/python/index.html
 Tips on using Pyspark: https://www.confessionsofadataguy.com/new-to-pyspark-do-this-not-that/
 SparkSession Config Options: https://spark.apache.org/docs/latest/configuration.html#viewing-spark-properties
 
+## SparkContext vs SparkSession
 
-
-## SparkContext vs SparkSession 
 link: https://www.sparkcodehub.com/pyspark-sparksession-and-sparkcontext
+
 ``` py
 from pyspark import SparkContext
 from pyspark.sql import SparkSession
 
 sc = SparkContext('local', 'PySparkIntro')
 spark = SparkSession.builder.appName('PySparkIntro').getOrCreate()
-
-
 ```
-- `SparkContext` 
+
+![Alt text](sparkcontext.png)
+
+- `SparkContext`
   - is the main entry point for using the Spark Core functionalities. 
   - It connects the cluster manager and coordinates resources across the cluster.
   - meant for fine grained control for low-level RDD operations
@@ -64,7 +65,7 @@ num_elements = squared_rdd.count()
 
 ## DataFrame & Dataset APIs
 
-Dataset API
+#### Dataset API
 - provides a typesafe object-oriented programming interface with the performance optimizations of dataframe AP
 - allows us to work with strongly-typed data
 
@@ -89,8 +90,10 @@ df = spark.createDataFrame(data, schema)
 df = df.alias('employees')
 df.show()
 ```
+<br>
 
-DataFrame API
+#### DataFrame API
+
 - provides a higher-level, more structured way to work with data
 - makes working in pyspark more intuitive and efficient
 

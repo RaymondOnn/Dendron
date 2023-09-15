@@ -1,8 +1,8 @@
 ---
 id: 4z62jnuhjlmr48987r1usc1
-title: JS
+title: js
 desc: ''
-updated: 1666470340815
+updated: 1694733076642
 created: 1666466431517
 ---
 

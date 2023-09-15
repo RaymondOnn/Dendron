@@ -1,8 +1,8 @@
 ---
 id: bb1fr6yuv8ylolfaikz6val
-title: Decison_making
+title: decison_making
 desc: ''
-updated: 1666466788515
+updated: 1694739810505
 created: 1666466609426
 ---
 

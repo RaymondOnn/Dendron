@@ -2,7 +2,7 @@
 id: d8zcvs8qaq7jnxoj67lk14e
 title: Grpcio
 desc: ''
-updated: 1691540323359
+updated: 1693297936863
 created: 1691532881992
 ---
 
@@ -26,12 +26,13 @@ These generated classes/files will allow you in your code to send and receive (s
 
 Next, you will also use the .proto files to define services. This concept should be familiar to you. A service is going to a logical grouping of your methods/messages.
 
-#### **In review…**
+##### **In review…**
 1. define a “service“
 2. define your protobuf “messages“
 3. compile (protoc) your .proto file(s) into code for your language.
 
-## Example
+
+## [Example](https://www.confessionsofadataguy.com/grpc-for-data-engineers/)
 ```py
  # to install
  pip3 install grpcio grpcio-tools

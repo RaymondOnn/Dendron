@@ -1,71 +1,20 @@
 ---
 id: wo52t5kfmgpfqiwtqm9c0ag
 title: Docker
-desc: ''
-updated: 1692157533136
+desc: ""
+updated: 1694662258755
 created: 1691076022969
 ---
 
-- Documentation: https://docs.docker.com/reference/
-- python-on-whales docs: https://gabrieldemarmiesse.github.io/python-on-whales/sub-commands/compose/
+- Docker Docs: <https://docs.docker.com/reference/>
+- python-on-whales docs: <https://gabrieldemarmiesse.github.io/python-on-whales/sub-commands/compose/>
 
-https://stackoverflow.com/questions/17157721/how-to-get-a-docker-containers-ip-address-from-the-host?page=1&tab=oldest#tab-top
+<https://stackoverflow.com/questions/17157721/how-to-get-a-docker-containers-ip-address-from-the-host?page=1&tab=oldest#tab-top>
 
-## Docker Commands
-
-``` bash
-# download images
-docker pull <IMAGE_NAME>
-
-# view available images
-docker images
-
-# run docker image (default: attached mode)
-docker run 
-    -d           # for running in detached mode (optional)
-    -p<HOST_PORT>:<CONTAINER_PORT>   # for binding/changing ports
-    --name     # assigning name to the container as specified
-    -e <ENV_KEY: VALUE>  # passing environment variables
-    --net <NETWORK_NAME> # docker-network to use
-	-v name:/var/lib/mysql/data # docker named volumes <container_directory>
-    <IMAGE_NAME>:<VERSION>    # defaults to latest version unless explicitly specified  
-
-# Starts particular container
-docker rmi <IMAGE_ID>
-
-docker ps           # See all running containers
-docker ps -a        # See all running and stopped containers
-
-# Stops particular container
-docker stop <CONTAINER_ID>
-
-# Starts particular container
-docker start <CONTAINER_ID>
-
-# Delete particular container
-docker rm <CONTAINER_ID>
-
-
-# view logs of container
-docker logs <CONTAINER_ID_OR_NAME>
-
-# get terminal access of container
-docker exec -it <CONTAINER_ID> /bin/bash
-docker exec -it <CONTAINER_ID> /bin/sh # for shell
-
-# exit terminal
-exit
-
-# See available docker networks
-docker network ls
-docker network create <NETWORK_NAME> # create new docker network
-
-docker inspect <CONTAINER_ID>
-```
 ---
 
-
 ## What is Container?
+
 - A way to package application with all the necessary dependencies and configuration
 - Portable aritifact, easily shared and moved around
 - Nakes development and deployment more efficient
@@ -78,18 +27,22 @@ docker inspect <CONTAINER_ID>
   - When a container is restarted, data is lost (No data persistence itself)
 
 ## Where do containers live?
+
 - Container Repository
 - Public Repository for Docker: DockerHub
 
 ## Docker Image vs Docker Container
+
 - Docker Image is the actual package / artifact that can be moved around
 - Docker Container is the running environment for the Docker Image
 
 ## Docker vs Virtual Machine
+
 - Virtual Machines share the hardware resources
 - Docker shares the same OS Kernel and hardware resources
 
 ## Port: Container vs Host
+
 - Multiple containers can run on your host machine
 - Host machine has only certain ports available for application
 - Conflict when same port on host machine
@@ -107,8 +60,8 @@ docker inspect <CONTAINER_ID>
   <tr>
     <td>
 
-``` shell
-docker run 
+```shell
+docker run
   -d
   --name mongodb
   -p 27017:27017
@@ -122,41 +75,43 @@ docker run
 <td>
 
 - docker compose takes care of creating a common network
-``` yaml
+
+```yaml
 version:'3'
 
 services:
   mongodb:          # maps from --name mongodb
-    image: mongo    # maps from image name 
+    image: mongo    # maps from image name
     ports:
-      	- 27017:37017 # maps from -p 27017:27017 (HOST:CONTAINER)
-	volumes:
-		- db-data:/var/lib/mysql/data
+       - 27017:37017 # maps from -p 27017:27017 (HOST:CONTAINER)
+ volumes:
+  - db-data:/var/lib/mysql/data
     environment:
-      	MONGO...USERNAME=admin # maps from -e MONGO-INITDB_ROOT_USERNAME=admin
+       MONGO...USERNAME=admin # maps from -e MONGO-INITDB_ROOT_USERNAME=admin
 volumes:
-	db-data (named volumes)
-		driver: local
+ db-data (named volumes)
+  driver: local
 ```
+
 </td>
   </tr>
 </table>
 
-
 ### Running the `docker-compose.yaml`
-docs: https://docs.docker.com/engine/reference/commandline/compose_up/
+
+docs: <https://docs.docker.com/engine/reference/commandline/compose_up/>
 
 ```sh
 # starting the containers
-docker-compose 
+docker-compose
   -f <docker-compose.yaml>
-  -d            # detached mode 
+  -d            # detached mode
   --no-deps     # Don’t start linked services
   --build       # Build images before starting containers
   up
 
 # stopping the containers.The common network is stopped as well
-docker-compose 
+docker-compose
   -f <docker-compose.yaml>  # name of docker-compose file
   -v                       # remove volumes
   down
@@ -172,7 +127,7 @@ docker-compose
   <tr>
     <td>
 
-``` raw
+```raw
 install node
 
 set MONGO_DB_USERNAME=admin
@@ -184,11 +139,11 @@ copy current folder files to /home/app
 
 start the amp with: 'node server.js'
 ```
+
 </td>
 <td>
 
-
-``` text
+```text
 FROM node:13-alpine  <IMAGE_NAME:VERSION>
 
 # environment variables
@@ -205,19 +160,21 @@ COPY . /home/app
 # you can have multiple RUN command but only one CMD command
 CMD ['node', '/home/app/server.js']
 ```
+
   </td>
   </tr>
 </table>
 
 ### Running the Dockerfile
 
-``` sh
-docker build 
-	-t my-app:1.0   # <repo_name:tag>
-	.   # '.' for current directory
+```sh
+docker build
+ -t my-app:1.0   # <repo_name:tag>
+ .   # '.' for current directory
 ```
 
 ## Docker Volumes: Persist data in docker
+
 - To provide data persistence, the file system on the host is plugged into the container's file system
 - This means that data written on the container's file system is replicated on the host's file directory
 

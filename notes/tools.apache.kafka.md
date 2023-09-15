@@ -2,7 +2,7 @@
 id: of71gv186953yjr2hrqs4pc
 title: Kafka
 desc: ''
-updated: 1692124538920
+updated: 1694658668615
 created: 1691444711422
 ---
 - Docs for `kafka-python`: https://kafka-python.readthedocs.io/en/master/index.html
@@ -111,6 +111,22 @@ producer.flush()
 
 
 ```
+### Significance of a Key in a Kafka Message
+
+
+#### links
+- source: https://www.baeldung.com/java-kafka-message-key)
+- https://stackoverflow.com/questions/29511521/is-key-required-as-part-of-sending-messages-to-kafka
+
+As we know, Kafka effectively stores a stream of records in the order in which we generate the records.
+
+When we publish a message to a Kafka topic, it’s distributed among the available partitions in a round-robin fashion. Hence, within a Kafka topic, the order of messages is guaranteed within a partition but not across partitions.
+
+When we publish messages with a key to a Kafka topic, all messages with the same key are guaranteed to be stored in the same partition by Kafka. Thus, keys in Kafka messages are useful if we want to maintain order for messages having the same key.
+
+To summarize, keys aren’t mandatory as a part of sending messages to Kafka. Basically, if we wish to maintain a strict order of messages with the same key, then we should definitely be using keys with messages. For all other cases, having null keys will provide a better distribution of messages amongst the partitions.
+
+Next, let’s straightaway deep dive into some of the implementation code having Kafka messages with a key.
 
 ## The Consumer: Reading from Kafka
 - To consume messages, you'll need to connect to the cluster (passing a configuration map to specify the address of the cluster, security, and other parameters). 

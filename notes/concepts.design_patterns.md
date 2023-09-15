@@ -2,7 +2,7 @@
 id: 1pxovhicqv04bdtn6n3iqd9
 title: Design_patterns
 desc: ''
-updated: 1681188548476
+updated: 1692225118422
 created: 1679865621530
 ---
 
@@ -101,3 +101,26 @@ ETL Patterns
 - Write Audit Publish(WAP) Pattern
 - Signal Table Pattern
 https://www.linkedin.com/posts/eczachly_dataengineering-activity-6962992934698848256-Gnye/?trk=posts_directory
+
+
+
+
+
+
+
+
+```py
+import functools
+
+def singleton(cls):
+    """Make a class a Singleton class"""
+    cls._instance = None
+
+    @functools.wraps(cls)
+    def wrapper_singleton(*args, **kwargs):
+        if not cls._instance:
+            cls._instance = cls(*args, **kwargs)
+        return cls._instance
+    return wrapper_singleton
+
+```

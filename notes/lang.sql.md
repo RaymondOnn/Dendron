@@ -1,8 +1,8 @@
 ---
 id: odxk4ux0734huja9kr318la
-title: SQL
+title: sql
 desc: ''
-updated: 1671416730340
+updated: 1694733038283
 created: 1666472526629
 ---
 

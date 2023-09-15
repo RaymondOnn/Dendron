@@ -2,7 +2,7 @@
 id: 18o45o02qk5zkz1d51cohsj
 title: Linux
 desc: ''
-updated: 1692065827604
+updated: 1692162973615
 created: 1692059913921
 ---
 
@@ -64,6 +64,8 @@ groups     # view my own access control list
 ?          # single character wildcard    
 
 
-
+curl <URL>                   # Client URL: data transfer to/from url
+curl <url> > <local-file>    # download file 
+sudo <command>              # SUperuser DO: run command with admin rights
 
 ```
