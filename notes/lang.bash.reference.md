@@ -1,13 +1,16 @@
 ---
 id: 18o45o02qk5zkz1d51cohsj
-title: Linux
+title: reference
 desc: ''
-updated: 1692162973615
+updated: 1697013478145
 created: 1692059913921
 ---
 
 https://linuxsurvival.com/linux-home-directories/
-CLI Commands
+
+`cat ~/.bashrc` for checking environmental variables
+
+### CLI Commands
 ```bash
 # navigation
 cd <folder_name>         # change directory
@@ -18,8 +21,8 @@ history
 
 
 # files
-ls                        # list directories
-ls -l                     # list directories, with permissions (long format)
+ls                        # List Storage
+ls -l                     # List Storage (long format)
 more <file_name>          # view file. spacebar for next page
 cat <file_name>           # print file contents
 head <file_name>          # print first 10 lines
@@ -33,6 +36,8 @@ less <file_name>          # print file contents in small chunks
     h   # If you need a little help about how to use less while you’re in less, use help.
 touch <file_name>         # create file
 rm <file_name>            # delete file
+grep <search_text> <file_name> # search text files
+  -q # quiet mode
 mv <file_name> <new_location>  # move files/folders to new location
 cp <file_name> <new_location>  # copy files/folders to new location
 # folders
@@ -69,3 +74,13 @@ curl <url> > <local-file>    # download file
 sudo <command>              # SUperuser DO: run command with admin rights
 
 ```
+##### [`curl`](https://phoenixnap.com/kb/curl-command)
+- curl (short for "Client URL") is a command line tool that enables data transfer over various network protocols. 
+- It communicates with a web or application server by specifying a relevant URL and the data that need to be sent or received.
+- curl is powered by libcurl, a portable client-side URL transfer library. You can use it directly on the command line or include it in a script. 
+- The most common use cases for curl are:
+  - Downloading files from the internet
+  - Endpoint testing
+  - Debugging
+  - Error logging
+

@@ -1,8 +1,8 @@
 ---
 id: akyq5dyqace65on4we4jqmv
-title: Error_handling
-desc: ""
-updated: 1694612851891
+title: error_handling
+desc: ''
+updated: 1695250518824
 created: 1692124561178
 ---
 
@@ -52,7 +52,7 @@ created: 1692124561178
 
 - Usually errors onlu occur for some of the processed messages
 - Almost require manual interception and alerting
-- Typical Solution: Dead Letter Queue
+- Typical Solution: **Dead Letter Queue**
   - Store faulty records somewhere and let users manually decide if they want to reprocess/abandon the records
   - BUT define clear ownership and responsibilties
   - Monitor the dead-letter queue and send alerts when records arrive

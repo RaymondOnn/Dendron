@@ -2,7 +2,7 @@
 id: 4en68jhsiay8lpcec6clbuw
 title: Railway
 desc: ''
-updated: 1693805788828
+updated: 1695078711567
 created: 1693805740760
 ---
 ## Monadic Error Handling
@@ -11,9 +11,17 @@ created: 1693805740760
 
 ### Railway Oriented Programming
 
+<br>
+
+>**Links**:
+- [Railway-Oriented Programming](https://fsharpforfunandprofit.com/rop/)
+- [Against Railway-Oriented Programming](https://fsharpforfunandprofit.com/posts/against-railway-oriented-programming/)
+  
 
 
 - Coming from the functional programming paradigm
+- A pattern for handling branches in logic within your program in a clean and concise way
+- It allows handling of errors in a type safe way and helps the developer to think about both the happy and not so happy paths of the application logic. It’s important to note this isn’t meant to be a replacement for exceptions but it can be used as a different way to think about and model the control flow of your domain logic.
 - Instead of using exception, the function can instead return either of two values
   - 'Success' object, containing the result of the computation
   - 'Failure' object, containing the error that occurred

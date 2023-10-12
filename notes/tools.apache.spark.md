@@ -1,14 +1,20 @@
 ---
 id: uus67uozis910s6idj3d96n
-title: Spark
+title: spark
 desc: ''
-updated: 1694654351510
+updated: 1696754149116
 created: 1691351110602
 ---
 
-Documentation: https://spark.apache.org/docs/2.1.0/api/python/index.html
-Tips on using Pyspark: https://www.confessionsofadataguy.com/new-to-pyspark-do-this-not-that/
-SparkSession Config Options: https://spark.apache.org/docs/latest/configuration.html#viewing-spark-properties
+- [Documentation](https://spark.apache.org/docs/2.1.0/api/python/index.html)
+- [Tips on using Pyspark](https://www.confessionsofadataguy.com/new-to-pyspark-do-this-not-that/)
+- [SparkSession Config Options](https://spark.apache.org/docs/latest/configuration.html#viewing-spark-properties)
+- [ETL Best Practices](https://alexioannides.com/2019/07/28/best-practices-for-pyspark-etl-projects/)
+- [Pyspark with Delta Lake](https://towardsdatascience.com/hands-on-introduction-to-delta-lake-with-py-spark-b39460a4b1ae)
+- [Official Spark Guide](https://spark.apache.org/docs/latest/sql-programming-guide.html)
+- [Apache Livy](https://medium.com/itnext/building-real-time-interactions-with-apache-spark-through-apache-livy-53169d87d012)
+- [Calling REST_API](https://medium.com/geekculture/how-to-execute-a-rest-api-call-on-apache-spark-the-right-way-in-python-4367f2740e78)
+
 
 ## SparkContext vs SparkSession
 

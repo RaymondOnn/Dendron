@@ -1,8 +1,8 @@
 ---
 id: 1ealoc83bpx663wnv0u0u2e
-title: Type_hints
+title: type_hints
 desc: ''
-updated: 1694747241290
+updated: 1695093248312
 created: 1693672520500
 ---
 

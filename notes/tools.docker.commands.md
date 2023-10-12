@@ -2,7 +2,7 @@
 id: 65mjp3wgb2vdf3wwivlxfmo
 title: CLI
 desc: ''
-updated: 1694663069723
+updated: 1695723710614
 created: 1694538082966
 ---
 
@@ -59,6 +59,9 @@ docker network ls
 docker network create <NETWORK_NAME> # create new docker network
 
 docker inspect <CONTAINER_ID>
+
+# Copy files from SRC_PATH to DEST_PATH.
+docker cp <SRC_PATH> <CONTAINER_NAME>:<DEST_PATH>
 ```
 
 

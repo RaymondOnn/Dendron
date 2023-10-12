@@ -2,155 +2,71 @@
 id: j4xuccg0lrj7h2xg7dw7l36
 title: yaml
 desc: ''
-updated: 1694733050284
+updated: 1697103593220
 created: 1694602245194
 ---
-https://www.linode.com/docs/guides/yaml-anchors-aliases-overrides-extensions/
 
-## Anchors and Aliases
+## What is YAML
 
-- The alias abbreviates YAML content, compacting it down so it takes up fewer bytes in a file system. 
-- More importantly, human readers have less to take in and thus focus more effectively on the essentials of the definition. 
-- Moreover, these anchor-alias combinations can ease maintenance chores. 
-- Suppose MYSQL_USER needs to be updated from wordpress to special_wordpress_account: while naive YAML requires editing the MYSQL_USER in each of its uses–presumably the same as the number of databases in all environments
-- The rewritten YAML only needs an update to its one anchor. 
-- Each alias then properly receives the updated special_wordpress_account automatically. 
-- Fewer distinct values to copy-and-paste inevitably mean fewer opportunities for inadvertent error.
+- a data serialization language i.e. standard format to transfer data e.g. XML, JSON
+- made up of key-value pairs
 
-<br>
+## Why YAML?
+
+- Human readable and intuitive
+- Based on line separation and indentation
 
 
-<table>
-  <tr>
-    <th>before</th>
-    <th>after</th>
-  </tr>
-  <tr>
-    <td>
+### Environment Variables
 
-``` yaml
-version: "3.9"
+- Use environment variables by using the $ prefix with the variable name
+- E.g. to use the environment variable `VARIABLE`, use `$VARIABLE`
 
-services:
-  production-db:
-    image: mysql:5.7
-    volumes:
-      - db_data:/var/lib/mysql
-    restart: always
-    environment:
-  MYSQL_ROOT_PASSWORD: somewordpress
-  MYSQL_DATABASE: wordpress
-  MYSQL_USER: wordpress
-  MYSQL_PASSWORD: wordpress
-      ...
-  test-db:
-    image: mysql:5.7
-    volumes:
-      - db_data:/var/lib/mysql
-    restart: always
-    environment:
-    MYSQL_ROOT_PASSWORD: somewordpress
-    MYSQL_DATABASE: wordpress
-    MYSQL_USER: wordpress
-    MYSQL_PASSWORD: wordpress
-```
-
-</td>
-<td>
-
-- the `&database-definition` is an anchor to which the `*database-definition` alias refers.
-  
-``` yaml
-version: "3.9"
-
-services:
-  production-db: &database-definition
-    image: mysql:5.7
-    volumes:
-      - db_data:/var/lib/mysql
-    restart: always
-    environment:
-  MYSQL_ROOT_PASSWORD: somewordpress
-  MYSQL_DATABASE: wordpress
-  MYSQL_USER: wordpress
-  MYSQL_PASSWORD: wordpress
-      ...
-  test-db: *database-definition
-```
-</td>
-  </tr>
-</table>
-
-## Overrides
-
-- Sometimes segments of a YAML file share only part of their contents. - For e.g.The WordPress example might configure databases that are identical except that each instance has a distinct password.
+### Placeholders (<small>`{{ }}`</small>)
+- Used to reference variables inside YAML files
+- Avoids hardcoded values
+- Helm uses these for templating Kubernetes YAML files and replaces these with real values using the Go Templating Engine
 
 ``` yaml
-version: "3.9"
+#values.yaml
+image:
+    name: nginx
+    tag: latest
 
-services:
-  production-db: &database-definition
-    image: mysql:5.7
-    volumes:
-      - db_data:/var/lib/mysql
-    restart: always
-    environment: &environment-definition
-  MYSQL_ROOT_PASSWORD: somewordpress
-  MYSQL_DATABASE: wordpress
-  MYSQL_USER: wordpress
-  MYSQL_PASSWORD: production-password
-      ...
-  test-db:
-    <<: *database-definition
-    environment:
-        <<: *environment-definition
-  MYSQL_PASSWORD: test-password
-  ...
-```
+---
 
-.?
->?
-
-```yaml
-# docker-compose.yaml
-message-server:
-    ...
-    restart: no            
-product-server:
-    ...
-    restart: on-failure
-
-```
-
-## Execute Multiple Commands
-
-``` yaml
-version: "3.9"
-
-services:
-  DB:
-    image: Postgres
-    volumes:
-      - ./data/db:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-  web:
-    build: .
-    command: >
-      sh -c "
-             python manage.py migrate &&
-             python manage.py runserver 0.0.0.0:8080"
-    volumes:
-
-      - .:/tonyloi
+apiVersion: v1
+kind: Service
+metadata: 
+    name: {{ .Values.service.name }}
+spec:
+    selector:
+        app: {{ .Values.service.app }}
     ports:
-      - "8080:8080"
-    environment:
-      - POSTGRES_NAME=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=password
-    depends_on:
-      - DB
+        - protocol: TCP
+          port: {{ .Values.service.port }}
+          targetPort: {{ .Values.service.targetport }}
+```
+
+### Separating Multiple YAML documents
+
+- We can indicate the boundaries of a yaml file with `---` symbol
+- Multiple YAML files can be combined into a single file by separating them with `---`.
+
+## Working with files
+
+### Writing to file
+
+The `dump()` method serializes a python object into a YAML stream
+
+``` py
+import yaml
+
+users = [
+    {'name': 'John Doe', 'occupation': 'gardener'},
+    {'name': 'Lucy Black', 'occupation': 'teacher'}
+]
+
+with open('test.yaml', 'w') as fL
+    data = yaml.dump(users, f)
 ```

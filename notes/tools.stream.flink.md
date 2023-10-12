@@ -1,11 +1,13 @@
 ---
 id: 34zramwnc9v2jgxtsahsbr6
-title: Flink
-desc: ""
-updated: 1694654738642
+title: flink
+desc: ''
+updated: 1694750025227
 created: 1691461087030
 ---
 -[PyFlink](https://thecodinginterface.com/blog/intro-to-pyflink/)
+- https://www.youtube.com/playlist?list=PLLvMUwMfgFGeM7IzOMiPwCZN2pCq3Nwka
+
 
 ## What is Flink?
 

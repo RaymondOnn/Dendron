@@ -1,8 +1,8 @@
 ---
 id: ethnzhpkik86q3gqn1y25mp
-title: Testing
+title: testing
 desc: ''
-updated: 1694226332340
+updated: 1696700290478
 created: 1693888370181
 ---
 
@@ -16,3 +16,5 @@ https://www.youtube.com/watch?v=dw2eNCzwBkk&ab_channel=IndianPythonista
 
 ## Arrange Act Assert 
 https://www.youtube.com/watch?v=8KB5aF6QXe8
+
+https://code.likeagirl.io/empower-your-testing-arsenal-with-parametrized-testing-in-python-using-pytest-7efe1f29e03f

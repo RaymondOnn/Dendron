@@ -2,9 +2,11 @@
 id: iv92hc8l74f10mi2b0e30ve
 title: Docker_compose
 desc: ''
-updated: 1694673849402
+updated: 1694747762944
 created: 1694673828509
 ---
+
+https://nightlies.apache.org/flink/flink-docs-master/docs/deployment/resource-providers/standalone/docker/
 
 ``` yaml
 version: "2.1"

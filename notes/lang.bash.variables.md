@@ -2,7 +2,7 @@
 id: c50jfpiu057q5z934e66wad
 title: variables
 desc: ''
-updated: 1694737057315
+updated: 1697018431097
 created: 1694737023808
 ---
 
@@ -46,6 +46,8 @@ echo $files
 ```
 
 #### System / Environment Variables
+- Uppercase variables meant for system / environment variables. Lowercase variables for all other variables
+- To see all environment variables, use the command `env`
 
 ```bash
 name="Jay LaCroix"
@@ -60,6 +62,3 @@ echo "Your username is: $USER"
 >>> Your username is: jay
 ```
 
-- Uppercase variables meant for system / environment variables
-- Lowercase variables for all other variables
-- To see all environment variables, use the command `env`

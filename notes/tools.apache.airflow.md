@@ -2,7 +2,7 @@
 id: gcm07ahnhr634dbmi7v9f7n
 title: Airflow
 desc: ''
-updated: 1694576155945
+updated: 1694890180089
 created: 1691960726557
 ---
 ## Links
@@ -75,4 +75,6 @@ with DAG(
     task1 >> task3 >> task2
 ```
 
+
+## Executors
 

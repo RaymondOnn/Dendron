@@ -1,8 +1,8 @@
 ---
 id: 16bnd2gfn802530yb58ju64
-title: Docker_compose
+title: docker_compose
 desc: ''
-updated: 1694689980042
+updated: 1695276824882
 created: 1694662151930
 ---
 
