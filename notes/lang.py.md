@@ -2,11 +2,11 @@
 id: mlzian0ayu0qzng6xt1kk5w
 title: py
 desc: ''
-updated: 1697106576729
+updated: 1697520050409
 created: 1666472517896
 ---
 https://python.plainenglish.io/wanna-code-like-a-google-engineer-lets-dive-into-advanced-python-together-93f1e08b6d2f
-
+https://python.plainenglish.io/python-hidden-treasures-delve-deeper-like-a-google-pro-part-2-of-wanna-code-like-a-google-c38069316ee7
 
 For doing designs in printout:
 <https://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html>

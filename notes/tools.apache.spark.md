@@ -2,23 +2,38 @@
 id: uus67uozis910s6idj3d96n
 title: spark
 desc: ''
-updated: 1696754149116
+updated: 1697931703181
 created: 1691351110602
 ---
 
 - [Documentation](https://spark.apache.org/docs/2.1.0/api/python/index.html)
 - [Tips on using Pyspark](https://www.confessionsofadataguy.com/new-to-pyspark-do-this-not-that/)
-- [SparkSession Config Options](https://spark.apache.org/docs/latest/configuration.html#viewing-spark-properties)
+
 - [ETL Best Practices](https://alexioannides.com/2019/07/28/best-practices-for-pyspark-etl-projects/)
 - [Pyspark with Delta Lake](https://towardsdatascience.com/hands-on-introduction-to-delta-lake-with-py-spark-b39460a4b1ae)
 - [Official Spark Guide](https://spark.apache.org/docs/latest/sql-programming-guide.html)
 - [Apache Livy](https://medium.com/itnext/building-real-time-interactions-with-apache-spark-through-apache-livy-53169d87d012)
 - [Calling REST_API](https://medium.com/geekculture/how-to-execute-a-rest-api-call-on-apache-spark-the-right-way-in-python-4367f2740e78)
+- <https://medium.com/nerd-for-tech/apache-spark-visual-intro-9eb3fd2709f9>
 
+## Spark
 
-## SparkContext vs SparkSession
+### What is Spark
 
-link: https://www.sparkcodehub.com/pyspark-sparksession-and-sparkcontext
+- Spark is a distributed data processing framework.
+
+### The SparkSession Object
+
+- Recap: Every Spark program will start a driver. See [[tools.apache.spark.config.deploy]]
+- The driver process is initiated via the SparkSession object,
+  - In some cases, for e.g. spark-shell, this is done automatically and assigned to the variable `spark`
+  - With Spark apps, we have to create a SparkSession object manually: `SparkSession.builder().getOrCreate()`
+- FYI SparkSession is a Singleton object so there will only be one active SparkSession
+- For configuring SparkSession, see [[tools.apache.spark.config]]
+
+#### SparkContext vs SparkSession
+
+link: <https://www.sparkcodehub.com/pyspark-sparksession-and-sparkcontext>
 
 ``` py
 from pyspark import SparkContext
@@ -31,95 +46,21 @@ spark = SparkSession.builder.appName('PySparkIntro').getOrCreate()
 ![Alt text](sparkcontext.png)
 
 - `SparkContext`
-  - is the main entry point for using the Spark Core functionalities. 
+  - is the main entry point for using the Spark Core functionalities.
   - It connects the cluster manager and coordinates resources across the cluster.
   - meant for fine grained control for low-level RDD operations
-- `SparkSession` 
-  - is a unified entry point for DataFrame and Dataset API, Structured Streaming, and SQL operations. 
+- `SparkSession`
+  - is a unified entry point for DataFrame and Dataset API, Structured Streaming, and SQL operations.
   - It encapsulates SparkContext and several other contexts, such as HiveContext and SQLContext, which were used in previous Spark versions
   - Meant for high level processing tasks
 
-## Resilent Distributed Datasets (RDDs)
+### Spark DataFrame
 
-```py
-# creating a RDD
-data = [1, 2, 3, 4, 5]
-rdd = sc.paralleize(data)
-
-```
-
-### RDD Transformations
-- creates another RDD from an existing RDD
-- RDD transformations are lazy. In antoher words, executions are not done immediately. However, their execution plans are recorded
-- e.g. map, filter, flatmap
-
-```py
-# examples of RDD transformations
-squared_rdd = rdd.map(lambda x: x**2)
-even_rdd = rdd.filter(lambda x: x % 2 == 0)
-```
-
-### RDD Actions
- - triggers the execution of transformations and return results to the driver program
- - eagerly evaluated and initate computation on the rdd
- - e.g. `collect`, `count`, `reduce`
-
-```py
-collected_data = squared_rdd.collect()
-num_elements = squared_rdd.count()
-```
-
-## DataFrame & Dataset APIs
-
-#### Dataset API
-- provides a typesafe object-oriented programming interface with the performance optimizations of dataframe AP
-- allows us to work with strongly-typed data
-
-```py
-from pyspark.sql.types import StructType, StructField, StringType, IntegerType
-
-# defining a schema to specified the column names and data type
-schema = StructType([
-    StructField('Name', StringType(), True),
-    StructField('Age', IntegerType(), True),
-    StructField('Salary', IntegerType(), True)
-])
-
-# data values
-data = [
-    ('Alice', 28, 45000),
-    ('Bob', 36, 60000),
-    ('Cathy', 23, 35000)
-]
-
-df = spark.createDataFrame(data, schema)
-df = df.alias('employees')
-df.show()
-```
-<br>
-
-#### DataFrame API
-
-- provides a higher-level, more structured way to work with data
-- makes working in pyspark more intuitive and efficient
-
-```py
-data_file = 'path/to/data.csv'
-df = spark.read.csv(data_file, header = True, inferSchema = True)
-```
-
-### Working with semi-structured data
-
-```py
-# for reading json data
-json_data_file = 'path/to/data.json'
-df = spark.read.json(json_data_file)
-
-# for reading XML data
-xml_data_file = 'path/to.data.xml'
-df = spark.read.format('xml').option('rowTag', 'employee').load(xml_data_file)
-
-```
+- Spark DataFrame is a two-dimensional table-like immutable data structure similar to the Pandas DataFrame.
+- They are a distributed table with named columns and well-defined schema i.e. each column has a specific data type such as integer, float, string, timestamp, etc.
+  - Tip: To get the schema, use the `.printSchema()` method
+- Visualizing the DataFrame (presented like a database table) can be done using the `.show()` method
+- Most transformations are performed on DataFrames
 
 ## Data Cleaning / Preprocessing
 
@@ -269,88 +210,3 @@ df_with_total_income = df.withColumn('Total_Income', calculate_total_income_udf(
 df_with_total_income.show()
 ```
 
-## Machine Learning
-
-``` py
-
-spark = SparkSession.builder.appName('SupervisedLearning').getOrCreate()
-data = [...]
-
-from pyspark.sql.types import FloatType
-
-schema = StructType([
-    StructField('Sqft', IntegerType(), True),
-    StructField('Bedrooms', IntegerType(), True),
-    StructField('Bathrooms', IntegerType(), True),
-    StructField('Price', IntegerType(), True)
-])
-df = spark.createDataFrame(data, schema)
-df.show()
-
-# CLASSIFICATION WITH LOGISTIC REGRESSION ==========================================
-
-from pyspark.ml.feature import VectorAssembler
-from pyspark.ml.classification import LogisticRegression
-from pyspark.ml import Pipeline
-
-feature_columns = ['Sqft', 'Bedrooms', 'Bathrooms']
-assembler = VectorAssembler(inputCols = feature_columns, outputCols = 'features')
-df_assembled - assembler.transform(df)
-
-# train test split
-train_data, test_data = df_assembled = randomSplit(0.8, 0.2)
-lr = LogisticRegression(featuresCol = 'features', labelCol = 'Price')
-# creating model
-model = lr.fit(train_data)
-# predict using model
-predictions = model.transform(test_data)
-predictions.select('features', 'Price', 'predictions').show()
-
-# REGRESSION WITH LINEAR REGRESSION ==========================================
-
-from pyspark.ml.regression import LinearRegression
-
-lr = LinearRegression(featuresCol = 'features', labelCol = 'Price')
-
-model = lr.fit(train_data)
-predictions = model.transform(test_data)
-predictions.select('features', 'Price', 'predictions').show()
-
-```
-
-### Unsupervised Learning
-
-```py
-
-data = [...]
-schema = StructType([
-    StructField('CustomerID', StringType(), True),
-    StructField('ElectronicsSpend', IntegerType(), True),
-    StructField('FashionSpend', IntegerType(), True),
-    StructField('GrocerySpend', IntegerType(), True)
-])
-df = spark.createDataFrame(data, schema)
-
-# K-MEANS CLUSTERING
-
-from pyspark.ml.clustering import KMeans
-
-feature_columns = ['ElectronicsSpend', 'FashionSpend', 'GrocerySpend']
-assembler = VectorAssembler(inputCols = feature_columns, outputCols = 'features')
-df_assembled - assembler.transform(df)
-
-kmeans = KMeans(featuresCol = 'features', k = 3)
-model = kmeans.fit(train_data)
-predictions = model.transform(test_data)
-predictions.select('CustomerID', 'features', 'predictions').show()
-
-
-# PRINCIPAL COMPONENT ANALYSIS
-from pyspark.ml.feature import PCA
-pca = PCA(k=2, inputCol = 'features', outputCol = 'pca_features')
-nodel = pca.fit(df_assembled)
-df_pca = model.transform(df_assembled)
-df_pca.select('CustomerID', 'pca_features').show(truncate=False)
-
-
-```

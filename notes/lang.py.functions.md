@@ -1,8 +1,8 @@
 ---
 id: m94s4odd4mfv9ld4i83gkpl
-title: Functions
+title: functions
 desc: ''
-updated: 1695072355553
+updated: 1697517680876
 created: 1694998939579
 ---
 https://www.youtube.com/shorts/TCFfi42S92Q

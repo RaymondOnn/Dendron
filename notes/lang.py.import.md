@@ -2,91 +2,96 @@
 id: 82b9k345pkczm5ba4xlurcg
 title: import
 desc: ''
-updated: 1696940773863
+updated: 1697782717454
 created: 1694226568563
 ---
 
-https://www.youtube.com/watch?v=QCSz0j8tGmI
-https://www.geeksforgeeks.org/how-to-dynamically-load-modules-or-classes-in-python/
+<https://www.youtube.com/watch?v=QCSz0j8tGmI>
+<https://www.geeksforgeeks.org/how-to-dynamically-load-modules-or-classes-in-python/>
+https://www.youtube.com/watch?v=BMgk10UfoPU&ab_channel=Indently
 
+## Importing Modules
 
+Python offers several ways to import modules:
 
+- Regular Import: `import module_name`
+  - With this approach, the module’s contents can be accessed using the module_name namespace.
+- Import with Alias: `import module_name as alias`
+  - Creating an alias provides a shorter, more convenient reference to the module.
+- Import Specific Items: `from module_name import item_name`
+  - This method directly imports specific items from the module into the current namespace.
+- Import Everything: `from module_name import *`
+  - While concise, this approach might lead to namespace pollution and reduced code readability.
 
-## Import via python script
+## The `__init__.py`
+
+- The `__init__.py` file is executed when the module is imported 
+- o\Often used to initialize variables, set up resources, or define module-level attributes.
+- Effectively transforms a directory into a Python package, allowing for more structured organization of code.
+
+### Use Cases of `__init__.py`
+
+#### Organizing Modules
+
+- Import all of these modules in the `__init__.py` file.
+- Allows the code can be imported directly via the main module, and you won't need to import code from separate modules anymore.
 
 ``` py
-import sys
-import subprocess
-import pkg_resources
-from pkg_resources import DistributionNotFound, VersionConflict
+# math_pkg/__init__.py
+from .arithmetic import add, subtract, multiply, divide
+from .statistics import mean, median, mode
+Importing and Using
 
-def should_install_requirement(requirement):
-    should_install = False
-    try:
-        pkg_resources.require(requirement)
-    except (DistributionNotFound, VersionConflict):
-        should_install = True
-    return should_install
+from math_pkg import add, mean
 
-
-def install_packages(requirement_list):
-    try:
-        requirements = [
-            requirement
-            for requirement in requirement_list
-            if should_install_requirement(requirement)
-        ]
-        if len(requirements) > 0:
-            subprocess.check_call([sys.executable, "-m", "pip", "install", *requirements])
-        else:
-            print("Requirements already satisfied.")
-
-    except Exception as e:
-        print(e)
-
-if __name__ == "__main__":
-    requirement_list = ['requests', 'httpx==0.18.2']
-    install_packages(requirement_list)        
+result = add(10, 5)
+average = mean([2, 4, 6, 8])
 ```
 
-#### Alternatives
+#### Package-Level Utility Functions
 
-```py
-# To conditionally install multiple packages with exact version
+- You can also define these functions directly in the `__init__.py` file for easy access.
+- Allows for direct access the utility functions without navigating through submodules.
 
-import sys
-from subprocess import run, PIPE, STDOUT
-import pkg_resources
+``` py
+# string_utils/__init__.py
+def reverse_string(input_str):
+    return input_str[::-1]
 
-def run_cmd(cmd):
-    ps = run(cmd, stdout=PIPE, stderr=STDOUT, shell=True, text=True)
-    print(ps.stdout)
+def capitalize_words(input_str):
+    return ' '.join([word.capitalize() for word in input_str.split()])
 
+# Using the Utility Functions
+from string_utils import reverse_string, capitalize_words
 
-# packages to be conditionally installed with exact version
-required = {"click==8.0.1", "semver==3.0.0.dev2"}
-installed = {f"{pkg.key}=={pkg.version}" for pkg in pkg_resources.working_set}
-missing = required - installed
+reversed = reverse_string("hello")
+capitalized = capitalize_words("python is awesome")
+```
 
-if missing:
-    run_cmd(f'pip install --ignore-installed {" ".join([*missing])}')
+#### Package-Level Configuration Class
 
-# -------------------------------------------
-    
-import pkg_resources
-import subprocess
-import sys
-import os
+- Here, the `__init__.py` file provides a convenient class for users to configure and manage settings related to your package.
 
-REQUIRED = {
-  'spacy', 'scikit-learn', 'numpy', 'pandas', 'torch',
-  'pyfunctional', 'textblob', 'seaborn', 'matplotlib'
-}
+``` py
+# my_package/__init__.py
+class Configuration:
+    def __init__(self):
+        self.api_key = None
+        self.debug_mode = False
 
-installed = {pkg.key for pkg in pkg_resources.working_set}
-missing = REQUIRED - installed
+    def set_api_key(self, key):
+        self.api_key = key
 
-if missing:
-    python = sys.executable
-    subprocess.check_call([python, '-m', 'pip', 'install', *missing], stdout=subprocess.DEVNULL)
+    def enable_debug(self):
+        self.debug_mode = True
+
+# Using the Configuration Class
+from my_package import Configuration
+
+config = Configuration()
+config.set_api_key("your_api_key_here")
+config.enable_debug()
+
+print(config.api_key)  # Output: your_api_key_here
+print(config.debug_mode)  # Output: True
 ```

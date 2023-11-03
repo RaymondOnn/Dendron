@@ -2,13 +2,11 @@
 id: odxk4ux0734huja9kr318la
 title: sql
 desc: ''
-updated: 1694733038283
+updated: 1698446365191
 created: 1666472526629
 ---
 
-Use Snowflake’s Pivot Function with a Dynamic List of Columns:
-https://www.youtube.com/watch?v=5tM2kKAwE74
 
 
-FIFO in Snowflake:
-https://www.youtube.com/watch?v=P-UBEJiuOKA
+
+https://medium.com/pragmatic-programmers/table-of-contents-4e017a30c020

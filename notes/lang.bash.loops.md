@@ -2,11 +2,22 @@
 id: mkrdhns5lbmskmsj4e69yrv
 title: loops
 desc: ''
-updated: 1697016931222
+updated: 1698874310041
 created: 1697012585505
 ---
 
 ## For Loops
+
+- General Structure
+
+``` raw
+for VARIABLE_NAME in ITEM_1 ITEM_N
+do 
+    command 1
+    command 2
+    command N
+done
+```
 
 ``` bash
 for current_number in 1 2 3 4 5 6 7 8 9 10
@@ -25,6 +36,18 @@ done
 echo "This is outside of the for loop"
 ```
 
+- It's also a common practice for the list of items to be stored in a variable as in this example.
+
+``` bash
+# storing lists in variable
+
+colors="red green blue"
+for color in $colors
+do
+    echo "Color: $color"
+done
+```
+
 ### A more useful example
 
 ``` bash
@@ -36,6 +59,24 @@ done
 ```
 
 ## While Loops
+
+- A while loop is a loop that repeats a series of commands for as long as a given condition is true.
+  - This condition could be some sort of test
+    - for e.g. check if a variable has a certain value or check if a file exists
+  - The condition could also be any command.
+    - As long as the command succeeds, the while loop will continue. Else the while loop stops.
+
+- General structure
+
+``` bash
+while [ CONDITION_IS_TRUE ]
+do
+    # commands that change the condition
+    command 1
+    command 2
+    command N
+done 
+```
 
 ``` bash
 # initialize variable myvar
@@ -86,3 +127,311 @@ rm testfile
 # while loop exited after testfile is removed
 >>> The file no longer exists. Exiting...
 ```
+
+### Infinite Loops
+
+- If the condition is always true, then the while loop will never exit.
+- To stop, you can hit ctrl-c to interrupt the script if running it interactively from the command line.
+- Alternatively, can use the kill command to kill the process.
+- Useful for creating some type of daemon that would keep running in the background until it was killed.
+
+``` bash
+while true   # condition will always return true
+do 
+    command N
+    sleep 1
+done
+```
+
+### Loop Control
+
+#### Explicit number of time
+
+- Control the number of times it loops using an index variable i.e. keep checking the value of that variable, and then increment that variable at the end of the command section of the while loop.
+
+``` bash
+INDEX=1
+while [ $index -lt 6 ]
+do
+    echo "Creating project-${INDEX}"
+    mkdir /usr/local/project-${INDEX}
+    ((INDEX++))   # ++: increment operator, keeps adding one to variable each time.
+done    
+```
+
+#### User Input
+
+``` bash
+# If the user answers anything other than a lowercase Y, loop repeats.
+while [ "$correct" != "y" ]
+do
+    read -p "Enter your name: " NAME  # user input for $name
+    read -p "Is ${NAME} correct ?" CORRECT # user input for $correct
+done
+```
+
+#### Command exit status
+
+``` bash
+# While server is pingable, condition=true and loop continues.
+while ping -c 1 appl >/dev/null
+do 
+    echo "appl still up..."
+    sleep 5
+done
+echo "appl down, continuing."
+
+```
+
+### Reading files, line by line
+
+If you've ever tried to use a for loop to read a file line-by-line, you'll quickly find that it doesn't work.
+
+- When using a for loop to read a file line-by-line, generally what happens is that the for loop will read the file word-by-word.
+- To actually read a file line-by-line, use a while loop together with a read command.
+- After the keyword "done", add "<" sign, followed by the file you wish to read.
+- Note: You can also read from the output of a command. To do this, pipe the output of the command into the while loop.
+
+``` bash
+line_num=1
+while read line     # "while read" in order to read line by line
+do 
+    echo "${line_num}: ${line}" # print line number and line.
+    ((line_num++))
+done < /etc/fstab   # place file to be read here
+```
+
+``` bash
+# extract the lines containing "xfs" vua `grep`
+# then pipe extracted lines to the while loop.
+grep xfs /etc/fstab | while read line
+do
+    echo "xfs: ${line}"
+done
+```
+
+- the read command also supports splitting the data it reads into multiple variables.
+- Each variable supplied to the read command will store one word or one field of data, with any leftover words or fields assigned to the last variable supplied to the read command.
+
+``` bash
+fs_num=1
+grep xfs /etc/fstab | while read FS MP REST # FS:1st word, MP: 2nd word, REST: the rest
+do
+    echo "${fs_num}: file system: ${FS}"
+    echo "${fs_num}: mount point: ${MP}"
+    ((fs_num++))   # line_counter
+done
+```
+
+### break and continue
+
+#### `break`
+
+- If you want to exit a loop before its normal ending, use the break statement.
+- The break statement exits the loop, but it does not exit the script.
+- The script will continue after the loop.
+
+``` bash
+# simple menu
+while true  # infinite loop
+do 
+    read -p "1: Show disk usage. 2: Show uptime. " CHOICE
+    case "$CHOICE" in
+        1) 
+            df -h
+            ;;
+        2) 
+            uptime
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
+```
+
+Here's one way you could create a simple menu.
+This example creates an infinite loop using "while true".
+Next, it asks the user for some input and stores that input in the variable CHOICE.
+A case statement is used to determine what action to take based on the user's input.
+If 1 was entered, then the df command is executed and the loop repeats, asking the user for input again.
+If 2 is entered, then the uptime command is executed and the loop repeats.
+If anything other than 1 or 2 is entered, then the break statement is executed, which ends the while loop.
+Note that the break statement can be used with other kinds of loops, like for loops, for example.
+
+#### `continue`
+
+- if you want to restart the loop at the next iteration before the loop completes, use the continue statement.
+- Any commands that follow the continue statement in the loop will not be executed.
+- Execution continues back at the top of the loop and the while condition is examined again.
+
+- Like the break statement, the continue statement can be used with other types of loops.
+``` bash
+# -B option to MySQL disables the ASCII table output that MySQL normally displays.
+# -N option suppresses the column names in the output and prevents the header from being displayed.
+# -e option causes MySQL to execute the commands that follow it.
+mysql -BNe 'show databases' | while read DB # read assign input into $DB
+do
+    db-backed-up-recently $DB
+    if [ "$?" -eq "0" ] # check if current db backed up recently
+    then
+        continue        # if yes, move on the next db
+    fi
+    backup $DB          # else, go ahead and backup
+done
+
+```
+
+---
+
+Positional parameters are variables that contain the contents of the command line. The variables are $0 through $9. The script itself is stored in $0, the first parameter is stored in $1, the second in $2, and so on. Let's take this command line as an example. The contents of $0 are "script.sh", $1 contains "parameter1", $2 contains "parameter2", and $3 contains "parameter3". This script called, archive_user.sh,
+accepts a parameter which happens to be a username.
+
+Anything that follows the pound sign is a comment.
+
+The only exception to this is the shebang on the first line.
+
+Everywhere else in the script where a pound sign is encountered
+
+it marks the beginning of a comment.
+
+Comments are dutifully ignored by the interpreter
+
+as they are for the benefit of us humans.
+
+Anything that follows the pound sign is ignored.
+
+If a pound sign starts at the beginning of a line
+
+the entire line is ignored.
+
+If a pound sign is encountered in the middle of a line
+
+only the information to the right of the pound sign is ignored.
+
+Here is what the output looks like
+
+when we execute the script.
+
+Instead of referring to $1 throughout the script,
+
+let's assign its value to a more meaningful variable name.
+
+In this case, let's assign it to the variable called user.
+
+The output remains exactly the same.
+
+You can access all the positional parameters
+
+starting at $1 to the very last one on the command line
+
+by using the special variable $@.
+
+Here is how to update the script
+
+to accept one or more parameters.
+
+Now you can pass in multiple users to the script.
+
+And the for loop will execute for each user
+
+that you supplied on the command line.
+
+Here's what the script will look like
+
+if we pass 'tar' to 2 users.
+
+In this case, 'chet' and 'joe'.
+
+If you want to accept standard input
+
+use the read command.
+
+Remember that standard input typically comes
+
+from a person typing at the keyboard,
+
+but it can also come from other sources
+
+like the output of a command in a command pipeline.
+
+The format for the read command is
+
+read -p "PROMPT" VARIABLE_NAME.
+
+This version of the archive_user.sh script
+
+asks for the user account.
+
+In this example, I ran the script
+
+then typed in the username 'mitch'
+---
+
+Let's review.
+
+The first line in a shell script
+
+should start with a shebang
+
+and the path to the interpreter
+
+that should be used to execute the commands listed in the script.
+
+To assign a value to a variable
+
+start with the variable name
+
+followed by an equals sign
+
+then followed by the value.
+
+Do not use a space before or after the equals sign.
+
+You can access the value stored in a variable by using
+
+$VARIABLE_NAME or $.
+
+The latter form is required if you want to preceed
+
+or follow the variable with additional data.
+
+To assign the output of a command to a variable
+
+enclose the command in parentheseis
+
+and precede it with a dollar sign.
+
+Perform tests by placing expressions in brackets.
+
+Tests are typically combined with if statements.
+
+Use if, if/else, or if/elif/else statements
+
+to make decisions in your scripts.
+
+To perform an action or series of actions
+
+on multiple items, use a for loop.
+
+To access items on the command line
+
+use positional parameters.
+
+The name of the program is represented by $0,
+
+the first parameter is represented by $1, and so on.
+
+To access all the items on the command line
+
+starting at the first parameter ($1),
+
+use the special variable $@.
+
+You can place comments in your scripts
+
+by using the pound sign.
+
+If you like to accept user input in your scripts,
+
+use the read command.

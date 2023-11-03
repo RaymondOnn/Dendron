@@ -2,7 +2,7 @@
 id: 4en68jhsiay8lpcec6clbuw
 title: Railway
 desc: ''
-updated: 1695078711567
+updated: 1697313475619
 created: 1693805740760
 ---
 ## Monadic Error Handling
@@ -11,13 +11,12 @@ created: 1693805740760
 
 ### Railway Oriented Programming
 
-<br>
 
 >**Links**:
-- [Railway-Oriented Programming](https://fsharpforfunandprofit.com/rop/)
-- [Against Railway-Oriented Programming](https://fsharpforfunandprofit.com/posts/against-railway-oriented-programming/)
+>- [Railway-Oriented Programming](https://fsharpforfunandprofit.com/rop/)
+>- [Against Railway-Oriented Programming](https://fsharpforfunandprofit.com/posts/against-railway-oriented-programming/)
   
-
+<br>
 
 - Coming from the functional programming paradigm
 - A pattern for handling branches in logic within your program in a clean and concise way
@@ -138,4 +137,5 @@ print(res)
 ```
 
 #### Other Resources
-- talk on railway programming: https://www.youtube.com/watch?v=cKixdve3JGg&ab_channel=PyData
+
+- talk on railway programming: <https://www.youtube.com/watch?v=cKixdve3JGg&ab_channel=PyData>

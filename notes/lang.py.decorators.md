@@ -1,8 +1,8 @@
 ---
 id: 3wkiqhqg7cw748xx3i2z1sr
-title: Decorators
+title: decorators
 desc: ''
-updated: 1693844079202
+updated: 1697197912157
 created: 1693821529395
 ---
 
@@ -82,8 +82,8 @@ if __name__ = "__main__":
 ```
 
 ## Using the '@' operator
-Syntactic sugar for decorators
 
+Syntactic sugar for decorators
 
 ``` py
 import functools
@@ -163,6 +163,7 @@ def func(...):
 ```
 
 ## Decorator defaults using `functools.partial`
+
 To avoid having to provide the same arguments throughout, we can create a default version of the decorator instead.
 
 ``` py

@@ -2,7 +2,7 @@
 id: wo52t5kfmgpfqiwtqm9c0ag
 title: docker
 desc: ""
-updated: 1695276811946
+updated: 1697273528197
 created: 1691076022969
 ---
 
@@ -10,7 +10,7 @@ created: 1691076022969
 - python-on-whales docs: <https://gabrieldemarmiesse.github.io/python-on-whales/sub-commands/compose/>
 
 <https://stackoverflow.com/questions/17157721/how-to-get-a-docker-containers-ip-address-from-the-host?page=1&tab=oldest#tab-top>
-
+<https://betterprogramming.pub/a-collection-of-docker-images-to-solve-all-your-debugging-needs-189973aae5c0>
 ---
 
 ## What is Container?

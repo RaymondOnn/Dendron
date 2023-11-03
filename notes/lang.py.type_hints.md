@@ -2,11 +2,12 @@
 id: 1ealoc83bpx663wnv0u0u2e
 title: type_hints
 desc: ''
-updated: 1695093248312
+updated: 1698633583746
 created: 1693672520500
 ---
 
 https://www.youtube.com/watch?v=QORvB-_mbZ0&ab_channel=TechWithTim
+https://tusharsadhwani.medium.com/the-comprehensive-guide-to-mypy-b7cd502d04e3
 
 ## Type Annotation: Why
 

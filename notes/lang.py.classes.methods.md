@@ -1,11 +1,25 @@
 ---
 id: lpy8c36zkl9yv9lx618in42
-title: Methods
+title: methods
 desc: ''
-updated: 1692224265294
+updated: 1697205213686
 created: 1692222625632
 ---
 
+## Instance Methods
+
+- Methods that refer to the instance of the class
+- affects the instance of the class
+
+### Static Methods (`@staticmethod`)
+
+- Method that can be used anything since it does not refer to the class
+- does not affect the instance nor the class
+
+### Class Methods (`@classmethod`)
+
+- e.g. an alternative constructor using diff set of args
+- changes how the class works
 
 ```py
 class Calendar:
@@ -34,15 +48,3 @@ if __name__ == '__main__':
 
 
 ```
-
-## Instance Methods
-- Methods that refer to the instance of the class
-- affects the instance of the class
-
-## Static Methods
-- Method that can be used anything since it does not refer to the class
-- does not affect the instance nor the class
-
-## Class Methods
-- e.g. an alternative constructor using diff set of args
-- changes how the class works

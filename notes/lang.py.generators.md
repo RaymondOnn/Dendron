@@ -1,11 +1,11 @@
 ---
 id: tml04k6ixygmhpo27v2e285
-title: Generators
+title: generators
 desc: ''
-updated: 1695137668855
+updated: 1697377105536
 created: 1695002900771
 ---
-
+https://medium.com/data-reply-it-datatech/mastering-delta-lake-optimizations-optimize-z-order-and-vacuum-f6ca110c9869
 Yield as birectional communication??
 Yield with itertools?
 
@@ -152,7 +152,7 @@ for num in my_nums:
 >>> 25
 ```
 
-### [Joining Generators](https://www.markhneedham.com/blog/2015/05/24/python-joining-multiple-generatorsiterators/)
+### [Combining Generators](https://www.markhneedham.com/blog/2015/05/24/python-joining-multiple-generatorsiterators/)
 
 ```py
 import itertools
@@ -256,6 +256,20 @@ def func():
         yield sq
 ```
 
+### Handling Exceptions in Generators
+Generators in Python can also throw exceptions. You can handle these exceptions within the generator using the throw() method. You can also use StopIteration exception to end the generator.
+``` py
+def simple_generator():
+    try:
+        yield 'Hello, world!'
+    except Exception as e:
+        yield str(e)
+
+gen = simple_generator()
+print(next(gen))  # prints: Hello, world!
+```
+
+gen.throw(Exception('Test exception'))  # prints: Test exception
 ---
 https://gist.github.com/kolypto/3240037e46bce47d4374331decc298f1
 https://docs.python.org/3/library/typing.html#typing.Generator

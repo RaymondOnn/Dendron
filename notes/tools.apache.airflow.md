@@ -1,28 +1,24 @@
 ---
 id: gcm07ahnhr634dbmi7v9f7n
-title: Airflow
+title: airflow
 desc: ''
-updated: 1694890180089
+updated: 1697932411255
 created: 1691960726557
 ---
 ## Links
-- Tutorial: https://www.youtube.com/watch?v=K9AnJ9_ZAXE&ab_channel=coder2j
-- Debug Tips: https://www.youtube.com/watch?v=5QxqqeOxJhI&list=PLwFJcsJ61oujAqYpMp1kdUBcPG0sE0QMT&index=15&ab_channel=coder2j
-- Email Alerts: https://www.youtube.com/watch?v=D18G7hW8418&list=PLwFJcsJ61oujAqYpMp1kdUBcPG0sE0QMT&index=18&ab_channel=coder2j
-- Bad & Best Practices:  https://www.youtube.com/watch?v=LBoT1DzGFS4&ab_channel=PlainSchwarz
-- Trigger DAGs via REST API: https://brocktibert.com/post/trigger-airflow-dags-via-the-rest-api/
 
-
-
-
+- Tutorial: <https://www.youtube.com/watch?v=K9AnJ9_ZAXE&ab_channel=coder2j>
+- Debug Tips: <https://www.youtube.com/watch?v=5QxqqeOxJhI&list=PLwFJcsJ61oujAqYpMp1kdUBcPG0sE0QMT&index=15&ab_channel=coder2j>
+- Email Alerts: <https://www.youtube.com/watch?v=D18G7hW8418&list=PLwFJcsJ61oujAqYpMp1kdUBcPG0sE0QMT&index=18&ab_channel=coder2j>
+- Bad & Best Practices:  <https://www.youtube.com/watch?v=LBoT1DzGFS4&ab_channel=PlainSchwarz>
+- Trigger DAGs via REST API: <https://brocktibert.com/post/trigger-airflow-dags-via-the-rest-api/>
 
 ## Airflow Connections
 
-
 ### Postgres Operator
+
 - NOTE: for host field, if using docker application, `localhost` doesn't work, try `host.docker.internal` instead
 - TIP: Recommended to delete data before inserting data to prevent duplication of primary keys
-
 
 ```py
 from datetime import datetime, timedelta
@@ -75,6 +71,4 @@ with DAG(
     task1 >> task3 >> task2
 ```
 
-
 ## Executors
-
