@@ -2,11 +2,12 @@
 id: h0vdg2ngxj0yslp6b3iasir
 title: Git
 desc: ''
-updated: 1693388905839
+updated: 1699360926504
 created: 1693376054163
 ---
 
 ## Resources
+
 - [Intermediate GIT](https://www.youtube.com/watch?v=Uszj_k0DGsg&t=9s&ab_channel=freeCodeCamp.org)
 - [Advanced GIT](https://www.youtube.com/watch?v=qsTthZi23VE&ab_channel=freeCodeCamp.org)
 - [How GIT works under the hood](https://www.youtube.com/watch?v=RxHJdapz2p0&ab_channel=TechWithNikola)
@@ -26,22 +27,19 @@ git cherry-pick
 
 ## What is Git?
 
-
-
-
-
-
 ---
 
 ## Working with Git Branches
 
 ### Core Concepts
-- The **HEAD** Branch: The currently "active" / "checked out" branch 
-- Local vs Remote Branches
-  - 
 
+- The **HEAD** Branch: The currently "active" / "checked out" branch
+
+- Local vs Remote Branches
+  -
 
 ---
+
 ## The Perfect Commit
 
 1. Add the **right** changes
@@ -73,8 +71,6 @@ Email signups now require a captcha to be completed:
 - invalid signup attempts are now blocked
 ```  
 
-
-
 ## Pull Requests
 
 ### Use Cases
@@ -89,10 +85,12 @@ Email signups now require a captcha to be completed:
 - Most of the time, Git will figure things out of its own
 - However, when contradictory changes occur (for e.g. same line is changed in two different ways), Git cannot know what's correct
 - Note that you can always undo and start fresh
+
   ``` bash
   git merge --abort
   git rebase --abort
   ```
+
 - To solve a conflict, simply clean up the files
 
 ## Merge vs Rebase
@@ -107,4 +105,4 @@ Email signups now require a captcha to be completed:
 - In a most realistic scenario
   - Most branches move forward differently
   - Here, Git will have to create a new commit containing the difference between the two branches called a merge commit
-  - 
+  -

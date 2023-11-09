@@ -2,7 +2,7 @@
 id: dtm4r38cjc01v8fbuy08891
 title: Vscode
 desc: ''
-updated: 1698985941091
+updated: 1699360887663
 created: 1691624185047
 ---
 
@@ -26,54 +26,100 @@ created: 1691624185047
 >
 >- `docker version`: check your version and that docker is working
 >- `docker info`: shows most config values for the docker engine
+>- `docker login <SERVER_URL>`: Defaults to logging in DockerHub, but can overrider by adding server url
+>- `docker logout <SERVER_URL>`: Always logout from shared machines/servers when done to protect your acct
 >- `ps aux`: show me all running processes
+>
+>#### Images: `docker image`
+>
+>- `ls`: Show all images downloaded
+>- `history <CONT>:<TAG>`: Shows layers of changes made in images. Same as `docker history`
+>- `inspect <CONT>`: returns JSON metadata about the image. Same as `docker inspect`
+>- `tag <SRC_IMG[:TAG]> <NEW_IMG[:TAG]>`: Assign one or more tags to an image. Default tag is 'latest'. Same as `docker tag`
+>- `push <IMG>`: Uploads changed alyers to a image registry. Default: DockerHub
 >
 >#### Containers: `docker container`
 >
->- `exec <CONT_NAME>`: run additional process in running container
->- `inspect <CONT_NAME>`: show metadata about the container. Same as `docker inspect`
->- `logs <CONT_NAME`: shows logs for a specific container. Same as `docker logs`
+>- `exec <CONT>`: run additional process in running container
+>- `inspect <CONT>`: show metadata about the container. Same as `docker inspect`
+>   - `--format`: common option for formatting output of commands using GO templates
+>- `logs <CONT>`: shows logs for a specific container. Same as `docker logs`
 >   - `--help`: see all log options
 >- `ls`: list running containers. same as `docker ps`
 >   - `--env`: pass in environment variables
 >- `rm <CONT_ID_1 CONT_ID_2 ...>`:
 >   - `-f`: force remove
->- `run [OPTIONS]<IMG_NAME> [COMMAND] [ARG...]`: starts a **new** container from an image. same as `docker run`
+>- `run [OPTIONS]<IMG> [COMMAND] [ARG...]`: starts a **new** container from an image. same as `docker run`
 >   - `--detach`: run it in the background
 >   - `--name <NAME>`: assign name to container
+>   - `-p, --publish`: publish ports. Always in HOST:CONTAINER format
 >   - `-t`: pseudo tty i.e. simulate a real terminal
 >   - `-i, --interactive`: keep session open to receive terminal input
+>   - `--network <NETWORK>`: attach container to network. Default network if unspecified
 >- `start`: start an existing stopped container
 >- `stats`: show live performance statistics for all containers. Saem as `docker stats`
->- `stop <CONT_ID>` stops the container process w/o removing it. Same as `docker stop`
->- `top <CONT_NAME>`: list the running processes in a container
+>- `stop <CONT>` stops the container process w/o removing it. Same as `docker stop`
+>- `top <CONT>`: list the running processes in a container
+>- `port <CONT>`: shows which ports are forwarding traffic to the container
+>
+>#### Network: `docker network`
+>
+>- `ls`: Show all networks created
+>- `inspect <NETWORK>`: show containers attached to that network
+>- `create [OPTIONS] <NETWORK>`: Spawns a new virtual network for you to attach containers to
+>   - `--driver`:
+>- `connect [OPTIONS] <NETWORK> <CONT>`: Connects a container to a network.
+>- `disconnect [OPTIONS] <NETWORK> <CONT>`: Disconnects a container from a network. The container must be running.
 
-## Containers
+### Docker Networks
 
-### Image vs Container
+- Docker supports networking as first-class entities.
+- Therefore docker network has its own life cycle and is not bound to other docker objects.
+- We can manage and interact with networking by using `docker network` command.
 
-- An image is the application we want to run
-- A container is an instance of that image running as a process
-- You can have many containers running off the same immage
+#### Docker Networks Defaults
 
-### Starting Docker Containers
+- Each container connected to a private virtual network 'bridge'
+- Each virtual network routes through NAT firewall on host IP
+  - Network Address Translation (NAT) translates a set of IP addresses into another set of IP address for e.g. converts a private IP address into a public IP address
+  - The Docker daemon configures the host IP address on its default interface to allow the container interact access or access to the rest of the network
+- All container on a virtual network can talk to each other without `-p`
+- Best practice is to create a new virtual network for each app:
+  - network "my_web_app" for mysql and php/apache containers
+  - network "my_api" for mongo and nodejs containers
+- Defaults work well in many cases, yet easy to swap out parts to customize it
+- for e.g.
+  - Making new virtual networks
+  - Attach containers to more than one virtual network (or none)
+    - A container that is attached to multiple networks can connect with the containers of these networks.
+  - Skip virtual networks and use host IP (`--net=host`)
+  - Use diffrent Docker network drivers to gain new abilities
 
-- Start a new container from an image using the `docker container run` command
-- `docker container run --publish 80:80 --detach nginx`
-  1. looks for image locally. if it doesn't find it, looks in Docker Hub
-  2. Downloads image from Docker Hub (default: latest version)
-  3. Creates new container from that image
-  4. Opens port 80 on the host IP
-  5. Routes traffic to the container IP port 80
-  6. Starts container by using the CMD in the image Dockerfile
-  - Note that if host port(left number) is being used, you'll get a "bind" error
+#### Public and Private Communications in Containers
 
-### Monitoring Containers
+![Alt text](docker_networks_bridge_port.png)
 
-- `docker container top` to show process list in one container
-- `docker container inspect` to show details of one container config
-- `docker container stats` for live performance stats for all containers
+- `docker container port <CONT>` to check ports
+- `docker container inspect --format "{{.NetworkSettings.IPAddress}}" webhost` to get IP Address
 
-### Getting a Shell
+#### CLI Management Commands
 
-- `docker container run -it --name nginx bash` to give you a terminal inside the running container. Use `exit` to stop
+- `docker network ls` to show networks
+  - `--network bridge`: default Docker virtual network which is NAT'ed behind the host IP
+  - `--network host`: gain performance by skipping vitual networks but sacrifices security of container model
+  - `--network none`: removes eth0 and only leaves you with localhost interface in container
+  - network driver: Built-in or 3rd party extensions that provide virtual network features (Default: `bridge`)
+- `docker network inspect` to inspect a network
+- `docker network create --driver` to create a network
+- `docker network connect` to attach a network to container
+- `docker network disconnet` to detach a network from container
+
+#### Default Security
+
+- Create your apps so frontend/backend sit on same Docker network
+- Their inter-communication never leaves host
+- All externally exposed ports closed by default
+- You must manually expose via `-p` which is better default security
+- This gets even better with Swarm and Overlay networks
+
+

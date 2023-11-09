@@ -2,7 +2,7 @@
 id: mlzian0ayu0qzng6xt1kk5w
 title: py
 desc: ''
-updated: 1697520050409
+updated: 1699405772747
 created: 1666472517896
 ---
 https://python.plainenglish.io/wanna-code-like-a-google-engineer-lets-dive-into-advanced-python-together-93f1e08b6d2f
@@ -39,3 +39,5 @@ print(f"price1 is: ${price1:}")
 print(f"price2 is: ${price2:}")
 print(f"price3 is: ${price3:}")
 ```
+
+

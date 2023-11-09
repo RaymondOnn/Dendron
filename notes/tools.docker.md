@@ -2,7 +2,7 @@
 id: wo52t5kfmgpfqiwtqm9c0ag
 title: docker
 desc: ""
-updated: 1697273528197
+updated: 1699058194087
 created: 1691076022969
 ---
 
@@ -13,40 +13,6 @@ created: 1691076022969
 <https://betterprogramming.pub/a-collection-of-docker-images-to-solve-all-your-debugging-needs-189973aae5c0>
 ---
 
-## What is Container?
-
-- A way to package application with all the necessary dependencies and configuration
-- Portable aritifact, easily shared and moved around
-- Nakes development and deployment more efficient
-- one command to install the app
-- Technically, made up of layers of images
-  - i.e linus base image, application image at the top
-  - To run the imsge, use `docker run <image_name>`
-  - If the image is not available, it auto downloads from DockerHub.
-  - When the image is runned, a container is created
-  - When a container is restarted, data is lost (No data persistence itself)
-
-## Where do containers live?
-
-- Container Repository
-- Public Repository for Docker: DockerHub
-
-## Docker Image vs Docker Container
-
-- Docker Image is the actual package / artifact that can be moved around
-- Docker Container is the running environment for the Docker Image
-
-## Docker vs Virtual Machine
-
-- Virtual Machines share the hardware resources
-- Docker shares the same OS Kernel and hardware resources
-
-## Port: Container vs Host
-
-- Multiple containers can run on your host machine
-- Host machine has only certain ports available for application
-- Conflict when same port on host machine
-- Will need to assign a free port with the container
 
 ## Docker Compose: Running multiple containers
 

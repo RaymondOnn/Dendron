@@ -1,27 +1,47 @@
 ---
 id: qb6mbr6fo9pus1qufkikot1
-title: TODO
+title: _TODO
 desc: ''
-updated: 1698986148120
+updated: 1699400931682
 created: 1698811182399
 ---
 
+### Week
+
+- Mon:  BigData | SoftEng | Data
+- Tues: SoftEng | Data | Interview
+- Wed:  Data | Interview | BigData
+- Thur: Interview | BigData | SoftEng
+- Fri: Projects Only
+- Sat: Clean and Reflect!
+- Sun: REST DAY!!
+
+---
+
 ### TODAY
-- Bash [20 mins]: 
-  - [x] Logging
-  - [ ] Debugging
-- Spark Interview [20 mins]: 
-  - [ ] Lecture 10
-  - [ ] Lecture11
-- Spark 
-  - [ ] Project structure
-  - [ ] Log4j Config
-- Docker [1 Section]: Until Section 5
-- SQL: 
-- Leetcode
-- Sort Interview Resources
+
+- [ ] SoftEng:
+  - Bash [20 mins]:
+    - [ ] [Debugging 2](https://nlbsg.udemy.com/course/bash-scripting/learn/lecture/5748400#notes)
+    - [ ] PEX
+    - [ ] GitHub
+- [x] BigData:
+  - Spark Interview [20 mins]:
+    - [x] Lecture 12
+  - Spark
+    - [ ] Project structure
+    - [ ] Log4j Config
+- [x] Data:
+  - Docker [1 Section]: Dockerfile
+  - 
+  - [SQL Anti Patterns](https://medium.com/pragmatic-programmers/table-of-contents-4e017a30c020)
+- [x] Interview:
+  - Stackoverflow SQL
+  - Leetcode Python
+  - Sort Interview Resources
 - Project:
 
+---
 
 ### [[root._todo.projects]]
 
