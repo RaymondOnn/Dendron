@@ -2,10 +2,11 @@
 id: vs314unbbuw0opiw271c1ki
 title: yaml
 desc: ''
-updated: 1696701641177
+updated: 1700754074694
 created: 1696700277932
 ---
 
+https://www.javatpoint.com/python-yaml-parser
 
 ## Format: YAML vs Python
 

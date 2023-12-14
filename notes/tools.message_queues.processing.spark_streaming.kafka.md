@@ -1,27 +1,50 @@
 ---
 id: 09dicm5rdoinmqpkb5u5nwj
 title: kafka
-desc: ''
-updated: 1697207492255
+desc: ""
+updated: 1700850124690
 created: 1697081033188
 ---
+
 ### Working with Kafka
 
 <https://spark.apache.org/docs/latest/structured-streaming-kafka-integration.html>
 
-- for low latency use cases
+-   for low latency use cases
 
 #### Serializing and Deserializing values
 
-- string: `cast()`
-- csv: `from_csv()`
-- json:
-  - serialize: `to_json(struct(<COL_NAMES))`
-  - deserialize: `from_json(<STRING_VALUE>, <SPARK_DATAFRAME_SCHEMA>)`
-- [avro](https://spark.apache.org/docs/latest/sql-data-sources-avro.html):
-  - will require to the `spark-avro` package to the dependency list
-  - serialize: `to_avro(struct(<DESIRED_FIELDS))`
-  - deserializw:`from_avro(<BINARY/BYTES>, <AVRO_SCHEMA_STRING)`
+-   string: `cast()`
+-   csv: `from_csv()`
+-   json:
+    -   serialize: `to_json(struct(<COL_NAMES))`
+    -   deserialize: `from_json(<STRING_VALUE>, <SPARK_DATAFRAME_SCHEMA>)`
+-   [avro](https://spark.apache.org/docs/latest/sql-data-sources-avro.html):
+    -   will require to the `spark-avro` package to the dependency list
+    -   serialize: `to_avro(struct(<DESIRED_FIELDS))`
+    -   deserializw:`from_avro(<BINARY/BYTES>, <AVRO_SCHEMA_STRING)`
+
+> ##### Confluent Avro Format
+>
+> -   For producers and consumers work together, Confluent appended the Schema id before actual standard Avro binary format.
+>-   This allows consumers to fetch the Schema id, request the schema from Schema Registry and deserialize the bytes.
+>-   The Confluent Avro format looks like this:
+    ![Alt text](spark_streaming_confluent_avro.png)
+>-   Thus, it will need some preprocessing before we can use `from_avro` to deserialize the event message. See [article](https://medium.com/@mrugankray/real-time-avro-data-analysis-with-spark-streaming-and-confluent-kafka-in-python-426f5e05392d).
+>
+>    ```py
+>    def rearrange_bytes(df:DataFrame):
+>        #  Create magic byte column from 1st byte. The first byte is magic byte
+>        df = df.withColumn("magicByte", F.expr("substring(value, 1, 1)"))
+>        #  Create schema id from value using next 4 byte
+>        df = df.withColumn("valueSchemaId", F.expr("substring(value, 2, 4)"))
+>        # remove first 5 bytes from value
+>        df = df.withColumn("fixedValue", F.expr("substring(value, 6, length(value)-5)"))
+>        # creating a new df with magicBytes, valueSchemaId & fixedValue
+>        df = df.select("magicByte", "valueSchemaId", "fixedValue")
+>        return df
+>    ```
+>
 
 ##### Working with Schema Registry
 
@@ -60,16 +83,16 @@ display(structuredGpsDf)
 
 #### Kafka Sinks
 
-- Sending to kafka will require a specific structure for dataframe.
-  - The dataframe can only have two cols: `key`, `value`.
-  - `value` column will have a json string for the fields you are sending over
+-   Sending to kafka will require a specific structure for dataframe.
+    -   The dataframe can only have two cols: `key`, `value`.
+    -   `value` column will have a json string for the fields you are sending over
 
 #### Multiple Streams
 
-- Each query/stream must have a unique checkpoint location!!
-- `spark.streams.awaitAnyTermination()`
-  
-``` py
+-   Each query/stream must have a unique checkpoint location!!
+-   `spark.streams.awaitAnyTermination()`
+
+```py
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import from_json, col, expr
 from pyspark.sql.types import StructType, StructField, StringType, LongType, DoubleType, IntegerType, ArrayType
@@ -85,7 +108,7 @@ if __name__ == "__main__":
         .getOrCreate()
 
     logger = Log4j(spark)
-    
+
     # define schema
     schema = StructType([
         StructField("InvoiceNumber", StringType()),
@@ -185,9 +208,9 @@ if __name__ == "__main__":
 
 ### [Kafka Best Practices for Production](https://blog.clairvoyantsoft.com/productionalizing-spark-streaming-applications-4d1c8711c7b0)
 
-- Setup Multiple Partitions in your Kafka Topics
-  - When data is pushed into a Kafka topic, the data is automatically distributed across the partitions by the Key you define in the Kafka Message.
-  - Each message is added to the Kafka topic with an offset associated with it or an ID that indicates its position in the partition. If you were to specify null as the Key, the message will be automatically distributed evenly across the partitions.
-- The above diagram shows how the Big Data Spark Streaming Application can work when it’s processing messages from a Kafka topic with multiple partitions.
-- Each “Consumer” can be thought of as one of the Spark Executors. Each Spark Executor can independently load data from a specific Kafka topic, rather than a single source.
-- In addition, each partition can also exist on a different Kafka Broker instance (separate node), which will help to decrease the load on any one node.
+-   Setup Multiple Partitions in your Kafka Topics
+    -   When data is pushed into a Kafka topic, the data is automatically distributed across the partitions by the Key you define in the Kafka Message.
+    -   Each message is added to the Kafka topic with an offset associated with it or an ID that indicates its position in the partition. If you were to specify null as the Key, the message will be automatically distributed evenly across the partitions.
+-   The above diagram shows how the Big Data Spark Streaming Application can work when it’s processing messages from a Kafka topic with multiple partitions.
+-   Each “Consumer” can be thought of as one of the Spark Executors. Each Spark Executor can independently load data from a specific Kafka topic, rather than a single source.
+-   In addition, each partition can also exist on a different Kafka Broker instance (separate node), which will help to decrease the load on any one node.

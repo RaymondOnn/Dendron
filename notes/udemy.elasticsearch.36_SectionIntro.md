@@ -1,0 +1,24 @@
+---
+id: 1ey9h66i0akpu2lhhr579ux
+title: 36_SectionIntro
+desc: ''
+updated: 1701104422719
+created: 1701084937787
+---
+In the previous section, we got our hands dirty by writing a bunch of queries.
+
+Among others, we indexed some documents and covered some aspects of how that works internally.
+
+We were just scratching the surface though.
+
+Not that things are going to be more difficult, but we just have a couple of new topics to
+
+cover — namely mapping and text analysis.
+
+We will cover both of these topics in this section of the course, because they are so
+
+closely related that it makes sense to introduce them at the same time.
+
+They are also really fundamental to Elasticsearch.
+
+Let’s begin by talking about what analysis is.

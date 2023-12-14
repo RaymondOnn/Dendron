@@ -2,13 +2,15 @@
 id: 82b9k345pkczm5ba4xlurcg
 title: import
 desc: ''
-updated: 1697782717454
+updated: 1702050617094
 created: 1694226568563
 ---
 
 <https://www.youtube.com/watch?v=QCSz0j8tGmI>
 <https://www.geeksforgeeks.org/how-to-dynamically-load-modules-or-classes-in-python/>
 https://www.youtube.com/watch?v=BMgk10UfoPU&ab_channel=Indently
+https://www.youtube.com/watch?v=CraNpITZwRo
+
 
 ## Importing Modules
 
@@ -26,7 +28,7 @@ Python offers several ways to import modules:
 ## The `__init__.py`
 
 - The `__init__.py` file is executed when the module is imported 
-- o\Often used to initialize variables, set up resources, or define module-level attributes.
+- Often used to initialize variables, set up resources, or define module-level attributes.
 - Effectively transforms a directory into a Python package, allowing for more structured organization of code.
 
 ### Use Cases of `__init__.py`

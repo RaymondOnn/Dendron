@@ -1,8 +1,8 @@
 ---
 id: rp0rn52q9hngzr8vut48buf
-title: Sed
+title: sed
 desc: ''
-updated: 1699256213460
+updated: 1702340859531
 created: 1699253109405
 ---
 

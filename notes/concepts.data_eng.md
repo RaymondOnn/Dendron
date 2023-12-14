@@ -2,7 +2,7 @@
 id: lj5qbm7qo2rlwfmwft7tdl6
 title: data_eng
 desc: ''
-updated: 1698098867516
+updated: 1702363878078
 created: 1695434860642
 ---
 
@@ -12,3 +12,5 @@ https://towardsdatascience.com/data-domains-where-do-i-start-a6d52fef95d1
 
 
 https://towardsdatascience.com/data-pipelines-design-patterns-for-reusability-extensibility-3df0af020c64
+
+https://www.startdataengineering.com/post/design-patterns/

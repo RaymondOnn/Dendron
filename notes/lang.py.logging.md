@@ -2,10 +2,11 @@
 id: cloahqwzuqhtkzbzm3urmrf
 title: logging
 desc: ''
-updated: 1698188209726
+updated: 1701772051452
 created: 1692039181977
 ---
-
+https://www.python-engineer.com/courses/advancedpython/10-logging/
+https://towardsdatascience.com/basic-to-advanced-logging-with-python-in-10-minutes-631501339650
 <https://betterstack.com/community/guides/logging/how-to-start-logging-with-python/>
 
 - [Logging into MYSQL](https://www.youtube.com/watch?v=9fnylVX8LU0)

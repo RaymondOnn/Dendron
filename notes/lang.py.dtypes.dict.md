@@ -2,7 +2,7 @@
 id: mo0cci9jwbrs19m5wh5hgrw
 title: dict
 desc: ''
-updated: 1697704445848
+updated: 1700931908037
 created: 1693289683911
 ---
 https://www.youtube.com/watch?v=u0yr9B3nH8c&ab_channel=Indently
@@ -51,5 +51,24 @@ Removes all key-value pairs from dictionary
 Gets all key-value pairs, stored within an iterable
 
 ##### `.update(<new_dict>)`
-same functionality as `old_dict | new_dict`
+same functionality as `old_dict |= new_dict`
 updates the dictionary. if clashing keys, data is overwritten by the new_dict
+
+
+### Operators
+
+``` py
+# With clashing keys, the right dictionary has precedence
+# merge (|) operator
+d = {'spam': 1, 'eggs': 2, 'cheese': 3}
+e = {'cheese': 'cheddar', 'aardvark': 'Ethel'}
+d | e
+>>> {'spam': 1, 'eggs': 2, 'cheese': 'cheddar', 'aardvark': 'Ethel'}
+e | d
+>>> {'cheese': 3, 'aardvark': 'Ethel', 'spam': 1, 'eggs': 2}
+
+# update (|=) operators
+d |= e
+d
+>>> {'spam': 1, 'eggs': 2, 'cheese': 'cheddar', 'aardvark': 'Ethel'}
+```

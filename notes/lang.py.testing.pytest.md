@@ -2,9 +2,10 @@
 id: ov21izw706cnwbg3560776m
 title: Pytest
 desc: ''
-updated: 1698445825768
+updated: 1701561257573
 created: 1693978028033
 ---
+Mocks: https://pytest-with-eric.com/pytest-best-practices/pytest-mock-assert-called/
 
 ## [Pytest](https://medium.com/@pragprog/table-of-contents-86377afafc57)
 

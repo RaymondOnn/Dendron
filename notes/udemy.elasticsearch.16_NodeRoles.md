@@ -1,0 +1,260 @@
+---
+id: 7a3zd5xw9pp7kqv9d3bo6ov
+title: 16_NodeRoles
+desc: ''
+updated: 1701086006329
+created: 1701085754300
+---
+As you know, an Elasticsearch cluster consists of one or more nodes.
+
+Data is stored on shards, and shards are stored on nodes.
+
+Until now, every node that you have seen, has stored one or more shards.
+
+A node will typically store shards, but it might not always be the case, though.
+
+That's because each node can have one or more roles, defining what the node is used for.
+
+Let's take a look at the roles that are available.
+
+First up, we have the "master" role, which makes a node eligible for being the cluster's
+
+master node.
+
+We haven't talked about what a master node is yet, and I don't want to go into a lot
+
+of details now, because it's actually a quite complicated subject.
+
+Essentially a master node is responsible for performing cluster-wide actions.
+
+This mainly includes creating and deleting indices, keeping track of nodes, and allocating
+
+shards to nodes.
+
+Giving this role to a node does not automatically make it the master node, unless there are
+
+no other nodes with this role.
+
+The reason is that the cluster's master node will be elected based on a voting process,
+
+so if you have several nodes with this role, either one of them may be elected as the master
+
+node.
+
+For large clusters, it is often useful to have dedicated master nodes.
+
+That's because having a stable master node is crucial for ensuring that the cluster is stable.
+
+If the elected master node is too busy doing other things - such as serving search requests
+
+- then cluster stability may be affected.
+
+Searching for data and modifying it is expensive in terms of hardware resources, so if you
+
+see high CPU, memory and I/O usage on your master node, then it might be time to add
+
+a dedicated master node.
+
+Next, we have the "data" role.
+
+As its name implies, this role enables a node to store a part of the cluster's data.
+
+Not only that, it also performs queries such as search queries and modifications of data.
+
+Storage of data therefore goes hand in hand with serving queries that are related to the
+
+stored data.
+
+A node will typically have this role - especially for small to medium sized clusters - but a
+
+node won't store any shards if this role is disabled.
+
+I mentioned that for large and busy clusters, there might be a point in time where it is
+
+useful to introduce dedicated master nodes.
+
+A part of doing that, is to disable the "data" role for the master-eligible nodes.
+
+You will then have other nodes that do contain the "data" role and not the "master" role.
+
+The main purpose of having dedicated data nodes is therefore to separate master and
+
+data nodes.
+
+The next role I will talk about is the one named "ingest," which enables a node to
+
+run ingest pipelines.
+
+That requires a bit of background knowledge.
+
+An ingest pipeline is a series of steps that should be performed when ingesting a document
+
+into Elasticsearch.
+
+Ingesting refers to adding a document to an index.
+
+The steps are formally referred to as processors, and they may manipulate documents before they
+
+are added to an index, such as adding and removing fields, or changing values.
+
+An example would be to ingest a web server's access log, where each request is stored as
+
+an Elasticsearch document.
+
+We could then transform the visitor's IP address into geographical data such as latitude,
+
+longitude, country, etc.
+
+You can think of an Elasticsearch ingest pipeline as a simplified Logstash pipeline, as it provides
+
+a subset of the Logstash functionality.
+
+You can build fairly complex ingest pipelines that perform a lot of data transformations,
+
+but if you need the full functionality, then Logstash is the way to go.
+
+That being said, ingest pipelines are useful for relatively simple data transformations.
+
+If you are ingesting a high volume of documents, then running them all through an ingest pipeline
+
+may be expensive in terms of hardware resources.
+
+Some of the Elastic Stack products ship with ingest pipelines.
+
+For example, if you use Filebeat to ingest Apache access logs, each line of the access
+
+log will be run through an ingest pipeline before being stored within an Elasticsearch
+
+index.
+
+As you might imagine, running a busy website or API will yield a lot of documents.
+
+That's why it's possible to enable or disable ingest pipelines for a node.
+
+If you run a lot of documents through a pipeline, you might consider having a dedicated node
+
+for this.
+
+If you intend to make use of machine learning, there are two settings related to this feature.
+
+The first one, named "node.ml," identifies a node as a machine learning node if set to "true."
+
+This enables the node to run machine learning jobs.
+
+The second setting is named "xpack.ml.enabled," which enables or disables the node's capability
+
+of responding to machine learning API requests.
+
+If you make use of machine learning, then these two settings enable you to run dedicated
+
+machine learning nodes.
+
+That might be useful if you don't want your background machine learning jobs to slow other
+
+things down, such as search requests.
+
+The next role is "coordination node." By "coordination," I am referring to how
+
+Elasticsearch distributes queries internally.
+
+We haven't talked about how requests are routed and coordinated yet, but we will soon.
+
+For now, just know that a so-called coordination node is a node that is responsible for processing
+
+a request and handling the delegation of work needed in that process.
+
+To be clear, such a node does not search any data on its own; such work is delegated to
+
+data nodes.
+
+Having a node only serve as a coordination node is actually not possible through a single
+
+setting, because there is no role available for doing so.
+
+Instead, this is accomplished by removing the other roles from a node.
+
+All that's left then, is the coordination of queries.
+
+Having dedicated coordination nodes is only really useful for large clusters, as it can
+
+essentially be used as a load balancer.
+
+The last role, is one that I will just name drop.
+
+It's called voting-only.
+
+I won't go into detail with this role, because the chances that you will ever need to use
+
+this role, are close to 0%.
+
+What it basically does, is that a node with this role will participate in the voting process
+
+when electing a new master node, but it cannot be elected as the master node itself.
+
+This role is only useful for large clusters.
+
+So which roles do our nodes actually have?
+
+You have actually seen that before, but I just didn't mention it.
+
+Let's head over to Kibana and take a look at the nodes within our cluster.
+
+There are two columns of interest to us; "node.role" and "master." The first column specifies
+
+which roles a given node has.
+
+The roles are abbreviated, so "dim" is short for "data," "ingest," and "master."
+
+As you can see, all of our nodes have these three roles, meaning that these are the default
+
+roles that are used unless configured otherwise.
+
+This also means that all of our three nodes are eligible to be elected as the master node.
+
+In this case, the first node was chosen as the master.
+
+That's because it's the first node that was started up, and since there were no other
+
+nodes available at that point in time, that node had to become the master.
+
+That's also why you saw me checking the output of the first node when adding additional
+
+nodes to the cluster in the previous lecture.
+
+Now that you know which roles are available, let's talk a bit about when you will want
+
+to change them.
+
+As with determining the optimal number of shards that an index should have, the answer
+
+is that it depends.
+
+That being said, modifying the roles of nodes, is almost always something you will do for
+
+large clusters and not small ones.
+
+Besides the size of the cluster, you will typically also want to do this when you need
+
+to scale the throughput of the cluster, i.e. when hardware usage is high.
+
+You will commonly want to tweak the number of shards and nodes first, however.
+
+Another reason for changing roles for a large cluster, is just that it makes it easier to
+
+understand how the hardware resources are being used and optimize your cluster based
+
+on that.
+
+As a rule of thumb, you shouldn't change any roles if you don't know what you are
+
+doing, or if you don't have a good reason for doing so.
+
+This is something that can always be done at a later point, so you will almost always
+
+want to stick with the default roles until you need to change them.
+
+This also means that the purpose of showing them to you, is not for you to go ahead and
+
+change the roles, but just for you to be aware of the possibility of doing so, in case you
+
+ever need to.

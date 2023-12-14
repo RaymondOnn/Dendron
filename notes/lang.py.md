@@ -2,7 +2,7 @@
 id: mlzian0ayu0qzng6xt1kk5w
 title: py
 desc: ''
-updated: 1699405772747
+updated: 1702100571743
 created: 1666472517896
 ---
 https://python.plainenglish.io/wanna-code-like-a-google-engineer-lets-dive-into-advanced-python-together-93f1e08b6d2f
@@ -12,9 +12,8 @@ For doing designs in printout:
 <https://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html>
 
 <https://www.youtube.com/shorts/fNMgJaDYxvk>
-
-Formatting:
-<https://www.youtube.com/watch?v=FrvBwdAU2dQ&ab_channel=BroCode>
+ - [print](https://www.youtube.com/watch?v=Ap5Gx0n24w0)
+- [Formatting](https://www.youtube.com/watch?v=FrvBwdAU2dQ&ab_channel=BroCode)
 - ColorRama
 
 ```py

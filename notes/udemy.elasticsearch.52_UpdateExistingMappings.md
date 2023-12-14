@@ -1,0 +1,116 @@
+---
+id: cyiff6kjb7qyq79gk31y0h7
+title: 52_UpdateExistingMappings
+desc: ''
+updated: 1701193454852
+created: 1701104847219
+---
+A bit earlier you saw how to add new field mappings to an existing index.
+
+But what about updating an existing field mapping?
+
+The “reviews” index currently contains a “product_id” field of the type “long.”
+
+That data type has served us well, but for whatever reason our product IDs may now contain
+
+letters, so we need to change it.
+
+We won’t be performing full-text searches on the field, so the “text” data type
+
+doesn’t make sense.
+
+Instead, we will use the field for filtering, i.e. to find the reviews for a given product.
+
+That narrows the data type down to “keyword,” which is the one we will use.
+
+So how do we actually change the field’s mapping?
+
+Can we just use the same query that we used to add a new field mapping to an existing
+
+index?
+
+I have it typed out already, so let’s try.
+
+As you can see, we get an error stating that the provided data type is different from the
+
+existing one.
+
+The reason is that in general, we cannot update field mappings in Elasticsearch.
+
+We can add new field mappings as we did earlier, but once you have added a field mapping, you
+
+are pretty much stuck with it.
+
+There is one exception, though; some mapping parameters can be updated, but only a few
+
+of them.
+
+Consider the second query on your screen now.
+
+It contains the current mapping for the “email” field that is nested within the “author”
+
+field.
+
+I will add one of the parameters that can be added to existing field mappings; namely
+
+the “ignore_above” parameter.
+
+This parameter ignores strings longer than the specified value such that they will not
+
+be indexed or stored.
+
+As you can see, we were indeed able to modify the field mapping to include this parameter.
+
+Chances are, though, that you will not be able to update a field mapping once you have
+
+created it.
+
+There are a number of reasons for that, with one of the main ones being that documents
+
+might already have been indexed with the existing field mapping.
+
+If we could just change the mapping, we would have to reindex any existing documents.
+
+For instance, changing a “text” field to a “keyword” field is not possible,
+
+because values have already been analyzed.
+
+Our failed attempt to change the “long” data type to “keyword” also didn’t work.
+
+Remember how numeric values are indexed into a BKD tree.
+
+Switching to the “keyword” data type would require that data structure to be converted
+
+to an inverted index, which is essentially the same as reindexing all of the field’s values.
+
+If you have indexed many millions of documents, that is going to take a while.
+
+Even if we haven’t indexed any documents since adding a field mapping, we are still
+
+not allowed to update it.
+
+On top of that, you also cannot remove a field mapping once you have added it.
+
+While that may sound strange, remember that the mapping will not be used if a field value
+
+is not supplied when indexing a document, so we can simply ignore the field moving forward.
+
+If we want to reclaim the storage space used by the field, we could use the Update By Query
+
+API and remove the field from each matching document with a script.
+
+There are all kinds of challenges involved with updating existing field mappings, some
+
+of which don’t even have to do with changing the data type.
+
+Changing a field mapping almost always requires documents to be reindexed.
+
+That’s why Elasticsearch protects us by simply not allowing existing mappings to be
+
+updated - except for a small number of parameters.
+
+So if we cannot update the data type for our “product_id” field, then what do we do?
+
+We create a new index with the updated mapping and reindex any existing documents into it.
+
+Let’s see how to do that in the next lecture.

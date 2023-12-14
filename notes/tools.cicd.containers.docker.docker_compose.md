@@ -1,0 +1,365 @@
+---
+id: 16bnd2gfn802530yb58ju64
+title: docker_compose
+desc: ''
+updated: 1701057301932
+created: 1694662151930
+---
+
+
+
+## Docker Compose Properties
+
+- Version 3 reference: <https://docs.docker.com/compose/compose-file/compose-file-v3/>
+- https://blog.devgenius.io/6-essential-docker-compose-tips-for-mastering-multi-container-development-57919fe5304c
+
+### `restart`: Restart Policy
+
+```yaml
+# docker-compose.yaml
+message-server:
+    ...
+    restart: no            
+product-server:
+    ...
+    restart: on-failure
+
+```
+
+#### Options
+
+- no: Containers won’t restart automatically.
+- on-failure[:max-retries]: Restart the container if it exits with a non-zero exit code, and provide a maximum number of attempts for the Docker daemon to restart the container.
+- always: Always restart the container if it stops.
+- unless-stopped: Always restart the container unless it was stopped arbitrarily, or by the Docker daemon.
+
+### [`network_mode`](https://www.delftstack.com/howto/docker/add-a-network-mode-in-docker-compose/)
+
+- In Docker Compose version 3, we can use the network mode in our YAML file by providing the network_mode: parameter and its value.
+- Therefore, make sure that you specify the version of Docker compose we are using with the version: parameter and the value 3 or 3.0.
+
+``` yaml
+version: "3"
+services:
+  app:
+    network_mode: "host"
+```
+
+#### For Docker Swarm
+
+``` yaml
+version: "3.0"
+services:
+    app:
+        networks:
+            - host
+
+networks:
+    host:
+        name: [Your Network Mode Value]
+        external: true
+```
+
+#### Options
+
+``` yaml
+network_mode: "bridge"
+network_mode: "host"
+network_mode: "none"
+network_mode: "service:[service name]"
+network_mode: "container:[container name/id]"
+```
+
+## Variables
+
+[Syntax Reference](https://docs.docker.com/compose/environment-variables/env-file/)
+
+## [Wait for dependencies](dadarek/wait-for-dependencies)
+
+Wait for all defined services to be fully available by probing their health status, even when using `docker compose up --detach`
+
+```yaml
+
+  start-dependencies:
+    image: dadarek/wait-for-dependencies
+    depends_on:
+      kafka-broker:
+        condition: service_healthy
+      flink-jobmanager:
+        condition: service_healthy
+      cratedb:
+        condition: service_healthy
+```
+
+## [Execute Multiple Commands](https://www.delftstack.com/howto/docker/docker-compose-multiple-commands/)
+
+``` yaml
+# Running shell commands
+command: >
+  sh -c "
+          python manage.py migrate &&
+          python manage.py runserver 0.0.0.0:8080"
+
+# Running bash commands
+command: bash -c "
+   python manage.py migrate  &&
+   python manage.py runserver 0.0.0.0:8080
+ "             
+```
+
+---
+
+``` yaml
+version: "3.8"
+
+networks:
+  scada-demo:
+    name: scada-demo
+    driver: bridge
+
+services:
+
+  # ---------------
+  # Confluent Kafka
+  # ---------------
+  # https://docs.confluent.io/platform/current/installation/docker/config-reference.html
+  # https://gist.github.com/everpeace/7a317860cab6c7fb39d5b0c13ec2543e
+  # https://github.com/framiere/a-kafka-story/blob/master/step14/docker-compose.yml
+  kafka-zookeeper:
+    image: confluentinc/cp-zookeeper:${CONFLUENT_VERSION}
+    environment:
+      ZOOKEEPER_CLIENT_PORT: ${PORT_KAFKA_ZOOKEEPER}
+      KAFKA_OPTS: -Dzookeeper.4lw.commands.whitelist=ruok
+    networks:
+      - scada-demo
+
+    # Define health check for Zookeeper.
+    healthcheck:
+      # https://github.com/confluentinc/cp-docker-images/issues/827
+      test: ["CMD", "bash", "-c", "echo ruok | nc localhost ${PORT_KAFKA_ZOOKEEPER} | grep imok"]
+      start_period: 3s
+      interval: 2s
+      timeout: 30s
+      retries: 60
+
+  kafka-broker:
+    image: confluentinc/cp-kafka:${CONFLUENT_VERSION}
+    ports:
+      - "${PORT_KAFKA_BROKER_INTERNAL}:${PORT_KAFKA_BROKER_INTERNAL}"
+      - "${PORT_KAFKA_BROKER_EXTERNAL}:${PORT_KAFKA_BROKER_EXTERNAL}"
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: kafka-zookeeper:${PORT_KAFKA_ZOOKEEPER}
+      KAFKA_LISTENERS: INTERNAL://0.0.0.0:${PORT_KAFKA_BROKER_INTERNAL},EXTERNAL://0.0.0.0:${PORT_KAFKA_BROKER_EXTERNAL}
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka-broker:${PORT_KAFKA_BROKER_INTERNAL},EXTERNAL://localhost:${PORT_KAFKA_BROKER_EXTERNAL}
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - kafka-zookeeper
+    networks:
+      - scada-demo
+
+    # Define health check for Kafka broker.
+    healthcheck:
+      #test: ps augwwx | egrep "kafka.Kafka"
+      test: ["CMD", "nc", "-vz", "localhost", "${PORT_KAFKA_BROKER_INTERNAL}"]
+      start_period: 3s
+      interval: 0.5s
+      timeout: 30s
+      retries: 60
+
+  # The Kafka schema registry as well as ksqlDB is not needed for this setup.
+  #kafka-schema-registry:
+  #  image: confluentinc/cp-schema-registry:${CONFLUENT_VERSION}
+  #kafka-ksqldb:
+  #  image: confluentinc/cp-ksqldb-server:${CONFLUENT_VERSION}
+
+
+  # ------------
+  # Apache Flink
+  # ------------
+  # https://ci.apache.org/projects/flink/flink-docs-master/docs/deployment/resource-providers/standalone/docker/#flink-with-docker-compose
+  flink-jobmanager:
+    image: flink:${FLINK_VERSION}
+    ports:
+      - "${PORT_FLINK_JOBMANAGER}:${PORT_FLINK_JOBMANAGER}"
+    command: jobmanager
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: flink-jobmanager
+    networks:
+      - scada-demo
+
+    # Define health check for Apache Flink jobmanager.
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "http://localhost:${PORT_FLINK_JOBMANAGER}/overview" ]
+      start_period: 3s
+      interval: 0.5s
+      timeout: 30s
+      retries: 60
+
+  flink-taskmanager:
+    image: flink:${FLINK_VERSION}
+    depends_on:
+      - flink-jobmanager
+    command: taskmanager
+    deploy:
+      replicas: 1
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: flink-jobmanager
+        taskmanager.numberOfTaskSlots: 2
+    networks:
+      - scada-demo
+
+
+  # -------
+  # CrateDB
+  # -------
+  cratedb:
+    image: crate:${CRATEDB_VERSION}
+    ports:
+      - "${CRATEDB_HTTP_PORT}:${CRATEDB_HTTP_PORT}"
+      - "${CRATEDB_POSTGRESQL_PORT}:${CRATEDB_POSTGRESQL_PORT}"
+    environment:
+      CRATE_HEAP_SIZE: 4g
+
+    command: ["crate",
+              "-Cdiscovery.type=single-node",
+              "-Ccluster.routing.allocation.disk.threshold_enabled=false",
+             ]
+    networks:
+      - scada-demo
+
+    # Define health check for CrateDB.
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "http://localhost:${CRATEDB_HTTP_PORT}" ]
+      start_period: 3s
+      interval: 0.5s
+      timeout: 30s
+      retries: 60
+
+
+  # -------
+  # Bundler
+  # -------
+  # Wait for all defined services to be fully available by probing their health
+  # status, even when using `docker compose up --detach`.
+  # https://marcopeg.com/2019/docker-compose-healthcheck/
+  start-dependencies:
+    image: dadarek/wait-for-dependencies
+    depends_on:
+      kafka-broker:
+        condition: service_healthy
+      flink-jobmanager:
+        condition: service_healthy
+      cratedb:
+        condition: service_healthy
+
+
+  # -----
+  # Tasks
+  # -----
+
+  # Create database table in CrateDB.
+  create-table:
+    image: westonsteimel/httpie
+    networks: [scada-demo]
+    command: http "${CRATEDB_HTTP_URL}/_sql?pretty" stmt='CREATE TABLE "taxi_rides" ("payload" OBJECT(DYNAMIC))' --ignore-stdin
+    deploy:
+      replicas: 0
+
+  # Create Kafka topic.
+  create-topic:
+    image: confluentinc/cp-kafka:${CONFLUENT_VERSION}
+    networks: [scada-demo]
+    command: kafka-topics --bootstrap-server kafka-broker:${PORT_KAFKA_BROKER_INTERNAL} --create --if-not-exists --replication-factor 1 --partitions 1 --topic rides
+    deploy:
+      replicas: 0
+
+  # Delete Kafka topic.
+  delete-topic:
+    image: confluentinc/cp-kafka:${CONFLUENT_VERSION}
+    networks: [scada-demo]
+    command: kafka-topics --bootstrap-server kafka-broker:${PORT_KAFKA_BROKER_INTERNAL} --delete --if-exists --topic rides
+    deploy:
+      replicas: 0
+
+  # Acquire Flink job JAR file.
+  download-job:
+    image: apteno/alpine-jq
+    networks: [scada-demo]
+    command: >
+      wget ${FLINK_JOB_JAR_URL} --output-document /src/${FLINK_JOB_JAR_FILE}
+    deploy:
+      replicas: 0
+
+  # Drop database table in CrateDB.
+  drop-table:
+    image: westonsteimel/httpie
+    networks: [scada-demo]
+    command: http "${CRATEDB_HTTP_URL}/_sql?pretty" stmt='DROP TABLE "taxi_rides"' --ignore-stdin
+    deploy:
+      replicas: 0
+
+  # Invoke HTTPie via Docker.
+  httpie:
+    image: westonsteimel/httpie
+    networks: [scada-demo]
+    deploy:
+      replicas: 0
+
+  # List running Flink jobs.
+  list-jobs:
+    image: flink:${FLINK_VERSION}
+    networks: [scada-demo]
+    command: flink list --jobmanager=flink-jobmanager:${PORT_FLINK_JOBMANAGER}
+    deploy:
+      replicas: 0
+
+  # List job ids of running Flink jobs.
+  # TODO: Currently, this does not work, because `flink-jobmanager` fails to respond to our requests.
+  list-job-ids:
+    image: westonsteimel/httpie
+    networks: [scada-demo]
+    command: http http://flink-jobmanager:${PORT_FLINK_JOBMANAGER}/jobs/overview Host:localhost --ignore-stdin | jq -r .jobs[].jid
+    deploy:
+      replicas: 0
+
+  # Publish data to Kafka topic.
+  publish-data:
+    image: confluentinc/cp-kafka:${CONFLUENT_VERSION}
+    networks: [scada-demo]
+    command: kafka-console-producer --bootstrap-server kafka-broker:${PORT_KAFKA_BROKER_INTERNAL} --topic rides
+    deploy:
+      replicas: 0
+
+  # Submit Flink job.
+  submit-job:
+    image: flink:${FLINK_VERSION}
+    networks: [scada-demo]
+    # Note: Remove `--detach` option to interactively receive stacktrace.
+    command: >
+      flink run
+        --jobmanager=flink-jobmanager:${PORT_FLINK_JOBMANAGER}
+        --detach
+        /src/${FLINK_JOB_JAR_FILE}
+          --kafka.servers kafka-broker:${PORT_KAFKA_BROKER_INTERNAL}
+          --kafka.topic rides
+          --crate.hosts "${CRATEDB_HOST}:${CRATEDB_POSTGRESQL_PORT}"
+          --crate.table taxi_rides
+          --crate.user '${CRATEDB_USERNAME}'
+          --crate.password '${CRATEDB_PASSWORD}'
+    deploy:
+      replicas: 0
+
+  # Subscribe to Kafka topic.
+  subscribe-topic:
+    image: edenhill/kcat:${KCAT_VERSION}
+    networks: [scada-demo]
+    command: kcat -b kafka-broker -C -t rides -o end
+    deploy:
+      replicas: 0
+```

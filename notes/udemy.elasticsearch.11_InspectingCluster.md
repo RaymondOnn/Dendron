@@ -1,0 +1,184 @@
+---
+id: rsaflotz5mduotemn1ninh9
+title: 11_InspectingCluster
+desc: ''
+updated: 1701085829792
+created: 1701085640546
+---
+Alright, now that you know the very basics of what an Elasticsearch cluster looks like,
+
+let’s take a moment to inspect the one that we have running.
+
+To do that, let’s open up the Console tool in Kibana.
+
+You can find it by expanding the menu and clicking the “Dev Tools” menu item,
+
+located within the “Management” group.
+
+This is the first time that we will send a request to Elasticsearch.
+
+As you might remember, an Elasticsearch cluster exposes a REST API, which is what we will
+
+be communicating with.
+
+Essentially this means that the HTTP verbs differ differ depending on the actions that we want to perform.
+
+By HTTP verbs, I am referring to GET, POST, PUT, and DELETE.
+
+Although we will be typing in our query within Kibana’s Console tool, Kibana still uses
+
+the REST API under the hood.
+
+On the Elasticsearch end of things, an HTTP request is received.
+
+This request is treated the same, regardless of where it was sent from.
+
+As long as the request is valid, we can access the REST API from any HTTP client of our choice,
+
+such as cURL, Postman, etc.
+
+You will see an example of this in the next lecture, but for now, let’s use the Console tool.
+
+The format in which we need to enter queries within the Console tool, is to start by specifying
+
+the HTTP verb.
+
+Let’s begin by retrieving information about our cluster’s health.
+
+Since we’ll be retrieving data, we will use the “GET” verb.
+
+Next, we need to specify the request path, being the part following the cluster’s network address.
+
+When using the Console tool, we should not specify the network address, since this is
+
+specified within Kibana’s configuration file, and will automatically be prepended
+
+to the HTTP request.
+
+To retrieve the cluster’s health, we use the following request path.
+
+As the first thing, I want to mention that the leading forward slash is optional when
+
+using the Console tool; if you leave it out, Kibana will automatically add it before sending
+
+the HTTP request.
+
+So whether or not you include it is up to how explicit you want to be when writing your requests.
+
+I like to include it, but that doesn’t mean that you have to.
+
+Alright, so let’s briefly talk about the request path that we specified.
+
+The _cluster part specifies the API that we want to access, whereas the health part specifies the command.
+
+APIs begin with an underscore by convention.
+
+In place of "health," there are a number of other commands that can be used to retrieve
+
+detailed information about the cluster and its nodes.
+
+These commands yield results that are a bit too advanced to get into right now, so let’s
+
+stick to the "health" command and run the query.
+
+On the right-hand side of the screen, we can see the results of the query, being a JSON
+
+object containing information about the cluster.
+
+The cluster’s name is set to “elasticsearch,” which is the default value.
+
+You can configure this to a more meaningful name, within the elasticsearch.yml configuration
+
+file if you want to.
+
+We can also see that the status of the cluster is set to “green.”
+
+You probably won’t be surprised that this means that everything is okay and that the
+
+cluster is in a healthy state.
+
+We will revisit the cluster’s health status in a couple of lectures, where you will see
+
+a situation in which the status is no longer “green.”
+
+Let’s continue exploring the cluster, this time listing the nodes that are part of it.
+
+For that, there is a CAT API, which outputs data into a human readable format.
+
+Within the CAT API, there is a command named "nodes" which does what we are looking for.
+
+I added a query parameter named “v,” which adds a descriptive header row to the output.
+
+Let’s run the query.
+
+The results show some basic information about the single node that we have running, including
+
+its IP address, name, as well as some performance measures.
+
+If you are using a cloud deployment, you will see multiple nodes here unless your deployment
+
+is not using default settings.
+
+That’s because cloud deployments are configured for high availability by default, meaning
+
+that at least two nodes are running in different availability zones.
+
+In Elasticsearch, a node has a number of roles associated with it, specifying its responsibilities
+
+within the cluster.
+
+We can also see that the node is a so-called master node.
+
+I will get back to both of these things in a couple of lectures, so don’t worry about it for now.
+
+By specifying query parameters, we can retrieve much more information about our nodes than
+
+what you see here.
+
+There is also a Nodes API that returns information about the cluster’s nodes in almost excruciating detail.
+
+I will leave you to explore both of these options if you are curious.
+
+You can find links to the documentation attached to this lecture.
+
+As the last thing for this lecture, let’s check which indices we have within our cluster
+
+by using the CAT API’s "indices" command.
+
+We get no indices back since we haven’t added any yet.
+
+That’s probably what you expected to happen.
+
+That doesn’t mean that our cluster doesn’t contain any indices, though.
+
+Let me just add a query parameter and show you what I mean.
+
+Now we do see a number of indices.
+
+These indices are so-called system indices, which are indices that are used by both Elasticsearch
+
+and Kibana to store various things.
+
+For instance, Kibana stores its configuration such as dashboards within one of these indices.
+
+That’s because Kibana doesn’t ship with a database of any kind.
+
+This means that if you set up a fresh instance of Kibana and point it to an existing Elasticsearch
+
+cluster, all of the existing Kibana data will be loaded.
+
+The leading period within an index name indicates that the index is a system index,
+
+meaning that it will be hidden by default.
+
+This is similar to hidden files and directories on Linux and macOS.
+
+That’s why we had to add the "expand_wildcards" query parameter to see these system indices.
+
+Alright, that’s all I wanted to show you in this lecture.
+
+We’ve run our first query against our Elasticsearch cluster, and we’ve taken a quick look at
+
+what it looks like internally.
+
+We’ll get into more detail in the following lectures, so I’ll see you there!
