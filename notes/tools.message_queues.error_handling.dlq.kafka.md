@@ -2,7 +2,7 @@
 id: 80qchg5u0tpr30eymf9ch83
 title: kafka
 desc: ''
-updated: 1697307381090
+updated: 1702550419497
 created: 1697307081035
 ---
 
@@ -18,7 +18,7 @@ created: 1697307081035
 - “target-topic” is full so cannot accept any new messages. This might happen if the load on your topic is very high. In this case we can have a target “dlq” topic for such messages.
 - “target-topic” does not exists. Thus we don’t have any destination for the messages and a possibility of message loss. While this scenario rarely occurs, it’s better to have some target topic for such messages.
 
-## An Example
+### An Example
 
 ```py
 import json

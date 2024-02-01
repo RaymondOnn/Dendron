@@ -2,7 +2,7 @@
 id: go0p84patamd3o4o76fmjgk
 title: 1_Projects
 desc: ''
-updated: 1666615314366
+updated: 1702714724017
 created: 1666563892520
 ---
 
@@ -13,9 +13,6 @@ created: 1666563892520
 		- END_TIME_OF_PERIOD 
 		- Date Conversion for filter -> Step 2 special case, agg_monthly most inner query
 		- Using settlement_id to do recon before sending invoice 
-- Paul’s EXIM Tool
-	- 199826 technically done, 199824 has issue	
-	- Paul to get back on 199826’s data
 - Test Merchant Identifier
 - Power BI
 	- Set up data flows with incremental refresh

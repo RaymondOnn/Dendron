@@ -2,7 +2,7 @@
 id: ywglohxkjwnd01t2cruql5h
 title: commit
 desc: ''
-updated: 1702349526302
+updated: 1706605773065
 created: 1702349501854
 ---
 
@@ -27,7 +27,7 @@ created: 1702349501854
 -   With every commit, we first add the changes made to this Staging Area, to be part of the next commit. You can think about the Staging Area as a draft area.
 -   And once all your changes are added, which should be part of this next commit, then you create this commit, you commit your changes, and the file changes are tracked in the next commit in the next snapshot.
 
-> #### The Perfect Commit
+> #### [The Perfect Commit](https://www.youtube.com/watch?v=Dy5t_H2PRrk)
 >
 > 1.  Add the **right** changes
 > 2.  Compose a **good** commit message
@@ -71,3 +71,30 @@ created: 1702349501854
     web-app/*   # ignore all files in web-app folder
 
     ```
+
+### `.gitkeep` file
+- Since git tracks files, empty folders are ignored by default.
+- A `.gitkeep` file is a dummy file that you created in the empty folder to prevent empty folders from being ignored.
+``` sh
+touch FOLDER_NAME/.gitkeep
+```
+
+#### To push your project's folder structure to Github:
+- To create a `.gitkeep` file in each of your folder subdirectories, run this bash script from the root of your source project:
+``` bash
+find . -type d -empty -not -path "./.git/*" -exec touch {}/.gitkeep \;
+```
+- Here is the PowerShell equivalent:
+    ``` powershell
+    Get-ChildItem -Recurse -Directory | ForEach-Object {New-Item -ItemType file -Path "$($_.FullName)" -Name ".gitkeep" }
+    ```
+
+#### To check-in a directory but not the files:
+- If you want to ignore everything inside the directory, but at the same time want to check-in the folder, add the following lines in your `.gitignore`:
+``` gitignore
+# ignore files in folder
+FOLDER_NAME/*
+
+# ...but keep the folder
+!FOLDER_NAME/.gitkeep
+```

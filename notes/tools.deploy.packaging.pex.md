@@ -1,8 +1,8 @@
 ---
 id: 7dk0lz5kd03vlhzpbcdpwjw
-title: Pex
+title: pex
 desc: ''
-updated: 1701856236104
+updated: 1702602185177
 created: 1699523935084
 ---
 https://www.pither.com/simon/blog/2018/09/18/how-build-portable-executable-single-python-script

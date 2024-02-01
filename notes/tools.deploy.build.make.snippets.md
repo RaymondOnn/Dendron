@@ -2,7 +2,7 @@
 id: 9plapdh1jej85kmpxle2cuv
 title: Snippets
 desc: ''
-updated: 1702338888553
+updated: 1705467952395
 created: 1702000484290
 ---
 
@@ -10,9 +10,9 @@ created: 1702000484290
 
 ``` makefile
 SHELL := /bin/bash # Tell Make this file is written with Bash as shell
-.ONESHELL #  each Make recipe is ran as one single shell session
+.ONESHELL: #  each Make recipe is ran as one single shell session
 .SHELLFLAGS := -eu -o pipefail -c # Bash strict mode
-.DELETE_ON_ERROR   # if a Make rule fails, it’s target file is deleted
+.DELETE_ON_ERROR:   # if a Make rule fails, it’s target file is deleted
 MAKEFLAGS += --warn-undefined-variables
 MAKEFLAGS += --no-builtin-rules
 

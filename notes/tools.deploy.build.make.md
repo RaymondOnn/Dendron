@@ -2,7 +2,7 @@
 id: wgw781ouni3ue6lmz0ysu4e
 title: make
 desc: ''
-updated: 1702338827303
+updated: 1706535335451
 created: 1699784509486
 ---
 
@@ -34,14 +34,64 @@ https://stackoverflow.com/questions/1789594/how-do-i-write-the-cd-command-in-a-m
 -   A Makefile consists of rules that specify how to build a target i.e such as an executable or a library.
 -   Targets have dependencies which are files that are used as input to create the target
 -   Execution of rules is done via the make command
--   When running MAKE, you can specify a different makefile name with the -f option. Otherwise, it assumes, by default, your makefile is called MAKEFILE and searches for it.
+-   When running `MAKE`, you can specify a different makefile name with the `-f` option. Otherwise, it assumes, by default, your makefile is called `Makefile` and searches for it.
 -   Similarly, we can also specify which rule to execute via the `make` command: `make <TARGET_NAME>`.
--   if target is not specified, MAKE will execute the first rule it finds in the makefile.
+-   if target is not specified, `MAKE` will execute the first rule it finds in the makefile.
 - Each line in a makefile target recipe  runs in a fresh context within its own shell session. 
   - This doesn't affect most recipes as they operate in the directory they need to by default. 
   - When it does, the workaround is to chain the commands together.
   - Alternatively, see `.ONESHELL`
-  
+
+
+### Dependencies 
+
+#### Types of Prerequisites
+- Two different types of prerequisites understood 
+    1. normal prerequisites
+     2. order-only prerequisites. 
+
+#### Normal Prerequisites
+- Ensure that if a target’s prerequisite is updated, then the target should also be updated.
+- A normal prerequisite makes two statements: 
+    1. it imposes an order in which recipes will be invoked
+       - the recipes for all prerequisites of a target will be completed before the recipe for the target is started. 
+     2. it imposes a dependency relationship
+       - if any prerequisite is newer than the target, then the target is considered out-of-date and must be rebuilt.
+
+#### Order-only Prerequistes
+- Ensure that a prerequisite is built before a target, but without forcing the target to be updated if the prerequisite is updated. 
+- Order-only prerequisites are never checked when determining if the target is out of date; even order-only prerequisites marked as phony (see Phony Targets) will not cause the target to be rebuilt.
+- Specified by placing a pipe symbol (|) in the prerequisites list
+    - Any prerequisites to the left of the pipe symbol are normal; any prerequisites to the right are order-only:
+        ``` makefile
+        targets : normal-prerequisites | order-only-prerequisites
+        ```
+    - The normal prerequisites section may of course be empty. 
+    - Also, you may still declare multiple lines of prerequisites for the same target: they are appended appropriately (normal prerequisites are appended to the list of normal prerequisites; order-only prerequisites are appended to the list of order-only prerequisites). 
+    - Note that if you declare the same file to be both a normal and an order-only prerequisite, the normal prerequisite takes precedence (since they have a strict superset of the behavior of an order-only prerequisite).
+
+#### An example
+- Consider an example where your targets are to be placed in a separate directory, and that directory might not exist before make is run. 
+- In this situation, you want the directory to be created before any targets are placed into it but, because the timestamps on directories change whenever a file is added, removed, or renamed, we certainly don’t want to rebuild all the targets whenever the directory’s timestamp changes. 
+- One way to manage this is with order-only prerequisites: make the directory an order-only prerequisite on all the targets:
+
+    ``` makefile
+    OBJDIR := objdir
+    OBJS := $(addprefix $(OBJDIR)/,foo.o bar.o baz.o)
+
+    $(OBJDIR)/%.o : %.c
+            $(COMPILE.c) $(OUTPUT_OPTION) $<
+
+    all: $(OBJS)
+
+    $(OBJS): | $(OBJDIR)
+
+    $(OBJDIR):
+            mkdir $(OBJDIR)
+    ```
+    - Now the rule to create the objdir directory will be run, if needed, before any ‘.o’ is built, but no ‘.o’ will be built because the objdir directory timestamp changed.
+
+
 > **Tip: Specifying Inputs**
 >
 > -   Instead of listing all the file dependencies, we can run a shell command and have its output substituted into the Makefile
@@ -144,169 +194,8 @@ Another example is for defining a target for
     -   A phony target must have a unique name; it cannot be the name of a file in your current directory.
     -   Phony target names must follow the operating system rules for naming files.
 
-### Functions
 
--   Functions are blocks of code that can be reused.
--   The function name can be any string, but ideally a descriptive name that reflects the purpose of the function.
--   The function arguments are optional and can be used to pass parameters to the function.
--   To define a function:
-    ``` makefile
-    define function-name
-        command1
-        command2
-        ...
-    endef
-    ```
--   Calling a function can be done like this:
 
-    ``` makefile
-    define print_anything
-        @echo "\nMakefile: $(1)\n"
-    endef
-
-    test:
-        $(call print_anything, "Testing a first function in a Makefile.")
-    ```
-
-    -   The custom function print is called with the keyword call inside $().
-    -   The parameters are passed to the function by specifying them inside those parenthesis separated by a comma.
-    -   Makefile targets won’t complain when this comma has been forgotten.
-    -   The parameter will be silently ignored and won’t be available inside the function. Thats one drawback of calling those functions and can lead to some time spend debugging weird issues.
-
-#### The function `wildcard`
-
-``` makefile
-$(wildcard *.c)
-```
-
--   The wildcard function allows you to match files against a pattern and return a space-separated list of names of existing files that match one of the given file name patterns.
--   If no existing file name matches a pattern, then that pattern is omitted from the output of the wildcard function.
--   The results of the wildcard function are sorted. But again, each individual expression is sorted separately, so `$(wildcard _.c _.h)` will expand to all files matching `.c`, sorted, followed by all files matching `.h`, sorted.
-
-### Variables (also called macros)
-
--   A macro is a variable that MAKE expands into a string whenever MAKE encounters the macro in a makefile.
--   General format: `VARIABLE_NAME = <EXPANSION_TEXT>`
-
-    ``` makefile
-    # define a variable CC
-    CC = gcc
-
-    # Using the variable CC
-    compile:
-            $(CC) -o program program.c
-    ```
-
--   Can also be defined using the `-D` command-line option.
-
-    ``` makefile
-    make -Dsourcedir=c:\projecta
-    make -Dcommand="bcc32 -c"
-    make -Dcommand=bcc32 option=-c
-    ```
-
-    -   No spaces are allowed before or after the equal sign =
-    -   you can define more than one macro by separating the definitions with spaces.
-    -   Note: Macros defined in makefiles overwrite macros defined at the command line.
-
--   There are also built-in variables, i.e. CC and CFLAGS, automatically set by Make. You can view the complete list of built-in variables by running make `--print-data-base`.
-
-#### Special Variables
-
-##### `.DEFAULT_GOAL`
-
--   Sets the default goal to be used if no targets were specified on the command line (see Arguments to Specify the Goals).
--   The `.DEFAULT_GOAL` variable allows you to
-    -   discover the current default goal,
-    -   restart the default goal selection algorithm by clearing its value,
-    -   or to explicitly set the default goal.
-
-```makefile
-# Query the default goal.
-ifeq ($(.DEFAULT_GOAL),)
-  $(warning no default goal is set)
-endif
->>> no default goal is set
-
-.PHONY: foo
-foo: ; @echo $@
-
-$(warning default goal is $(.DEFAULT_GOAL))
->>> default goal is foo
-
-# Reset the default goal.
-.DEFAULT_GOAL :=
-
-.PHONY: bar
-bar: ; @echo $@
-
-$(warning default goal is $(.DEFAULT_GOAL))
->>> default goal is bar
-
-# Set our own.
-.DEFAULT_GOAL := foo
->>> foo
-```
-
--   Note that assigning more than one target name to .DEFAULT_GOAL is invalid and will result in an error.
-
-#### Automatic Variables
-
--   These are set during the build process.
--   Some of the most common automatic variables include:
-    -   `$@`: Represents the target of the current rule.
-    -   `$(@D)`: Represents the directory the target of the current rule exist in.
-    -   `$<`: Represents the first dependency of the current rule.
-    -   `$^`: Represents all dependencies of the current rule.
-    -   `$?`: Represents all dependencies that are newer than the target.
-    -   `$*`: Represents the stem of a pattern rule. The stem is the part of the target that matches the % symbol in the pattern rule.
-
-#### String Substitution in MAKE Macros
-
--   MAKE lets you temporarily substitute characters in a previously defined macro.
--   For example,
-    -   if you define the following macro: `SOURCE = f1.cpp f2.cpp f3.cpp`
-    -   you can substitute the characters `.obj` for the characters `.cpp` by using the following MAKE command: `$(SOURCE:.cpp=.obj)`
-    -   NOTE: This substitution does not redefine the macro.
--   Rules for macro substitution:
-    -   Syntax: `$(VARIABLE_NAME:ORIG_TEXT=NEW_TEXT)`.
-    -   No space before or after the colon.
-    -   Characters in original_text must exactly match the characters in the macro definition (text is case-sensitive).
--   MAKE also lets you use macros within substitution macros. For example:
-    ``` makefile
-    MYEXT=.C
-    SOURCE=f1.cpp f2.cpp f3.cpp
-    $(SOURCE:.cpp=$(MYEXT)) #Changes 'f1.cpp' to 'f1.C', etc.
-    ```
--   The caret ^ symbol causes MAKE to interpret the next character literally. This is useful for inserting a new-line character. For example:
-
-    -   Here, the caret tells MAKE to change each occurrence of .cpp to .C followed by the new-line character.
-
-        ``` makefile
-        # changes 'f1.cpp f2.cpp f3.cpp' to:
-        # f1.C
-        # f2.C
-        # f3.C
-
-        MYEXT=.C
-        SOURCE=f1.cpp f2.cpp f3.cpp
-        ($(SOURCE):.cpp=$(MYEXT)^
-        )
-        ```
-
-#### Accepting Command Line Arguments
-
--   Suppose this makefile rule
-    ``` makefile
-    VAR = "default"
-    action:
-    	@echo $(VAR)
-    ```
--   We can assign values to `$(VAR)` through the command line like this:
-    ``` makefile
-    make action VAR="value"
-    >>> value
-    ```
 
 ### Pattern Rules: Simplifying targets and dependencies
 

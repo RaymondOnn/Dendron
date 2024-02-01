@@ -2,7 +2,7 @@
 id: 073rvv7knjq0yq33089r4g4
 title: transform
 desc: ''
-updated: 1698244405575
+updated: 1704939801616
 created: 1698244278530
 ---
 
@@ -135,7 +135,7 @@ created: 1698244278530
     airlinesDF.select("Origin", "Dest", "Distance", to_date(concat("Year","Month","DayofMonth"),"yyyyMMdd").alias("FlightDate")).show(10)
   ```
 
-  - NOTE: You should be referring to three places: DataFrame, Column and built-in functions
+   > NOTE: You should be referring to three places: DataFrame, Column and built-in functions
 
 ### User-Defined Functions
 
@@ -153,58 +153,58 @@ created: 1698244278530
   - Column Object Expression
     - The withColumn() transformation allows you to transform a single column without impacting other columns in the Dataframe. It takes two arguments.The first argument is the column name that you want to transform. The next argument is a column expression.
 
-  ``` py
-  # Step 1: Define UDF
-  def parse_gender(gender):
-      female_pattern = r"^f$|f.m|w.m" # "|" represents OR operation
-      male_pattern = r"^m$|ma|m.l"
-      if re.search(female_pattern, gender.lower()):
-          return "Female"
-      elif re.search(male_pattern, gender.lower()):
-          return "Male"
-      else:
-          return "Unknown"
+      ``` py
+      # Step 1: Define UDF
+      def parse_gender(gender):
+          female_pattern = r"^f$|f.m|w.m" # "|" represents OR operation
+          male_pattern = r"^m$|ma|m.l"
+          if re.search(female_pattern, gender.lower()):
+              return "Female"
+          elif re.search(male_pattern, gender.lower()):
+              return "Male"
+          else:
+              return "Unknown"
 
-  # Step 2: Register UDF before it can be used
-  parse_gender_udf = udf(parse_gender, returnType=StringType())
-  
-  # Check catalog for UDF
-  logger.info("Catalog Entry:")
-  [logger.info(r) for r in spark.catalog.listFunctions() if "parse_gender" in r.name]
+      # Step 2: Register UDF before it can be used
+      parse_gender_udf = udf(parse_gender, returnType=StringType())
+      
+      # Check catalog for UDF
+      logger.info("Catalog Entry:")
+      [logger.info(r) for r in spark.catalog.listFunctions() if "parse_gender" in r.name]
 
-  # Step  3: Using UDF
-  survey_df2 = survey_df.withColumn("Gender", parse_gender_udf("Gender"))
-  survey_df2.show(10)
+      # Step  3: Using UDF
+      survey_df2 = survey_df.withColumn("Gender", parse_gender_udf("Gender"))
+      survey_df2.show(10)
 
-  ```
+      ```
 
   - String Expression
 
-  ``` py
-  # Step 1: Define UDF
-  def parse_gender(gender):
-      female_pattern = r"^f$|f.m|w.m" # "|" represents OR operation
-      male_pattern = r"^m$|ma|m.l"
-      if re.search(female_pattern, gender.lower()):
-          return "Female"
-      elif re.search(male_pattern, gender.lower()):
-          return "Male"
-      else:
-          return "Unknown"
+    ``` py
+    # Step 1: Define UDF
+    def parse_gender(gender):
+        female_pattern = r"^f$|f.m|w.m" # "|" represents OR operation
+        male_pattern = r"^m$|ma|m.l"
+        if re.search(female_pattern, gender.lower()):
+            return "Female"
+        elif re.search(male_pattern, gender.lower()):
+            return "Male"
+        else:
+            return "Unknown"
 
-  # Step 2: Register UDF as SQL function
-  # Note: An entry is made in the catalog upon registration
-  spark.udf.register("parse_gender_udf", parse_gender, StringType())
-  
-  # Check catalog for UDF
-  logger.info("Catalog Entry:")
-  [logger.info(r) for r in spark.catalog.listFunctions() if "parse_gender" in r.name]
+    # Step 2: Register UDF as SQL function
+    # Note: An entry is made in the catalog upon registration
+    spark.udf.register("parse_gender_udf", parse_gender, StringType())
+    
+    # Check catalog for UDF
+    logger.info("Catalog Entry:")
+    [logger.info(r) for r in spark.catalog.listFunctions() if "parse_gender" in r.name]
 
-  # Step  3: Using UDF
-  survey_df3 = survey_df.withColumn("Gender", expr("parse_gender_udf(Gender)"))
-  survey_df3.show(10)
+    # Step  3: Using UDF
+    survey_df3 = survey_df.withColumn("Gender", expr("parse_gender_udf(Gender)"))
+    survey_df3.show(10)
 
-  ```
+    ```
 
 ### Aggregations
 
@@ -241,38 +241,38 @@ created: 1698244278530
 
 - Spark SQL is an excellent and easy method to run your grouping aggregations.
 
-  ``` py
-  invoice_df.createOrReplaceTempView("sales")
-  summary_sql = spark.sql("""
-        SELECT Country, InvoiceNo,
-              sum(Quantity) as TotalQuantity,
-              round(sum(Quantity*UnitPrice),2) as InvoiceValue
-        FROM sales
-        GROUP BY Country, InvoiceNo""")
-  ```
+    ``` py
+    invoice_df.createOrReplaceTempView("sales")
+    summary_sql = spark.sql("""
+          SELECT Country, InvoiceNo,
+                sum(Quantity) as TotalQuantity,
+                round(sum(Quantity*UnitPrice),2) as InvoiceValue
+          FROM sales
+          GROUP BY Country, InvoiceNo""")
+    ```
 
 - Using Dataframe expressions, it is a two step process
   1. Select the columns to group by using the `df.groupBy(<COL_NAME>, <COL_NAME>, ...)` method or the `df.agg()` method
   2. Provide the list of aggregations into the `.agg()` method
 
-``` py
-NumInvoices = f.countDistinct("InvoiceNo").alias("NumInvoices")
-TotalQuantity = f.sum("Quantity").alias("TotalQuantity")
-InvoiceValue = f.expr("round(sum(Quantity * UnitPrice),2) as InvoiceValue")
+  ``` py
+  NumInvoices = f.countDistinct("InvoiceNo").alias("NumInvoices")
+  TotalQuantity = f.sum("Quantity").alias("TotalQuantity")
+  InvoiceValue = f.expr("round(sum(Quantity * UnitPrice),2) as InvoiceValue")
 
-exSummary_df = invoice_df \
-    .withColumn("InvoiceDate", f.to_date(f.col("InvoiceDate"), "dd-MM-yyyy H.mm")) \
-    .where("year(InvoiceDate) == 2010") \
-    .withColumn("WeekNumber", f.weekofyear(f.col("InvoiceDate"))) \
-    .groupBy("Country", "WeekNumber") \
-    .agg(NumInvoices, TotalQuantity, InvoiceValue)
-```
+  exSummary_df = invoice_df \
+      .withColumn("InvoiceDate", f.to_date(f.col("InvoiceDate"), "dd-MM-yyyy H.mm")) \
+      .where("year(InvoiceDate) == 2010") \
+      .withColumn("WeekNumber", f.weekofyear(f.col("InvoiceDate"))) \
+      .groupBy("Country", "WeekNumber") \
+      .agg(NumInvoices, TotalQuantity, InvoiceValue)
+  ```
 
 #### Windowing Aggregates
 
-- using them is a three-step process.(SQL: AGG() )
-  - Identify your partitioning columns (SQL: PARTITION BY)
-  - Identify your ordering requirement (SQL: ORDER BY)
+- using them is a three-step process.(SQL: `AGG()` )
+  - Identify your partitioning columns (SQL: `PARTITION BY`)
+  - Identify your ordering requirement (SQL: `ORDER BY`)
   - define your window start and end.
 - Defining the Window Object will require three things
   - Partition

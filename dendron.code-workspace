@@ -7,7 +7,7 @@
   ],
   "settings": {
     "dendron.rootDir": ".",
-    "files.autoSave": "onFocusChange",
+    "files.autoSave": "afterDelay",
     "pasteImage.path": "${currentFileDir}/assets/images",
     "pasteImage.prefix": "/",
     "markdown-preview-enhanced.enableWikiLinkSyntax": true,

@@ -1,10 +1,11 @@
 ---
 id: nam9jp3u9ysmgb6scegj7mb
 title: jinja
-desc: ''
-updated: 1702236350224
+desc: ""
+updated: 1706699629000
 created: 1702177557352
 ---
+https://ttl255.com/jinja2-tutorial-part-3-whitespace-control/
 
 ## Jinja
 
@@ -20,107 +21,117 @@ created: 1702177557352
     -   `# ##` for line statements
 
 ### Python API
-- We start with a simple example
-  ```py
-  #!/usr/bin/env python3
-  from jinja2 import Template
-  name = input("Enter your name: ")
-  tm = Template("Hello {{ name }}")
-  msg = tm.render(name=name)
-  print(msg)
-  ```
-- We can work with objects in our template strings.
 
-  ``` py
-  objects.py
-  #!/usr/bin/env python3
-  from jinja2 import Template
-  class Person:
-      def __init__(self, name, age):
-          self.name = name
-          self.age = age
-      def getAge(self):
-          return self.age
-      def getName(self):
-          return self.name    
-  person = Person('Peter', 34)
-  tm = Template("My name is {{ per.getName() }} and I am {{ per.getAge() }}")
-  msg = tm.render(per=person)
-  print(msg)
-  ```
-- Jinja allows a convenient dot notation to access data in Python dictionaries.
-  ``` py
-  dicts.py
+-   We start with a simple example
+    ```py
+    #!/usr/bin/env python3
+    from jinja2 import Template
+    name = input("Enter your name: ")
+    tm = Template("Hello {{ name }}")
+    msg = tm.render(name=name)
+    print(msg)
+    ```
+-   We can work with objects in our template strings.
 
-  #!/usr/bin/env python3
-  from jinja2 import Template
+    ```py
+    objects.py
+    #!/usr/bin/env python3
+    from jinja2 import Template
+    class Person:
+        def __init__(self, name, age):
+            self.name = name
+            self.age = age
+        def getAge(self):
+            return self.age
+        def getName(self):
+            return self.name
+    person = Person('Peter', 34)
+    tm = Template("My name is {{ per.getName() }} and I am {{ per.getAge() }}")
+    msg = tm.render(per=person)
+    print(msg)
+    ```
 
-  person = { 'name': 'Person', 'age': 34 }
-  # Both the active and the commented way are valid. The dot notation is more convenient.
-  tm = Template("My name is {{ per.name }} and I am {{ per.age }}")
-  # tm = Template("My name is {{ per['name'] }} and I am {{ per['age'] }}")
-  msg = tm.render(per=person)
-  print(msg)
-  ```
-- We can use `raw`, `endraw` markers to escape Jinja delimiters.
-  - By using the `raw`, `endraw` block, we escape the Jinja `{{ }}` syntax. It is printed in its literal meaning.
-  ``` py
-  raw_data.py
+-   Jinja allows a convenient dot notation to access data in Python dictionaries.
 
-  #!/usr/bin/env python3
-  from jinja2 import Template
-  data = '''
-  {% raw %}
-  His name is {{ name }}
-  {% endraw %}
-  '''
-  tm = Template(data)
-  msg = tm.render(name='Peter')
-  print(msg)
-  ```
-- To escape data such as < or > characters, we can use a filter or the escape() function.
-  ``` py
-  escape_data.py
+    ```py
+    dicts.py
 
-  #!/usr/bin/env python3
-  from jinja2 import Template, escape
-  data = '<a>Today is a sunny day</a>'
-  tm = Template("{{ data | e}}") # Using the e filter, the data is escaped
-  msg = tm.render(data=data)
-  print(msg)
-  print(escape(data)) # escape has same functionality as the e filter
-  ```
-- Here's how to work with template files
-The for expression is used to iterate over a data collection in a template.
+    #!/usr/bin/env python3
+    from jinja2 import Template
+
+    person = { 'name': 'Person', 'age': 34 }
+    # Both the active and the commented way are valid. The dot notation is more convenient.
+    tm = Template("My name is {{ per.name }} and I am {{ per.age }}")
+    # tm = Template("My name is {{ per['name'] }} and I am {{ per['age'] }}")
+    msg = tm.render(per=person)
+    print(msg)
+    ```
+
+-   We can use `raw`, `endraw` markers to escape Jinja delimiters.
+
+    -   By using the `raw`, `endraw` block, we escape the Jinja `{{ }}` syntax. It is printed in its literal meaning.
+
+    ```py
+    raw_data.py
+
+    #!/usr/bin/env python3
+    from jinja2 import Template
+    data = '''
+    {% raw %}
+    His name is {{ name }}
+    {% endraw %}
+    '''
+    tm = Template(data)
+    msg = tm.render(name='Peter')
+    print(msg)
+    ```
+
+-   To escape data such as < or > characters, we can use a filter or the escape() function.
+
+    ```py
+    escape_data.py
+
+    #!/usr/bin/env python3
+    from jinja2 import Template, escape
+    data = '<a>Today is a sunny day</a>'
+    tm = Template("{{ data | e}}") # Using the e filter, the data is escaped
+    msg = tm.render(data=data)
+    print(msg)
+    print(escape(data)) # escape has same functionality as the e filter
+    ```
+
+-   Here's how to work with template files
+    The for expression is used to iterate over a data collection in a template.
 
 Now we do not use a simple string template anymore. We use a text file which is loaded with FileSystemLoader.
-  ``` py
-  for_expr.py
 
-  #!/usr/bin/env python3
-  from jinja2 import Environment, FileSystemLoader
-  persons = [
-      {'name': 'Andrej', 'age': 34}, 
-      {'name': 'Mark', 'age': 17}, 
-      {'name': 'Thomas', 'age': 44}, 
-      {'name': 'Lucy', 'age': 14}, 
-      {'name': 'Robert', 'age': 23}, 
-      {'name': 'Dragomir', 'age': 54}
-  ]
-  file_loader = FileSystemLoader('templates')
-  env = Environment(loader=file_loader)
-  template = env.get_template('showpersons.txt')
-  output = template.render(persons=persons)
-  print(output)
-  ```
-  ``` txt
-  # ./templates/showpersons.txt
-  {% for person in persons -%}
-      {{ person.name }} {{ person.age }}
-  {% endfor %}
+```py
+for_expr.py
 
-  ```
+#!/usr/bin/env python3
+from jinja2 import Environment, FileSystemLoader
+persons = [
+    {'name': 'Andrej', 'age': 34},
+    {'name': 'Mark', 'age': 17},
+    {'name': 'Thomas', 'age': 44},
+    {'name': 'Lucy', 'age': 14},
+    {'name': 'Robert', 'age': 23},
+    {'name': 'Dragomir', 'age': 54}
+]
+file_loader = FileSystemLoader('templates')
+env = Environment(loader=file_loader)
+template = env.get_template('showpersons.txt')
+output = template.render(persons=persons)
+print(output)
+```
 
+```txt
+# ./templates/showpersons.txt
+{% for person in persons -%}
+    {{ person.name }} {{ person.age }}
+{% endfor %}
+
+```
 
 ```py
 from jinja2 import Environment, FileSystemLoader
@@ -146,7 +157,6 @@ content = template.render(data)
 -   Used to insert dynamic content into a template.
 -   You can define a variable using the `{% set %}` tag, and then use it in the template by enclosing it in double curly braces.
 -   For e.g. if you define a variable “name” as “Jinja”, you can insert it into a sentence like “Welcome to {{ name }} templates!”. Let’s see it in action in a simple HTML code.
-
 
 ```py
 {% set name = "Jinja" %}
@@ -184,6 +194,28 @@ content = template.render(data)
   <p>Please log in to continue.</p>
 {% endif %}
 ```
+
+##### Iterating over a dictionary
+
+1. The Simple Way
+    - Loop over each item in a sequence. For example, to display a list of users provided in a variable called users:
+        ```jinja2
+        <ul>
+            {% for user in users %}
+              <li>{{ user.username|e }}</li>
+            {% endfor %}
+        </ul>
+        ```
+2. Using `iteritems()`
+    - If you need to retain both the key and value when doing a for-loop over a jinja dictionary, use iteritems() like this...
+      ```jinja2
+      <ul>
+        {% for key, value in _dict.iteritems() %}
+          <dt>{{ key }}</dt>
+          <dd>{{ value }}</dd>
+        {% endfor %}
+      </dl>
+      ```
 
 #### Filters
 

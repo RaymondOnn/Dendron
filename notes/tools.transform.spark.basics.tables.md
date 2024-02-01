@@ -2,7 +2,7 @@
 id: lkftk8i1qnvmpt3tunxgant
 title: tables
 desc: ''
-updated: 1698085331346
+updated: 1703050135986
 created: 1698063072836
 ---
 
@@ -36,7 +36,7 @@ Apache Spark is not only a set of APIs and a processing engine. It is a database
 
 - Spark manages both the metadata and the data.
 - Metadata stored in Hive meta-store in HDFS.
-- Data saved inside a predefined directory location known as the spark.sql.warehouse.dir which is the base location where all your managed tables are stored in HDFS. Hence, no need to specify directory
+- Data saved inside a predefined directory location known as the `spark.sql.warehouse.dir` which is the base location where all your managed tables are stored in HDFS. Hence, no need to specify directory
 - This base directory set by cluster admin is going to set this base directory location for you.
 - Metadata and data will be deleted when the table is dropped
 - Preferred option

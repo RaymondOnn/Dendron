@@ -2,12 +2,12 @@
 id: 34zramwnc9v2jgxtsahsbr6
 title: flink
 desc: ''
-updated: 1694750025227
+updated: 1706362327922
 created: 1691461087030
 ---
 -[PyFlink](https://thecodinginterface.com/blog/intro-to-pyflink/)
 - https://www.youtube.com/playlist?list=PLLvMUwMfgFGeM7IzOMiPwCZN2pCq3Nwka
-
+https://jaehyeon.me/blog/2023-08-17-getting-started-with-pyflink-on-aws-part-1/
 
 ## What is Flink?
 

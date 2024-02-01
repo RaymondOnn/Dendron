@@ -2,7 +2,7 @@
 id: wv8pjhxjjrp5bnwlz2kznsg
 title: Tutorial
 desc: ""
-updated: 1660931467392
+updated: 1706056024553
 created: 1659721741451
 currentStep: 0
 totalSteps: 0
@@ -104,3 +104,5 @@ You can also:
 - Star us on [GitHub](https://github.com/dendronhq/dendron)
 - Follow us on [Twitter](https://twitter.com/dendronhq)
 - Subscribe to the [Dendron Newsletter](https://link.dendron.so/newsletter)
+
+

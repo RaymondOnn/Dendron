@@ -1,8 +1,8 @@
 ---
 id: 3odtm4ogjg4fzek06izdsf5
-title: Httpx
+title: httpx
 desc: ''
-updated: 1693800688998
+updated: 1705563778210
 created: 1693796294809
 ---
 

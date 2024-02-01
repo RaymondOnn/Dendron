@@ -1,8 +1,8 @@
 ---
 id: 6o63drx5uws6jini042nsmr
 title: compose
-desc: ''
-updated: 1701057101249
+desc: ""
+updated: 1705523484824
 created: 1700034678596
 ---
 
@@ -177,21 +177,25 @@ services:
         ports:
             - 27020:27017
     ```
-- TIP: You can check which values are assigned to the environment variables by running the following command (in a different terminal):
-    ``` bash
+
+-   TIP: You can check which values are assigned to the environment variables by running the following command (in a different terminal):
+    ```bash
     docker-compose config
     ```
 
 ##### The `env_file` option
-- Adds environment variables to the container based on the file content.
-- The advantage of this method is that you can store the file anywhere and name it appropriately, for example, `.env.ci`, `.env.dev`, `.env.prod`
+
+-   Adds environment variables to the container based on the file content.
+-   The advantage of this method is that you can store the file anywhere and name it appropriately, for example, `.env.ci`, `.env.dev`, `.env.prod`
 
 ##### Variable Substitution
-- `${VARIABLE:-default}`: default if VARIABLE is unset or empty in the environment.
-- `${VARIABLE-default}`: default only if VARIABLE is unset in the environment.
-- For Required Variables
-  - `${VARIABLE:?err}` exits with an error message containing err if VARIABLE is unset or empty in the environment.
-  - `${VARIABLE?err}` exits with an error message containing err if VARIABLE is unset in the environment.
+
+-   `${VARIABLE:-default}`: default if VARIABLE is unset or empty in the environment.
+-   `${VARIABLE-default}`: default only if VARIABLE is unset in the environment.
+-   For Required Variables
+    -   `${VARIABLE:?err}` exits with an error message containing err if VARIABLE is unset or empty in the environment.
+    -   `${VARIABLE?err}` exits with an error message containing err if VARIABLE is unset in the environment.
+
 #### Build Arguments
 
 -   Build arguments are the build-time environment variables.
@@ -499,3 +503,71 @@ Here are the most common Docker Compose commands that we can use with our files.
     -   if you already have containers running for the service, Docker Compose will create additional instances to match the desired scale. It will not remove any existing containers unless explicitly instructed.
 -   Scaling allows you to distribute the workload across multiple instances of a service, which can improve performance and handle increased traffic or demand.
 -   However it’s important to consider the resource requirements and capacity of your host machine when scaling services.
+
+### Docker Compose Watch
+
+-   With the “watch” feature enabled, Docker Compose can automatically update active services whenever you make changes and save your code.
+-   In Docker Compose, the `watch` attribute establishes a set of rules for automatically updating services based on local file changes.
+-   Each rule requires both a `path` pattern and an `action` to perform when a modification is detected.
+-   There are two available actions for watch: sync and rebuild.
+
+    1. Sync
+
+        - Any changes to files on the host are instantly mirrored within the corresponding service container.
+        - Useful for frameworks that support “Hot Reload” or similar features.
+        - Sync rules can often substitute bind mounts in many development use cases, providing a finer degree of control over watched files and directories.
+
+    2. Rebuild
+        - Uses BuildKit to create a new image, replacing the current service container, which is the same as executing `docker compose up --build <svc>`.
+        - Ideal for compiled languages or modifications to specific files that necessitate a full image rebuild.
+
+#### Configuring the `Watch` Feature
+
+-   To use the `watch` feature, you need to include watch sections for one or more services in your `compose.yml` file.
+-   Once this is done, launch a Compose project with `docker compose up --build --wait` and initiate the file watch mode by running `docker compose alpha watch`.
+-   Docker Compose then handles updates automatically according to your watch settings as you edit your service source files.
+
+#### An example
+- This minimal example targets a Node.js application with the following structure:
+    ```md
+    myproject/
+    ├── web/
+    │   ├── App.jsx
+    │   └── index.js
+    ├── Dockerfile
+    ├── compose.yaml
+    └── package.json
+    ```
+- In this configuration, 
+  - the `sync` action monitors your host’s ./web directory. Any modifications are synchronized to the corresponding `/src/web` directory in your Docker container, except for changes made to the node_modules/ directory.
+  - The `rebuild` action monitors the `package.json` file. If this file is modified in any way, Docker Compose rebuilds the image and replaces the active service container.
+
+    ```yaml
+    services:
+        web:
+            build: .
+            command: npm start
+            x-develop:
+                watch:
+                    - action: sync
+                    path: ./web
+                    target: /src/web
+                    ignore:
+                        - node_modules/
+                    - action: rebuild
+                    path: package.json
+    ```
+
+- Once you’ve set the watch configuration, 
+    1. start your Docker Compose project using `docker compose up --build --wait`
+    2. execute `docker compose alpha watch` to activate the file watch mode. 
+    3. Docker Compose will now automatically sync or rebuild your service every time you save a change to a file in the `web/` directory or the `package.json` file, respectively.
+
+    ```bash
+    # Follow the instructions at dockersamples/avatars to quickly run a small demo app, as follows:
+    git clone https://github.com/dockersamples/avatars.git
+    cd avatars
+    docker compose up -d
+    docker compose alpha watch
+    >>> Open http://localhost:5735 in your browser.
+    ```

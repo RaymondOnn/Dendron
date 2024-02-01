@@ -2,38 +2,30 @@
 id: lj84cv92l72n2uvjvs2hgyl
 title: flask
 desc: ""
-updated: 1700573466991
+updated: 1706259172990
 created: 1700567696959
 ---
+- [`flask-smorest` docs](https://flask-smorest.readthedocs.io/en/latest/api_reference.html#)
+https://prettyprinted.com/tutorials/automatically_load_environment_variables_in_flask/
 
+- [reCAPTCHA](https://python.plainenglish.io/how-to-implement-recaptcha-v3-with-flask-to-prevent-bot-submissions-48afa9c75d76)
+- Adding Security: https://www.youtube.com/watch?v=3drtMrcfssk&ab_channel=SoumilShah
 
 ?: Using request.args.get() to grab query string arguments
 
-### Basic REST API Endpoint
-
-#### Anatomy of a Flask route
-
--   There are two parts to a Flask route:
-    -   The endpoint decorator
-        -   The endpoint decorator (@app.get("/store")) registers the route's endpoint with Flask. That's the /store bit.
-        -   That way, the Flask app knows that when it receives a request for /store, it should run the function.
-    -   The function that should run
-        -   The function's job is to do everything that it should, and at the end return something.
-        -   In most REST APIs, we return JSON, but you can return anything that can be represented as text (e.g. XML, HTML, YAML, plain text, or almost anything else).
-
-```py
-# app.py
-from flask import Flask
-
-app = Flask(__name__)
-
-stores = [{"name": "My Store", "items": [{"name": "my item", "price": 15.99}]}]
-
-
-@app.get("/store")
-def get_stores():
-    return {"stores": stores}
-```
+#### Enhancements:
+- different level of access: admin, ...
+- rate-limiting
+- APIFairy
+- File Upload / Download
+- Stream data via Web Sockets
+- Tables
+- webhooks
+- Basic Auth
+- SendGrid Email Validation
+- IP Blocking
+- Stop bots
+- pagination
 
 ### Testing REST API: How to make a request
 
@@ -268,4 +260,25 @@ def get_item(item_id):
         return items[item_id]
     except KeyError:
         return {"message": "Item not found"}, 404
+```
+
+
+---
+
+#### docstring
+
+``` py
+"""
+    Description of the endpoint.
+    ---
+    parameters:
+      - name: parameter_name
+        in: parameter_location
+        type: parameter_type
+        required: true|false
+        description: Description of the parameter.
+    responses:
+      HTTP_STATUS_CODE:
+        description: Response description.
+    """
 ```

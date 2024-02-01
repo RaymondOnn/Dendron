@@ -2,7 +2,7 @@
 id: v8fsy06nfc9xo6bqq7f0ttn
 title: github_actions
 desc: ""
-updated: 1702537448494
+updated: 1702544076959
 created: 1693757971078
 ---
 
@@ -409,7 +409,155 @@ https://www.youtube.com/watch?v=R8_veQiYBjI&t=3s&ab_channel=TechWorldwithNana
     ```
 
 ### Custom Actions   
+- 3 ways to create custom actions
+  1. Docker container action:
+      - A Dockerfile is created and use to package the entire environment needed for GitHub Actions.
+      - They bundle not only your code but also the specific OS, dependencies, tools, and runtime environment.
+      - This packaging approach ensures consistency and reliability because the consumers of your action don’t need to worry about installing the necessary tools or dependencies themselves.
+      - It tends to be slower than JavaScript action due to the time it takes to build and retrieve the container.
+      - It can only execute on a Linux-based operating system. If you’re using self-hosted runners[¹], they must also be running a Linux-based operating system and have Docker installed to execute Docker container actions.
+  2. JavaScript action:
+     - A javascript file is executed directly on the runner[¹] machine.
+     - These actions separate your action’s code from the environment used to run that code.
+     - It ensures compatibility with all GitHub-hosted runners[¹] (including Ubuntu, Windows, and macOS).
+     - It uses pure JavaScript and existing runner binaries.
+     - GitHub Actions Toolkit offers Node.js packages for faster development.
+  3. Composite action:
+     - Composite actions combine multiple workflow steps into one action.
+     - Say you have several run commands that you frequently use together in your workflows. With composite actions, you can bundle these commands into a single, well-defined action.
+     - It simplifies workflows by creating reusable actions.
+     - Using this composite action in your workflow makes your workflow configuration cleaner and more maintainable.
+     - It is great for organizing complex workflows efficiently.
+- Instructions for custom actions must be named `action.yaml`
+
+#### Composite Actions
+- Note the absence of the `on` key. Since they are used as part of a workflow, they do not need a trigger
+
+    ``` yaml
+    # ./.github/actions/cached-deps/action.yaml
+
+    name: 'Get & Cache Dependencies'
+    description: 'Get the dependencies (via npm) and cache them'
+    inputs:
+        caching:
+            description: 'Whether to cache dependencies or not'   # this key is required
+            required: false
+            default: 'true'
+    outputs:
+        used-cache:
+            description: 'Whether the cache was used'
+            value: ${{ steps.install.outputs.cache }}
+    runs:
+        using: 'composite'
+        steps:
+            - name: Cache dependencies
+                id: cache
+                if: inputs.caching == 'true'   # <--- input value used here
+                uses: actions/cache@v3
+                with:
+                    path: node_modules
+                    key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+            - name: Install dependencies 
+                id: install
+                if: steps.cache.outputs.cache-hit != 'true' || inputs.caching != 'true'
+                run: |
+                    npm ci
+                    echo "cache='${{ inputs.caching }}'" >> $GITHUB_OUTPUT
+                shell: bash    # required if using `run` key
+
+    ```
+
+    ``` yaml
+    name: Deploy Project
+    on: [push, workflow_dispatch]
+    jobs:
+        test:
+            runs-on: ubuntu-latest
+            steps:
+                - name: Get Code
+                    uses: actions/checkout@v3
+                - name: Load & cache deps       # <--- using custom action here
+                    id: cache-deps
+                    # if using file path, must start at root
+                    # can also reference action in a repo: <ACCT_NAME>/<REPO_NAME>
+                    uses: ./.github/actions/cached-deps
+                    with:
+                        caching: 'false'
+                - name: Output Info
+                    run: echo "Cache used? ${{ steps.cache-deps.outputs.used-cache }}"
+                - name: Run tests
+                    continue-on-error: true
+                    id: run-tests   
+                    run: npm test
+                - name: Upload test report 
+                    if: failure() && steps.run-tests.outcome == 'failure'
+                    uses: actions/upload-artifacts@v3
+                    with:
+                        name: test-report
+                        path: test.json
+    ```
+
+#### Javascript Actions
+- s
+    ``` yaml
+    # ./.github/actions/deploy-s3-js/action.yaml
+    
+    name: 'Deploy to AWS S3'
+    description: 'Deploy a static website via AWS S3'
+    runs:
+        using: 'node16'
+        pre: 'setup.js' # optional
+        main: 'main.js'
+        post: 'cleanup.js' # optional
+    ```
+
+#### Docker Action
+- s
+    ``` yaml
+    # ./.github/actions/deploy-s3-docker/action.yaml
+    
+    name: 'Deploy to AWS S3'
+    description: 'Deploy a static website via AWS S3'
+    # for every input, github actions generates an environment variable INPUT_<VARIABLE_NAME>
+    inputs:
+        bucket:
+            description: 'The S3 bucket name'
+            required: true
+        bucket-region:
+            description: 'The region of the S3 bucket'
+            required: false
+            default: 'us-east-1'
+        dist-folder:
+            description: 'The folder containg the deployable files'
+            required: true
+    outputs:
+        website-url:
+            description: 'The URL of the depolyed website'
+            
+    runs:
+        using: 'docker'
+        image: 'Dockerfile'
+    ```
+#### Storing Actions In Repositories & Sharing Actions With Others
+
+- Alternatively, we could've stored the custom Actions in separate repositories (which therefore then only include the Action definition + code).
+- This is actually quite straightforward:
+  1. Create a new, local project folder which contains your action.yml file + all the code belonging to the action 
+     - (Important: Don't put your `action.yml` file or code in a `.github/actions` folder or anything like that - just keep it directly on the root level of your created project!)
+  2. Add a local Git repository to your created project (via git init)
+  3. Create your commit(s) via `git add` and `git commit`
+  4. Create a GitHub repository and connect it to your local Git repository (via `git remote add`)
+  5. Add a tag via `git tag -a -m "My action release" v1`
+  6. Push your local code to the remote GitHub repository (via `git push --follow tags`)
+  7. Use your custom Action in any other Workflow (in any other project and repository) by referencing the repository which contains your action (e.g., `my-account/my-action@v1`)
+
+- If your custom Action is stored in a public repository, it can also be published to the GitHub Actions Marketplace as described [here](https://docs.github.com/en/actions/creating-actions/publishing-actions-in-github-marketplace#publishing-an-action)
+
 ### Security
+- Script Injection Attacks
+- Manage Permission via the `permission` key
+- `$GITHUB_TOKEN`
+- OpenID Connect
 ---
 
 -   When something happens in/to your repo, automated actions are executed in response

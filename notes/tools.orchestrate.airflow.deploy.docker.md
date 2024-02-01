@@ -2,9 +2,12 @@
 id: pp7fza9kon2cb5gadz38803
 title: Docker
 desc: ''
-updated: 1694718110565
+updated: 1702549478439
 created: 1694576142162
 ---
+
+
+https://www.restack.io/docs/airflow-faq-howto-docker-compose-index-07
 
 ## Running Airflow using Docker
 

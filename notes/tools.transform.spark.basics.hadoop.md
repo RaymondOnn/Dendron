@@ -2,7 +2,7 @@
 id: 4npuhctjcmdkzpgso8cbtbn
 title: hadoop
 desc: ''
-updated: 1697809029282
+updated: 1703045883544
 created: 1697809023381
 ---
 
@@ -37,7 +37,7 @@ created: 1697809023381
   - Name Node (NN): runs on master node
   - Data Node (DN): runs on worker nodes
 
-###### On COPY
+##### On COPY
 
 - NN redirect COPY command to DNs
 - COPY command split file into small parts and writes them onto DNs

@@ -1,8 +1,8 @@
 ---
 id: o25ke68or6wdigmxyxayp3x
-title: Basics
+title: basics
 desc: ''
-updated: 1701161876336
+updated: 1702549791133
 created: 1701118150896
 ---
 

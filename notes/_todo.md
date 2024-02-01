@@ -2,28 +2,37 @@
 id: mz18hetbe5bdcoa0rp9jaff
 title: _todo
 desc: ''
-updated: 1702537643609
+updated: 1706606279702
 created: 1699491963127
 ---
 
-### Project
+Bash Exercism
+Apply Job
+Income Insurance
 
-- Setup Monorepo
-- SetUp Working Airflow Dag
-- Airflow Dev Env
-- Airflow Pools
-- Check DockerOperator: Where the container is hosted?
-- ClusterPack for Spark Packaging
-- Mocking for Scraper Tests
-- Write Tests for Kafka Helper
-- Develop Airflow Lightweight Docker Image
-- Airflow Dynamic Dags
-- Research Python Fire
-- Kafka Producer DLQ
-- Spark Streaming DLQ
-- Implementing Railway Programming for Error Handling
-- Logging in Spark Cluster
-- Airflow Practices In Production
+### Project
+- NRT Streaming 
+  - SetUp Working Airflow Dag
+  - Airflow Dynamic Dags
+  - Airflow Pools
+  - Airflow Practices In Production
+  - ClusterPack for Spark Packaging
+  - Mocking for Scraper Tests
+  - Write Tests for Kafka Helper
+  - Kafka Producer DLQ
+  - Kafka Refactor (Airflow)
+  - Spark Streaming DLQ
+  - Implementing Railway Programming for Error Handling
+  - Logging in Spark Cluster
+  - Config Management
+  - Testing DAGs
+- REST_API
+  - Error handling for JWT
+  - Repository Pattern
+  - UoW Pattern
+  - Testing 
+  - Automated Tests
+  - GitHub Actions
 
 ### Theory
 
@@ -31,38 +40,31 @@ created: 1699491963127
 - [ ] Here Documents
 - [ ] Flask REST API
 - [ ] Configuration Snippets
-- [ ] Portable PEX Env
-- [ ] Docker Swarm
 - [ ] Spark Resource Estimation
-- [ ] Udemy: Copy AWS Transcripts
-  - [ ] Redis, RabbitMQ, Neo4J, DBT, Kibana, Logstash, GitHub Actions
 - [ ] Interactive rebase, rerere
-- [ ] Docker Compose Watch
-- [ ] MultiStage Docker Builds
-- [ ] Bash AWK
-- [ ] Docker Networking
+- [ ] Docker 
+  - [ ] Docker Networking
+  - [ ] Docker Swarm
+  - Writing entrypoint script: https://medium.com/@madflojo/shutdown-signals-with-docker-entry-point-scripts-5e560f4e2d45
+  - Docker: gosu, establish provenance
+  - docker scout, docker compose init
+    - https://dwdraju.medium.com/development-made-easier-docker-compose-init-watch-29b9f8da1800
 - [ ] Airflow Notes
-  - [ ] Airflow Deferred Operators
-  - [ ] Airflow Queues
-  - [ ] Airflow XCOMs, Branching & Trigger Rules
+  - [ ] Airflow Deferred Operators, Branching & Trigger Rules
 - [ ] local tracking branch, git clone, upstream
-- [ ] [Debugging 2](https://nlbsg.udemy.com/course/bash-scripting/learn/lecture/5748400#notes)
+- [ ] Activity Schema, One big table
 - [ ] AWS IAM
-
-### Interview
-
-- [ ] Interview Answers
-- [ ] Stackoverflow SQL
-- [ ] Make Portfolio Website
-
-
-### Others
-
-FIXME: MAC: weird python module not found error
-- python interpreter looking at wrong folder
-
-
-
+- [ ] Bash Positional Parameters
+- [ ] [xargs](https://www.youtube.com/watch?v=rp7jLi_kgPg)
+- polling app: https://www.youtube.com/watch?v=L5pszofCkCw
+- git submodules, git xync
+- makefile assignment: https://www.youtube.com/watch?v=z4uPHjxYyPs&list=PLtimIuw_6KzXti4B_Y6xIEj88YlstpCnk&index=2&t=134s
+- selenuim, js rendering site: https://www.youtube.com/watch?v=Irs6PG36qz8 
+- rest api resources: https://restfulapi.net/resource-naming/
+ - logging: https://www.youtube.com/watch?v=9L77QExPmI0 
+ - SQL Patterns: https://medium.com/@ergest/an-introduction-to-sql-design-patterns-and-best-practices-169891b4e27f
+https://medium.matcha.fyi/build-a-simple-testing-framework-with-bash-bcb59aaa6a57
+Python Enumeration : Enum, IntEnum, IntFlag and Flag
 
 ---
 
@@ -90,22 +92,3 @@ FIXME: MAC: weird python module not found error
 - CICD ()
   - <https://www.youtube.com/watch?v=gJ5vp0UptdA&ab_channel=SoumilShah>
 
-### [[root._todo.topics]]
-
-#### Now
-
-- Pytest
-- Spark Interview
-- Bash
-
-#### Next
-
-- [x] testing
-- [x] version control
-- [x] linux
-- [x] docker
-- [x] data warehousing guidelines
-- [ ] dwh indices, locks
-- [x] cicd
-- [ ] regex
-- [ ] aws

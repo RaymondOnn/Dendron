@@ -2,7 +2,7 @@
 id: uus67uozis910s6idj3d96n
 title: spark
 desc: ''
-updated: 1701916927274
+updated: 1703650923220
 created: 1691351110602
 ---
 
@@ -26,7 +26,7 @@ created: 1691351110602
 
 ### The SparkSession Object
 
-- Recap: Every Spark program will start a driver. See [[tools.transform.spark.config.deploy]]
+- Recap: Every Spark program will start a driver. See [[tools.transform.spark.config.deploy_mode]]
 - The driver process is initiated via the SparkSession object,
   - In some cases, for e.g. spark-shell, this is done automatically and assigned to the variable `spark`
   - With Spark apps, we have to create a SparkSession object manually: `SparkSession.builder().getOrCreate()`

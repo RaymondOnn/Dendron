@@ -2,7 +2,7 @@
 id: tplcsgn73m3klgljmz6m92j
 title: containers
 desc: ''
-updated: 1699926180241
+updated: 1705930925680
 created: 1699057794771
 ---
 
@@ -52,6 +52,11 @@ created: 1699057794771
     5. Routes traffic to the container IP port 80
     6. Starts container by using the CMD in the image Dockerfile
     -   Note that if host port(left number) is being used, you'll get a "bind" error
+
+>**Container not starting with `docker run`**
+>
+>..."Containers are not virtual machines. They will not run unless you run a command inside. You **did not provide any command that would run indefinitely in the foreground, so the container runs the default command which is python, but there is no parameter, no python script to run, so it stops immediately.** If you want to keep it running, you either need to define a command that would keep the container running, or you need to ask for an interactive terminal using the `-i` and `-t` flags which you can use together like `-it`"...
+>https://forums.docker.com/t/running-a-simple-python-container-in-docker/128563
 
 ### Monitoring Containers
 

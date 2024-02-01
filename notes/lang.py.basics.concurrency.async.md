@@ -2,11 +2,12 @@
 id: mkm3qet6iphofdgwj0ile0p
 title: Async
 desc: ''
-updated: 1697834675882
+updated: 1706246575715
 created: 1693478993388
 ---
 <https://realpython.com/async-io-python/>
 <https://www.youtube.com/watch?v=ftmdDlwMwwQ&ab_channel=mCoding>
+https://www.youtube.com/watch?v=p8tnmEdeOU0
 
 ```py
 import asyncio

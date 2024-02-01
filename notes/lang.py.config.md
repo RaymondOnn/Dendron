@@ -1,8 +1,8 @@
 ---
 id: 0n3n40duzpd08z4o96u5rjy
-title: configurations
+title: config
 desc: ''
-updated: 1697522248216
+updated: 1705557010286
 created: 1696700247660
 ---
 
@@ -27,7 +27,7 @@ LEARNING_RATE = 1.0
 # Now N_ESTIMATORS has been overwritten
 ```
 
-### The Better Approach: [[lang.py.classes.type.enums]]
+### The Better Approach: [[lang.py.basics.classes.type.enums]]
 
 - Enums provide a more elegant solution for storing configuration information.
 - Enums are essentially a way to define a set of named constants.

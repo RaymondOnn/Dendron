@@ -2,7 +2,7 @@
 id: h0vdg2ngxj0yslp6b3iasir
 title: git
 desc: ''
-updated: 1702350247218
+updated: 1704846333089
 created: 1693376054163
 ---
 
@@ -81,7 +81,7 @@ created: 1693376054163
     -   `--remotes`: working with remote tracking branches
 -   `git checkout <BRANCH_NAME>`: Switch to another branch
     -   `-b <BRANCH_NAME`: create and switch to new branch
--   `git switch <BRANCH_NAME>`: Switch to another branch. from Git v2.23 onwards.
+-   `git switch <BRANCH_NAME>`: Switch to another branch. from `git v2.23` onwards.
     -   `-c`: Create branch first before switching to it
 -   `git merge <OTHER_BRANCH>`: merge specified branch with current branch
     -   `--squash`:

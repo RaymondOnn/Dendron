@@ -2,7 +2,7 @@
 id: 65mjp3wgb2vdf3wwivlxfmo
 title: commands
 desc: ''
-updated: 1701058113185
+updated: 1705926141868
 created: 1694538082966
 ---
 
@@ -47,7 +47,6 @@ created: 1694538082966
 >- `images`: List all images built via Compose
 >   -`-q`: get only image ids 
 >- `ps`: List running containers created via Compose
->   - `all`: List all containers, including stopped containers
 >
 >#### Volumes: `docker volume`
 >
@@ -64,6 +63,7 @@ created: 1694538082966
 >- `inspect <CONT>`: returns JSON metadata about the image. Same as `docker inspect`
 >- `tag <SRC_IMG[:TAG]> <NEW_IMG[:TAG]>`: Assign one or more tags to an image. Default tag is 'latest'. Same as `docker tag`
 >- `push <IMG>`: Uploads changed alyers to a image registry. Default: DockerHub
+>- `build <WORKDIR>`: Build Docker image. Same as `docker build`
 >
 >#### Containers: `docker container`
 >

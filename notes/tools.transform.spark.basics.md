@@ -2,9 +2,17 @@
 id: lnp5yzvb5whqlez5lwe88wz
 title: basics
 desc: ''
-updated: 1698654659670
+updated: 1703047766047
 created: 1697783930285
 ---
+- [[tools.transform.spark.basics.hadoop]]
+- [[tools.transform.spark.basics.data_storage]]
+- [[tools.transform.spark.basics.tables]]
+- [[tools.transform.spark.basics.transform]]
+- [[tools.transform.spark.basics.execution]]
+- [[tools.transform.spark.basics.api]]
+---
+
 <https://www.freecodecamp.org/news/deep-dive-into-spark-internals-and-architecture-f6e32045393b/>
 
 ## Apache Spark
@@ -248,13 +256,3 @@ I will talk more about this in a later video.
 But for now, let's remember that you may have Python workers inside the executor container
 
 for running custom python code outside the PySpark API.
-
-Make sense?
-
-Great!
-
-That's all for Spark Cluster.
-
-See you again!
-
-Keep learning and keep growing!

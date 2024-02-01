@@ -1,9 +1,8 @@
 ---
 id: 18o45o02qk5zkz1d51cohsj
 title: commands
-
 desc: ''
-updated: 1702340818519
+updated: 1705268883591
 created: 1692059913921
 ---
 
@@ -50,7 +49,7 @@ mv <file_name> <new_location>  # move files/folders to new location
 cp <file_name> <new_location>  # copy files/folders to new location
 # folders
 mkdir <folder_name>       # create folder
-  p
+  -p, --parents: no error if existing, make parent directories as needed
 rmdir <folder_name>       # delete folder
 
 

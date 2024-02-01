@@ -1,22 +1,10 @@
 ---
-id: 1mxfq6cn9pd4xf8ffkeyqk5
-title: flask
+id: voa7kaz4wgb8ky1u2mf9uxe
+title: Flask_restful
 desc: ''
-updated: 1696698166188
-created: 1692165593799
+updated: 1705634232555
+created: 1705634194181
 ---
-
-- Theory: https://www.youtube.com/watch?v=qbLc5a9jdXo&ab_channel=CalebCurry
-- Adding Security: https://www.youtube.com/watch?v=3drtMrcfssk&ab_channel=SoumilShah
-- https://www.freecodecamp.org/news/structuring-a-flask-restplus-web-service-for-production-builds-c2ec676de563/
-- https://towardsdatascience.com/flask-in-production-minimal-web-apis-2e0859736df
-- *** https://blog.miguelgrinberg.com/post/designing-a-restful-api-using-flask-restful
-
-## Installation
-```py
-pip install flask flask-sqlachemy
-```
-
 ## Hello World
 
 ```py

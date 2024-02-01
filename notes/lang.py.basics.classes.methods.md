@@ -2,22 +2,22 @@
 id: lpy8c36zkl9yv9lx618in42
 title: methods
 desc: ''
-updated: 1701627606361
+updated: 1704365487822
 created: 1692222625632
 ---
 
 ### Method Types
-### Instance Methods
+#### Instance Methods
 
 - Methods that refer to the instance of the class
 - affects the instance of the class
 
-### Static Methods (`@staticmethod`)
+#### Static Methods (`@staticmethod`)
 
 - Method that can be used anything since it does not refer to the class
 - does not affect the instance nor the class
 
-### Class Methods (`@classmethod`)
+#### Class Methods (`@classmethod`)
 
 - e.g. an alternative constructor using diff set of args
 - changes how the class works
@@ -47,6 +47,35 @@ class WorkCalendar(Calendar):
 
 if __name__ == '__main__':
 
+
+```
+
+### `@property`
+
+``` py
+class Fruit:
+    def __init__(self, name: str):
+        self._name = name
+
+    @property
+    def fruit_name(self):
+        return self._name
+
+    @fruit_name.setter
+    def fruit_name(self, value):
+        self._name = value
+
+    @fruit_name.deleter
+        print(f'"{self._name}" was deleted.')
+        del self._name
+
+if __name__ = '__main__':
+    fruit = Fruit('Banana')
+    print(fruit.fruit_name)
+
+    fruit.fruit_name = 'Orange'
+
+    def fruit.fruit_name
 
 ```
 

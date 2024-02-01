@@ -2,10 +2,11 @@
 id: oqube9yym46yi2qqrv9vw0v
 title: loops
 desc: ''
-updated: 1697363176692
+updated: 1705715595438
 created: 1697362473679
 ---
 
+- for / else, while / else
 
 ### Alternatives
 

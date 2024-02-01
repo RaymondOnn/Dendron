@@ -2,7 +2,7 @@
 id: gcm07ahnhr634dbmi7v9f7n
 title: airflow
 desc: ""
-updated: 1702440397438
+updated: 1705364268997
 created: 1691960726557
 ---
 
@@ -127,11 +127,49 @@ airflow scheduler
 
 ![Alt text](airflow_architecture.png)
 
--   **Web Server**: A flask python web server that allows you to access the interface
--   **Scheduler**: Critical component. Does the scheduling of tasks, pipelines
--   **Metadata Database**: Database that stored metadata regarding pipelines, tasks, users
--   Triggerer
--   **Executor**: Defines how tasks are executed. Note that it does not do the execution of task
+#### Web Server
+- A flask python web server that allows you to access the interface to track your tasks and workflows (like your route and stops). 
+- The Airflow web UI provides a visual pipeline map:
+  - View planned workflows and dependencies (DAG diagrams)
+  - Monitor current task execution status
+  - Access logs to diagnose failures
+  - Modify workflows by dragging nodes 
+  - Share editable maps with others (permission controls)
+- The web server enables monitoring and troubleshooting workflows interactively through pipeline visualization.
+
+#### Scheduler: 
+- **Critical** component
+- Does the scheduling of tasks, pipelines
+- The scheduler keeps track of all your tasks and their dependencies. 
+- The scheduler sequences pipeline tasks based on dependencies:
+  - Plans execution order respecting dependencies
+  - Sets precise task timing 
+  - Dynamically handles delays and failures
+  - Continuously optimizes execution plan
+- The scheduler is the brain orchestrating task execution to complete workflows reliably.
+
+#### Metadata Database
+- Database that stored metadata regarding pipelines, tasks, users
+- It maintains records of all your tasks, their statuses, and other details to ensure the web server and the scheduler are updated and in sync. 
+- It captures extensive workflow execution data:
+  - Logs each activity along the journey (task instances, logs)
+  - Records dag runs stats
+  - pipeline run history
+  - Documentation for future improvements
+- The metadata database provides visibility into current and historical runs.
+
+-   Triggerer: Triggers tasks based on scheduling and dependencies.
+####  Executor
+- Defines how tasks are executed. Note that it does not do the execution of task
+- It executes the tasks
+- Executors provide different runtime environments for task execution:
+  - LocalExecutor for test drives (local Docker containers)
+  - Kubernetes Executor for structured trips (Kubernetes pods)
+  - CeleryExecutor for distributed journeys
+  - SparkExecutor for batch processing
+  - Custom execs like Lambda
+- Executors allow for robustly running tasks on different computing infrastructures.
+
 -   Other Componenets:
     -   **Queue**: Your tasks will be pushed into it in order to execute them in the right order
     -   **Worker**: Does the execution of tasks

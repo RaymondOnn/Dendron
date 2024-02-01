@@ -2,7 +2,7 @@
 id: 16bnd2gfn802530yb58ju64
 title: docker_compose
 desc: ''
-updated: 1701057301932
+updated: 1705521983529
 created: 1694662151930
 ---
 
@@ -74,7 +74,7 @@ network_mode: "container:[container name/id]"
 
 [Syntax Reference](https://docs.docker.com/compose/environment-variables/env-file/)
 
-## [Wait for dependencies](dadarek/wait-for-dependencies)
+### [Wait for dependencies](dadarek/wait-for-dependencies)
 
 Wait for all defined services to be fully available by probing their health status, even when using `docker compose up --detach`
 
@@ -91,7 +91,7 @@ Wait for all defined services to be fully available by probing their health stat
         condition: service_healthy
 ```
 
-## [Execute Multiple Commands](https://www.delftstack.com/howto/docker/docker-compose-multiple-commands/)
+### [Execute Multiple Commands](https://www.delftstack.com/howto/docker/docker-compose-multiple-commands/)
 
 ``` yaml
 # Running shell commands

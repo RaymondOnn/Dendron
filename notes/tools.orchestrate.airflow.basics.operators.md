@@ -2,7 +2,7 @@
 id: 6wn4lc4p8fak8gwil7egm5h
 title: operators
 desc: ''
-updated: 1701119269487
+updated: 1705983694522
 created: 1694545332850
 ---
 
@@ -126,28 +126,89 @@ exit
 ```
 
 ## DockerOperator
+- https://medium.com/towards-data-science/using-apache-airflow-dockeroperator-with-docker-compose-57d0217c8219
 
-```py
-from airflow.decorators import task, dag
-from airflow.providers.docker.operators.docker import DockerOperator
-from datetime import datetime
+1. Build task image
+    ``` dockerfile
+    # docker image to run python script
+    FROM python:3.10
 
-@dag(
-    start_date=datetime(2021, 1, 1),
-    schedule_interval='@daily',
-    catchup=False
-)
-def docker_dag():
+    WORKDIR /usr/src/app
+    RUN --mount=type=bind,source=./web2kafka/requirements.txt,target=/tmp/requirements.txt  \
+        pip install --no-cache-dir -r /tmp/requirements.txt
 
-    @task()
-    def t1():
-        pass
+    COPY ./web2kafka/src/ .
 
-    t2 = DockerOperator(
-        task_id='t2',
-        image='python:3.8-slim-buster',
-    )    
-    t1() >> t2
+    CMD ["python", "./hello.py"]
+    ```
+    ``` bash
+    # To build docker image
+    docker build <WORKDIR> -t <TAG>
 
-dag = docker_dag()
-```
+    # To run and test image
+    docker run <IMG>
+    ```
+2. `docker-compose.yaml`
+    1. add `docker.sock` to `volumes` 
+    2. add the `apache-airflow-providers-docker` under `_PIP_ADDITIONAL_REQUIREMENTS`
+        ``` yaml
+        x-airflow-common:
+            ...
+            environment:
+                _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:- apache-airflow-providers-docker}    #<---See here
+                ...
+            volumes:
+                - ./dags:/opt/airflow/dags
+                - ./logs:/opt/airflow/logs
+                - ./plugins:/opt/airflow/plugins
+                - ./include:/opt/airflow/include
+                - /var/run/docker.sock:/var/run/docker.sock  #<---See here
+        ```
+    3. add `docker-proxy` service
+        ``` yaml
+        # Be mindful of the networks 
+        docker-proxy:
+            image: bobrik/socat
+            command: "TCP4-LISTEN:2375,fork,reuseaddr UNIX-CONNECT:/var/run/docker.sock"
+            ports:
+            - "2376:2375"
+            volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+        ```
+3. `dag.py` 
+
+    ```py
+
+    from airflow.providers.docker.operators.docker import DockerOperator
+    from airflow.decorators import dag, task
+    from airflow.utils.dates import days_ago
+
+
+    @dag(start_date=days_ago(0), schedule=None, catchup=False)
+    def web_streams():
+        @task
+        def start():
+            print("Workflow started...")
+
+        @task
+        def end():
+            print("Workflow done.")
+
+        run_script = DockerOperator(
+            task_id="web2kafka",
+            image="task_web2kafka",
+            api_version='auto',
+            docker_url="tcp://docker-proxy:2375",  # <-- Rmb to add this!!
+            auto_remove=True,
+            command='echo "this is a test message shown from within the container"',
+            mount_tmp_dir=False,
+            # tty=True,
+            network_mode="bridge"
+        )
+
+        start() >> run_script >> end()
+
+
+    web_streams()
+
+    ```

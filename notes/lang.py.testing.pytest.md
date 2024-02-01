@@ -1,8 +1,8 @@
 ---
 id: ov21izw706cnwbg3560776m
-title: Pytest
+title: pytest
 desc: ''
-updated: 1701561257573
+updated: 1705556944242
 created: 1693978028033
 ---
 Mocks: https://pytest-with-eric.com/pytest-best-practices/pytest-mock-assert-called/

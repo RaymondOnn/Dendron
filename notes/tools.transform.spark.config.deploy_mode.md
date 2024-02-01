@@ -1,8 +1,8 @@
 ---
 id: i89wuyhxvgpu28belkabwbh
-title: deploy_mode
+title: deploy
 desc: ''
-updated: 1698892801828
+updated: 1703650933549
 created: 1697910335736
 ---
 
