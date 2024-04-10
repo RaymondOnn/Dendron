@@ -1,7 +1,7 @@
 ---
 id: qi4kuq9f823tr7t76ii4c2y
 title: join_strategy
-desc: ""
+desc: ''
 updated: 1703649895113
 created: 1698244745934
 ---

@@ -2,7 +2,7 @@
 id: mz18hetbe5bdcoa0rp9jaff
 title: _todo
 desc: ''
-updated: 1706606279702
+updated: 1710716462865
 created: 1699491963127
 ---
 
@@ -13,19 +13,20 @@ Income Insurance
 ### Project
 - NRT Streaming 
   - SetUp Working Airflow Dag
-  - Airflow Dynamic Dags
   - Airflow Pools
   - Airflow Practices In Production
-  - ClusterPack for Spark Packaging
   - Mocking for Scraper Tests
   - Write Tests for Kafka Helper
   - Kafka Producer DLQ
-  - Kafka Refactor (Airflow)
   - Spark Streaming DLQ
   - Implementing Railway Programming for Error Handling
   - Logging in Spark Cluster
   - Config Management
   - Testing DAGs
+  - Extra
+    - YARN Spark
+  - github.com/HamzaG737/data-engineering-project
+  - https://towardsdatascience.com/end-to-end-data-engineering-system-on-real-data-with-kafka-spark-airflow-postgres-and-docker-a70e18df4090
 - REST_API
   - Error handling for JWT
   - Repository Pattern
@@ -39,11 +40,9 @@ Income Insurance
 - [SQL Anti Patterns](https://medium.com/pragmatic-programmers/table-of-contents-4e017a30c020)
 - [ ] Here Documents
 - [ ] Flask REST API
-- [ ] Configuration Snippets
 - [ ] Spark Resource Estimation
 - [ ] Interactive rebase, rerere
 - [ ] Docker 
-  - [ ] Docker Networking
   - [ ] Docker Swarm
   - Writing entrypoint script: https://medium.com/@madflojo/shutdown-signals-with-docker-entry-point-scripts-5e560f4e2d45
   - Docker: gosu, establish provenance
@@ -61,10 +60,12 @@ Income Insurance
 - makefile assignment: https://www.youtube.com/watch?v=z4uPHjxYyPs&list=PLtimIuw_6KzXti4B_Y6xIEj88YlstpCnk&index=2&t=134s
 - selenuim, js rendering site: https://www.youtube.com/watch?v=Irs6PG36qz8 
 - rest api resources: https://restfulapi.net/resource-naming/
- - logging: https://www.youtube.com/watch?v=9L77QExPmI0 
  - SQL Patterns: https://medium.com/@ergest/an-introduction-to-sql-design-patterns-and-best-practices-169891b4e27f
-https://medium.matcha.fyi/build-a-simple-testing-framework-with-bash-bcb59aaa6a57
-Python Enumeration : Enum, IntEnum, IntFlag and Flag
+- https://medium.matcha.fyi/build-a-simple-testing-framework-with-bash-bcb59aaa6a57
+- Python Enumeration : Enum, IntEnum, IntFlag and Flag
+- https://medium.com/the-python-project/state-of-the-art-python-packaging-with-pyproject-toml-cf96ad136af5
+- REST API Design, Health check
+- https://www.youtube.com/watch?v=GHa4x7BO25I
 
 ---
 

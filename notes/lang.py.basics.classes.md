@@ -2,10 +2,10 @@
 id: us7md8g2ovpyeepw2n71ymp
 title: classes
 desc: ''
-updated: 1697907892311
+updated: 1712072527228
 created: 1691590806329
 ---
-
+https://www.youtube.com/watch?v=YaSMkzmc_sA
 link: <https://blog.tobked.dev/enum-and-dataclass.html>
 
 Enum
@@ -18,7 +18,9 @@ Protocol
 
 - Functions are **action-focused** and organised based on data flow
 - Classes are **state-focused**; they are variables grouped into objects, grouped into other objects and methods modify the state
-- The rule can be formulated as follows: if you have state that needs to be retained for longer than one procedure call (and that state can be meaningfully encapsulated), then use a class. If the state is only needed for one procedure call, use a procedure .
+- The rule can be formulated as follows: 
+    - if you have state that needs to be retained for longer than one procedure call (and that state can be meaningfully encapsulated), then use a class. 
+    - If the state is only needed for one procedure call, use a procedure .
 
 ## Speed Up Class Performance
 

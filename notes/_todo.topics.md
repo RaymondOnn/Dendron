@@ -2,7 +2,7 @@
 id: j5w77o2ntqocs787abp94wv
 title: Topics
 desc: ''
-updated: 1706322479605
+updated: 1711790267521
 created: 1698815739312
 ---
 
@@ -13,11 +13,8 @@ created: 1698815739312
 
 - Concurrency
 - Property Based Testing
-- Pydantic Data Validation
 - GitLab CICD
 - Terraform
-- REST APIs
-  - Flask Web
 - Web Scraping
   - JS Sites
   - API method
@@ -33,12 +30,13 @@ created: 1698815739312
   - Debezium
   - Flink
   - RbbitMQ
+  - NATS
 
 - Distributed Systems
   - <https://www.youtube.com/watch?v=XCSARhkRg7g&ab_channel=MathByteAcademy>
   - Celery
   - Redis
-- File Formats:  Parquet, Iceberg, Hudi, Delta Lake
+- File Formats: Iceberg, Hudi
     Dagster
     Amundsen
 
@@ -63,4 +61,7 @@ created: 1698815739312
     Testing Code / Pipelines
     Neo4j
     Terraform
-    Kubernetes (Use k3D)
+    Kubernetes (Use k3D): https://www.youtube.com/watch?v=SeQevrW176A
+    Apache Druid
+    Presto
+    MinIO

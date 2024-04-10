@@ -1,7 +1,7 @@
 ---
 id: dcgzy2jshzo2jxwm2957q4b
 title: config
-desc: ""
+desc: ''
 updated: 1706251263989
 created: 1705824559417
 ---

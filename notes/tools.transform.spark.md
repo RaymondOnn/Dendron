@@ -2,7 +2,7 @@
 id: uus67uozis910s6idj3d96n
 title: spark
 desc: ''
-updated: 1703650923220
+updated: 1712154408133
 created: 1691351110602
 ---
 
@@ -18,6 +18,7 @@ created: 1691351110602
 
 - [spark-submit job template](https://github.com/js58/pyspark-template/tree/main)
 - https://towardsdatascience.com/successful-spark-submits-for-python-projects-53012ca7405a
+- https://mallikarjuna_g.gitbooks.io/spark/content/spark-standalone-master.html
 ## Spark
 
 ### What is Spark

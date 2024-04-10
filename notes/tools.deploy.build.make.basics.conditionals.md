@@ -1,7 +1,7 @@
 ---
 id: 7n40yaon0gx1p288bf30pdn
 title: conditionals
-desc: ""
+desc: ''
 updated: 1706539650774
 created: 1706538940028
 ---

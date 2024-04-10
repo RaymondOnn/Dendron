@@ -2,7 +2,7 @@
 id: qsejf2leu2n5fp8vhao0186
 title: virt_env
 desc: ''
-updated: 1706020221152
+updated: 1711344731197
 created: 1694391268892
 ---
 
@@ -36,6 +36,8 @@ conda deactivate
 # delete virtual environmet
 conda remove --name ENV_NAME --all
 
+# to get path of conda env
+conda info --envs
 ```
 
 ## Pip Virtual Environment

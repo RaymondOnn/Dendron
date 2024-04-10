@@ -1,13 +1,14 @@
 ---
 id: hba08e2flrm6n8y31riuh70
 title: bash
-desc: ""
-updated: 1705296719680
+desc: ''
+updated: 1707496018715
 created: 1694732979398
 ---
 
 - [Bash Reference Manual](https://www.gnu.org/software/bash/manual/html_node/index.html#SEC_Contents)
-
+https://www.youtube.com/watch?v=IYZDIhfAUM0
+https://www.youtube.com/watch?v=mSXOYhfDFYo
 ### What is BASH?
 
 -   A shell language

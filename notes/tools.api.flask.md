@@ -1,7 +1,7 @@
 ---
 id: lj84cv92l72n2uvjvs2hgyl
 title: flask
-desc: ""
+desc: ''
 updated: 1706259172990
 created: 1700567696959
 ---

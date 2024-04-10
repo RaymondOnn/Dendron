@@ -1,13 +1,13 @@
 ---
 id: puouu9nytpps6mx6hr4sqk6
 title: API
-desc: ""
-updated: 1706151973381
+desc: ''
+updated: 1712336222815
 created: 1705284113026
 ---
 https://medium.com/@kamaleshs48/difference-between-put-post-and-patch-35ed362e05e9#:~:text=In%20summary%2C%20PUT%20is%20used,for%20partially%20updating%20existing%20resources.
 - https://www.youtube.com/shorts/s33eVDbsyYM
-
+https://stephennimmo.com/2023/09/07/build-a-rest-api-from-the-ground-up-with-python/
 
 ### What is an API?
 

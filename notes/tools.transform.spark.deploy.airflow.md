@@ -1,12 +1,12 @@
 ---
 id: kbc5l0zw14tcd7h3zym36jo
 title: Airflow
-desc: ""
+desc: ''
 updated: 1705992473770
 created: 1705992008318
 ---
 
-### `spark_submit` via [[tools.orchestrate.airflow]]
+### `spark_submit` via [[tools.schedule.airflow]]
 
 -   ref: [link](https://stackoverflow.com/questions/53344285/is-there-a-way-to-submit-spark-job-on-different-server-running-master/53344713#53344713)
 

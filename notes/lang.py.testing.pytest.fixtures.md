@@ -2,7 +2,7 @@
 id: 6dogn3hd0am59e7q4o5tqdl
 title: fixtures
 desc: ''
-updated: 1698627101274
+updated: 1707384110124
 created: 1698427330354
 ---
 
@@ -386,7 +386,7 @@ Run once per test class, regardless of how many test methods are in the class.
 
 ##### `scope=’module’`
 
-Run once per module, regardless of how many test functions or methods, or other fixtures in the module use it.
+Run once per module (i.e. per test file), regardless of how many test functions or methods, or other fixtures in the module use it.
 
 ##### `scope=’package’`
 
@@ -394,7 +394,7 @@ Run once per package, or test directory, regardless of how many test functions o
 
 ##### `scope=’session’`
 
-Run once per session. All test methods and functions using a fixture of session scope share one setup and teardown call.
+Run once per session (i.e. per call to pytest). All test methods and functions using a fixture of session scope share one setup and teardown call.
 
 - Using setup-show to demonstrate that the number of times a fixture is called and when the setup and teardown are run depend on the scope:
 

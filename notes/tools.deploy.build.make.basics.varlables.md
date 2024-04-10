@@ -2,10 +2,11 @@
 id: n4hf87nshy5btscn26oh2ep
 title: varlables
 desc: ''
-updated: 1706538990906
+updated: 1710960185008
 created: 1706535700043
 ---
 
+> **Reference: https://www.gnu.org/software/make/manual/html_node/Quick-Reference.html**
 
 ### Variables (also called macros)
 

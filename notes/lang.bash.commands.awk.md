@@ -1,7 +1,7 @@
 ---
 id: nvlqa4a7s29xn2d1vl0kmhl
 title: awk
-desc: ""
+desc: ''
 updated: 1704121128089
 created: 1702340874416
 ---

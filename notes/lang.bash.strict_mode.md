@@ -1,7 +1,7 @@
 ---
 id: v73quoxinp30n2y2sovpdom
 title: strict_mode
-desc: ""
+desc: ''
 updated: 1705286450454
 created: 1705270084085
 ---

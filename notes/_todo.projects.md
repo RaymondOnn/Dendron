@@ -2,7 +2,7 @@
 id: 92a2ej6gzw5mqqokbl13n98
 title: Projects
 desc: ''
-updated: 1698815644144
+updated: 1711320552840
 created: 1698815594804
 ---
 Data Engineering Solutions
@@ -32,3 +32,12 @@ Data Engineering Solutions
 - RabbitMQ:
 - Resume API:
   - https://www.linkedin.com/posts/eric-lake_webdevelopment-api-resume-activity-6976555817147789312-JS3u/
+
+
+Batch Pipeline
+Streaming Pipeline
+Data Vault
+Log ELK / Data Lake
+Automated Selenium
+Data Migration
+Data Platform

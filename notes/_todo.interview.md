@@ -2,7 +2,7 @@
 id: h9puxp2sjgsv3jypm4jw0x7
 title: Interview
 desc: ''
-updated: 1700116583602
+updated: 1709702055751
 created: 1699598565887
 ---
 https://www.youtube.com/watch?v=aPN2qzYuPPs
@@ -30,4 +30,5 @@ Data Engineering Case Study
 - Focused on data architecture
 
 1 Clarify the Question
-2. 
+
+![

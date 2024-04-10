@@ -2,7 +2,7 @@
 id: 9plapdh1jej85kmpxle2cuv
 title: Snippets
 desc: ''
-updated: 1705467952395
+updated: 1711064202171
 created: 1702000484290
 ---
 
@@ -164,7 +164,7 @@ help:
 
 # ------------------------------------ Boilerplate Code ----------------------------------
 
-boilerplate:  ## Add simple 'README.md' and .gitignore
+ boilerplate:  ## Add simple 'README.md' and .gitignore
 	@echo "# $(PACKAGE_NAME)" | sed 's/_/ /g' >> README.md
 	@$(call add-gitignore)
 

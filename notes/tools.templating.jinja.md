@@ -1,12 +1,12 @@
 ---
 id: nam9jp3u9ysmgb6scegj7mb
 title: jinja
-desc: ""
-updated: 1706699629000
+desc: ''
+updated: 1709191474809
 created: 1702177557352
 ---
 https://ttl255.com/jinja2-tutorial-part-3-whitespace-control/
-
+https://jinja.palletsprojects.com/page/templates/
 ## Jinja
 
 ### What is Jinja
@@ -15,9 +15,9 @@ https://ttl255.com/jinja2-tutorial-part-3-whitespace-control/
 -   Provides a syntax for creating dynamic web pages and templates.
 -   It was originally created by Armin Ronacher in 2008 as a replacement for the outdated templating language used in the Flask web framework.
 -   Jinja uses a set of special characters and keywords to denote variables, control structures, and other elements of a template.
-    -   `{{ }}`, which enclose a variable
-    -   `{% %}` for control structures like loops and conditionals.
-    -   `{# #}` for comments
+    -   `{{ }}` for expressions. These will print text to the rendered file.
+    -   `{% %}` for statements. These perform any function programming such as setting a variable or starting loops or conditionals.
+    -   `{# #}` for comments. This allows us to document our code inline
     -   `# ##` for line statements
 
 ### Python API
@@ -146,6 +146,10 @@ content = template.render(data)
 ```
 
 ### Jinja Templating Basics
+#### Whitespace Control
+
+- We can control for whitespace by adding a single dash on either side of the Jinja delimiter. 
+- This will trim the whitespace between the Jinja delimiter on that side of the expression.
 
 #### Comments: `{# #}`
 
@@ -156,8 +160,7 @@ content = template.render(data)
 
 -   Used to insert dynamic content into a template.
 -   You can define a variable using the `{% set %}` tag, and then use it in the template by enclosing it in double curly braces.
--   For e.g. if you define a variable “name” as “Jinja”, you can insert it into a sentence like “Welcome to {{ name }} templates!”. Let’s see it in action in a simple HTML code.
-
+-   For e.g. if you define a variable “name” as “Jinja”, you can insert it into a sentence like `“Welcome to {{ name }} templates!”`. 
 ```py
 {% set name = "Jinja" %}
 <!DOCTYPE html>
@@ -171,6 +174,24 @@ content = template.render(data)
   </body>
 </html>
 ```
+##### List
+
+``` py
+{% set my_animals = ['lemur', 'wolf', 'panther'] %}
+{{ my_animals[0] }}   # lemur
+```
+##### Dictionary
+
+``` py
+{% set my_dict = {
+  'word': 'data', 
+  'speech_part': 'noun', 
+  'definition': 'if you know you know'
+  } %}
+
+{{ my_dict['word'] }}   # data
+```
+
 
 #### Control Structures
 

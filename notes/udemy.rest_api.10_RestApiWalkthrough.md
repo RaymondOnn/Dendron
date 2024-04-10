@@ -2,7 +2,7 @@
 id: arwr9p4y2mymwq0jmck1ofl
 title: 10_RestApiWalkthrough
 desc: ''
-updated: 1699966399009
+updated: 1706814334067
 created: 1699964599989
 ---
 Example API walkthrough.
@@ -21,7 +21,7 @@ Ticketmaster has built capabilities related to the management of e-tickets for d
 
 as concerts, sporting events.
 
-ET cetera.
+Etcetera.
 
 They expose these same capabilities for managing e-tickets by way of their APIs.
 

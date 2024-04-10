@@ -1,19 +1,19 @@
 ---
 id: zd48jq02qht4piif6z0zq36
 title: _draft
-desc: ""
-updated: 1706362405016
+desc: ''
+updated: 1707672427468
 created: 1706060336639
 ---
 
 https://betterstack.com/community/guides/logging/how-to-start-logging-with-python/#the-python-logging-hierarchy
 https://www.youtube.com/watch?v=9L77QExPmI0
 
-### The Components
+## The Components
 
 ![Alt text](image-4.png)
 
-#### Loggers
+### Loggers
 
 -   The actual thing used in code to log messages
 -   Each message is a LogRecord object that contains contextual info i.e. message, level, created, thread
@@ -23,24 +23,203 @@ https://www.youtube.com/watch?v=9L77QExPmI0
 -   Changes to the messages will persist throughout.
 -   The LogRecord is then passed to the handlers
 
-#### Filters
+#### Log Levels
+
+-   Log levels define the severity of the event that is being logged.
+-   Useful when sieving through large logs for specific events.
+-   Each log level in Python is associated with a number (from 10 to 50) and has a corresponding module-level method in the logging module as demonstrated in the previous example.
+    -   `DEBUG (10)`: used to log messages that are useful for debugging.
+    -   `INFO (20)`: used to log events within the parameters of expected program behavior.
+    -   `WARNING (30)`: used to log unexpected events which may impede future program function but not severe enough to be an error.
+    -   `ERROR (40)`: used to log unexpected failures in the program. Often, an exception needs to be raised to avoid further failures, but the program may still be able to run.
+    -   `CRITICAL (50)`: used to log severe errors that can cause the application to stop running altogether.
+-   To set the log level:
+
+    ```py
+    # By default, the logging module will produce records for
+    # events with severity level of WARNING and above.
+
+    import logging
+
+    logging.basicConfig(level=logging.INFO)
+
+    logging.debug("A debug message")
+    logging.info("An info message")
+    logging.warning("A warning message")
+    logging.error("An error message")
+    logging.critical("A critical message")
+    ```
+
+-   To add custom log levels:
+
+    ```py
+
+    import logging
+
+
+    # Adopted from https://stackoverflow.com/a/35804945/1691778
+    # Adds a new logging method to the logging module
+    def addLoggingLevel(levelName, levelNum, methodName=None):
+        if not methodName:
+            methodName = levelName.lower()
+
+        if hasattr(logging, levelName):
+            raise AttributeError("{} already defined in logging module".format(levelName))
+        if hasattr(logging, methodName):
+            raise AttributeError("{} already defined in logging module".format(methodName))
+        if hasattr(logging.getLoggerClass(), methodName):
+            raise AttributeError("{} already defined in logger class".format(methodName))
+
+        def logForLevel(self, message, *args, **kwargs):
+            if self.isEnabledFor(levelNum):
+                self._log(levelNum, message, args, **kwargs)
+
+        def logToRoot(message, *args, **kwargs):
+            logging.log(levelNum, message, *args, **kwargs)
+
+        logging.addLevelName(levelNum, levelName)
+        setattr(logging, levelName, levelNum)
+        setattr(logging.getLoggerClass(), methodName, logForLevel)
+        setattr(logging, methodName, logToRoot)
+
+    # Create the TRACE level
+    addLoggingLevel("TRACE", logging.DEBUG - 5)
+    logging.basicConfig(level=logging.TRACE)
+
+    # Use the TRACE level
+    logging.trace("A trace message")
+    logging.debug("A debug message")
+    logging.info("An info message")
+    logging.warning("A warning message")
+    logging.error("An error message")
+    logging.critical("A critical message")
+
+    ```
+
+### Filters
+
+-   Filters allow for selectively include or exclude log messages based on specific criteria.
+-   They implement a single method filter(record), which returns either True to include the log message or False to exclude the log message.
+
+    ```py
+    import sys
+    import logging
+
+
+    class LevelFilter(logging.Filter):
+        def __init__(self, level):
+            self.level = level
+
+        def filter(self, record):
+            if record.levelno == self.level:
+                return True
+
+
+    logger = logging.getLogger(__name__)
+
+    stdout = logging.StreamHandler(stream=sys.stdout)
+
+    fmt = logging.Formatter(
+        "%(name)s: %(asctime)s | %(levelname)s | %(filename)s%(lineno)s | %(process)d >>> %(message)s"
+    )
+
+    level_filter = LevelFilter(logging.WARNING)
+    logger.addFilter(level_filter)
+
+    stdout.setFormatter(fmt)
+    logger.addHandler(stdout)
+
+    logger.setLevel(logging.INFO)
+
+    logger.info("An info")
+    logger.warning("A warning")
+    logger.error("An error")
+    ```
 
 #### Handlers
 
--   Handlers define how and where to log records i.e. stdout, file, email, log service
+-   Handlers define how and where to log records i.e. stdout, file, email, log service, network socket, or HTTP API
 -   Each handler also has level and filters to customize the output
 -   However, unlike the logger, these changes revert once it is passed to the next handler.
 
+-   To use a handler, a Handler object must be instantiated and added to a Logger.
+-   There are several types of Handler objects
+-   Multiple Handlers can be added to a single Logger instance so that the logs produced through that Logger can be sent to multiple destinations.
+
+```py
+import sys
+import logging
+
+logger = logging.getLogger("example")
+
+stdout = logging.StreamHandler(stream=sys.stdout)
+stdout.setLevel(logging.INFO) # Note this level filter comes after the main level filter
+
+logger.addHandler(stdout) # add handler to logger
+
+logger.info("An info") # <--- this will be filtered out by main logger unless logger.setLevel(logging.INFO)
+logger.warning("A warning")
+
+# Output
+A warning
+```
+
 #### Formatters
 
--   log messages are generated in the form of text but LogRecords are python objects
+-   Log messages are generated in the form of text but LogRecords are python objects
 -   Formatters is used to convert the LogRecord into text so that it can be sent out
 -   Formatters allows you to customize how the log message look like and choose which data in included in the log message
+-   To use a formatter, a formatter object must be instantiated and added to a Logger.
+-   For more formating options, see [here](https://docs.python.org/3/library/logging.html#logging.Formatter)
+
+```py
+import sys
+import logging
+
+logger = logging.getLogger("example")
+
+stdout = logging.StreamHandler(stream=sys.stdout)
+
+fmt = logging.Formatter(
+    "%(name)s: %(asctime)s | %(levelname)s | %(filename)s:%(lineno)s | %(process)d >>> %(message)s"
+)
+
+stdout.setFormatter(fmt)
+logger.addHandler(stdout)
+
+logger.setLevel(logging.INFO)
+
+logger.info("An info")
+logger.warning("A warning")
+```
 
 ### The Logging Tree
 
--   Loggers are accessed and created by name
+-   Loggers are organized into a tree structure based on their names with the root logger at the root.
+-   Loggers are accessed and created by name, hence each logger must have a unique name.
+-   Creating a custom logger is done via the `getLogger()` method and child loggers are created via the dot syntax
+
+
+    ``` py
+
+    # logger app.example is the child of the app logger
+    # which in turn is the child of the "root" logger
+
+    import logging
+
+    app_logger = logging.getLogger("app")
+    module_logger = logging.getLogger("app.module")
+
+    print(app_logger.parent)
+    print(module.parent)
+    # Output
+    <RootLogger root (WARNING)>
+    <Logger app (WARNING)>
+    ```
+
 -   Log messages will propagate from child loggers to its parent all the way to the root logger
+- Configurations will propagate from parent to child, in the opposite direction
+
 
 ### Best Practices
 
@@ -69,7 +248,8 @@ https://www.youtube.com/watch?v=9L77QExPmI0
 **An example: Logging to stdout**
 
 ![Alt text](image-3.png)
-``` py
+
+```py
 import logging
 
 logging.info("some_message")   # BAD: This uses the root logger
@@ -112,7 +292,7 @@ def main():
     logger.warning("warning message")
     logger.error("error message")
     logger.critical("critical message")
-    
+
 ...
 
 def main():
@@ -120,14 +300,13 @@ def main():
     ...
 ```
 
-
 2. Put all handlers/filters on the root logger
 
-   -   An benefit of this is that any messages generated by third party libraries get formatted the same way as messages generated by your own app.
+    - An benefit of this is that any messages generated by third party libraries get formatted the same way as messages generated by your own app.
 
 3. Dont use the root logger in your code.
 
-``` py
+```py
 import logging
 
 logging.info("some_message")   # BAD: This uses the root logger
@@ -138,12 +317,12 @@ logger.info("some_message") # GOOD: Use your own logger
 
 4. One logger per major subcomponent.
 
-   -   Do not use `getLogger(__name__)` in every file
+    - Do not use `getLogger(__name__)` in every file
 
 5. Store config in `json` or `yaml` file
 
 6. Use ISO-8601 Timestamps (with timezone)
-![Alt text](image-1.png)
+   ![Alt text](image-1.png)
 
 7. Store persistent logs in JSON for easy search
 8. Add Context with `logging.info(..., extra={...})`

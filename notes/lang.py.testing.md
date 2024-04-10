@@ -2,9 +2,16 @@
 id: v9nhpg0uh5mbosx6ftf3d5d
 title: testing
 desc: ''
-updated: 1705556933085
+updated: 1712124398481
 created: 1701681081530
 ---
+https://www.youtube.com/watch?v=Xu5EhKVZdV8&t=6s
+
+> ### Laws of Unit Testing
+> 1. Always use interfaces
+> 2. Use dependeny injection
+> 3. Only mock/fake the interfaces
+> 4. Only touch what is yours
 
 ### Types of Test Doubles
 - Dummy

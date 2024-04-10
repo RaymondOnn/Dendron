@@ -2,7 +2,7 @@
 id: 7ltpqb1kglfp8azgo8sh793
 title: data_storage
 desc: ''
-updated: 1698636352823
+updated: 1709101934889
 created: 1698040879162
 ---
 
@@ -283,9 +283,7 @@ if __name__ == "__main__":
   - Organizing your output in partitions and buckets
   - Storing sorted data
 
->NOTE:
->
->- Partitioning our data might get us two types of direct benefits
+>NOTE: Partitioning our data might get us two types of direct benefits
 >   - Parallel Processing
 >   - Partition Elimination: When data is stored in partitions based partition columns, it allows the Spark SQL engine to speed up optimize read and filter operation by skipping over some files and only reading the files that fit the criteria.
 

@@ -2,9 +2,10 @@
 id: jivnq4hli0dypzgppprm4ii
 title: bucketing
 desc: ''
-updated: 1698343075958
+updated: 1709103052194
 created: 1698274197545
 ---
+https://www.youtube.com/watch?v=1kWl6d1yeKA
 
 ## [Bucketing](https://towardsdatascience.com/best-practices-for-bucketing-in-spark-sql-ea9f23f7dd53)
 
@@ -306,7 +307,6 @@ created: 1698274197545
 ### Bucketing Considerations
 
 - Bucketing need to be considered similarly to partitioning which is another way how to organize data in the file system.
-- Let’s now see some issues that the data engineer usually has to face.
 
 #### Controlling the number of created files
 

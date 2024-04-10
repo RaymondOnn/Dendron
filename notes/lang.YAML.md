@@ -2,9 +2,10 @@
 id: j4xuccg0lrj7h2xg7dw7l36
 title: yaml
 desc: ''
-updated: 1697103593220
+updated: 1711218852183
 created: 1694602245194
 ---
+https://www.cloudbees.com/blog/yaml-tutorial-everything-you-need-get-started
 
 ## What is YAML
 
