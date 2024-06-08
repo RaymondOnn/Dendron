@@ -2,11 +2,12 @@
 id: 02iif1rjxgq715lvsgg49km
 title: streams
 desc: ''
-updated: 1670679828033
+updated: 1717523470575
 created: 1665969961098
 ---
 
-# Streams #
+# Streams
+
 - Objects that records/tracks/captures (DML-)changes made to a table i.e. `INSERT`, `UPDATE`, `DELETE`
 - This process is called change data capture, CDC
 - Has all of the columns of the tracked table + 3 additional columns: `METADATA$ACTION`, `METADATA$UPDATE`, `METADATA$ROW_ID`
@@ -16,7 +17,8 @@ created: 1665969961098
 - works like a view that tracks work that has to be done
 - We can consume a stream using either `INSERT` or `CREATE TABLE` statement
 
-## How to create streams ##
+### How to create streams
+
 <br/>
 
 ```SQL
@@ -28,7 +30,7 @@ CREATE STREAM <stream name>
 SELECT * FROM <stream name>    
 ```
 
-### **`INSERT`** operation ## 
+### **`INSERT`** operation ##
 
 <br/>
 
@@ -87,6 +89,7 @@ SET
 -- stream now is empty
 SELECT * FROM sales_stream;
 ```
+
 ### **`DELETE`** Operation ##
 
 ```sql
@@ -108,7 +111,7 @@ THEN DELETE;
 SELECT * FROM sales_stream;
 ```
 
-## Process All Data Changes ## 
+## Process All Data Changes ##
 
 ```sql
 
@@ -193,11 +196,11 @@ ORDER BY NAME ASC, SCHEDULED_TIME DESC;
 ```
 
 ## Types of streams ##
-- There are two types of streams, standard/default and append-only
-    - STANDARD: `INSERT`, `UPDATE`, `DELETE` (incl `TRUNCATE`)
-    - APPEND_ONLY: `INSERT`
-    - INSERT_ONLY: For external tables only
 
+- There are two types of streams, standard/default and append-only
+  - STANDARD: `INSERT`, `UPDATE`, `DELETE` (incl `TRUNCATE`)
+  - APPEND_ONLY: `INSERT`
+  - INSERT_ONLY: For external tables only
 
 ```sql
 -- create append-only stream
@@ -206,7 +209,7 @@ CREATE STREAM <stream name>
     APPEND_ONLY = TRUE
 ```
 
-## Alternative to streams: `CHANGES` clause ## 
+## Alternative to streams: `CHANGES` clause ##
 
 ```sql
 ALTER TABLE sales_raw

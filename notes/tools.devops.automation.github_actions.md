@@ -2,12 +2,12 @@
 id: v8fsy06nfc9xo6bqq7f0ttn
 title: github_actions
 desc: ''
-updated: 1711328373937
+updated: 1715786365098
 created: 1693757971078
 ---
 
 - [SUPER_LINTER](https://github.com/super-linter/super-linter)
-
+- [testing GHA locally with ACT](https://www.youtube.com/watch?v=YORvmxQBPeM)
 
 ### What is GitHub Actions
 

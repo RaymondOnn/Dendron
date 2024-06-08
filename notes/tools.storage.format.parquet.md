@@ -2,7 +2,7 @@
 id: g8akxa2rummjlipj14x5qnf
 title: parquet
 desc: ''
-updated: 1709040126065
+updated: 1714979706445
 created: 1708930388581
 ---
 > Links
@@ -26,13 +26,18 @@ created: 1708930388581
 
 ### Why Parquet
 
--   **Columnar Storage**: Parquet’s columnar storage layout is optimized for analytical queries. It minimizes I/O operations by reading only the columns needed for a query, leading to faster query execution.
--   **Compression and Encoding**: Parquet uses various compression algorithms and encoding techniques specific to each column, resulting in efficient use of storage space and improved data transfer speed.
+-   **Columnar Storage**: 
+    -   Parquet’s columnar storage layout is optimized for analytical queries. 
+    -   It minimizes I/O operations by reading only the columns needed for a query, leading to faster query execution.
+-   **Compression and Encoding**: 
+    -   Parquet uses various compression algorithms and encoding techniques specific to each column, resulting in efficient use of storage space and improved data transfer speed.
 -   **Predicate Pushdown**: The ability to push down filters to the Parquet format means that queries can skip over irrelevant data, reducing the amount of data read and improving performance.
 -   **Schema Evolution**: Parquet’s support for schema evolution enables easy adaptation to changing data requirements without significant data transformation efforts.
 -   **Performance**: With its storage efficiency, compression, and predicate pushdown capabilities, Parquet contributes to overall better performance for analytical workloads compared to traditional row-based formats.
--   **Interoperability**: Parquet’s compatibility with various big data processing tools ensures seamless integration into existing data processing ecosystems.
--   **Data Types**: Parquet supports a wide range of data types, making it versatile for storing diverse datasets.
+-   **Interoperability**: 
+    -   Parquet’s compatibility with various big data processing tools ensures seamless integration into existing data processing ecosystems.
+-   **Data Types**: 
+    -   Parquet supports a wide range of data types, making it versatile for storing diverse datasets.
 -   **Metadata**: Parquet files contain metadata that describes the schema and encoding of the data, enhancing query optimization.
 
 ### Architecture and Internals
@@ -42,7 +47,7 @@ created: 1708930388581
 ![alt text](parquet_structure.png)
 
 -   Parquet files are organized in a columnar storage format, resulting in better compression and query performance.
--   Columns and Row Groups:
+-   Stores data in **Row Groups**:
     -   Data in a Parquet file is divided into columns, and groups of columns are organized into “row groups.”
     -   Each row group contains a section of the data
     -   Columns within a row group are stored together to optimize compression and minimize I/O operations.

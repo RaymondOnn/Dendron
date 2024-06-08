@@ -2,7 +2,7 @@
 id: lnp5yzvb5whqlez5lwe88wz
 title: basics
 desc: ''
-updated: 1703047766047
+updated: 1717294614556
 created: 1697783930285
 ---
 - [[tools.transform.spark.basics.hadoop]]
@@ -11,6 +11,7 @@ created: 1697783930285
 - [[tools.transform.spark.basics.transform]]
 - [[tools.transform.spark.basics.execution]]
 - [[tools.transform.spark.basics.api]]
+
 ---
 
 <https://www.freecodecamp.org/news/deep-dive-into-spark-internals-and-architecture-f6e32045393b/>
@@ -161,7 +162,9 @@ This line is for local debugging and not for production.
 - The application's main() method will run in the container and it can use the allocated 4 CPU cores and 16 GB memory
 
 ### The Application
-- Py4j: https://www.py4j.org/getting_started.html
+
+- Py4j: <https://www.py4j.org/getting_started.html>
+
 #### Background
 
 - Spark Core was written in Scala which is a JVM language and it runs in the Java virtual machine (JVM).
@@ -179,7 +182,6 @@ This line is for local debugging and not for production.
 - Before executing spark-submit, a temporary file is created and it's name is exported as an environment variable:
 - Subsequently, spark-submit instantiates a PythonGatewayServer to initialise a Py4J server and write the Py4J server connection details to this file:
 - The Python driver can then read the contents of the file to establish a Py4J gateway to enable communication between the Python driver and the local Spark JVM process:
-
 
 - So I have Python code in my main() method.
 This python code is designed to start a Java main() method internally.
@@ -211,7 +213,7 @@ Each container will run one Spark executor, and the Spark executor is a JVM appl
 So your driver is a JVM application, and your executor is also a JVM application.
 
 The driver will assign work to the executors, monitor them and manage the overall application, but the executors do all the data processing.
-So let's quickly revise some terminologies.
+So let's quickly revise some terminologies
 ---
 
 You have a container, also known as Application Master or AM Container, that runs the driver.

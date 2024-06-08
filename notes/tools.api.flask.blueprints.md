@@ -1,8 +1,8 @@
 ---
 id: f2xq0qvnnco8xuu4f00flm2
-title: Blueprints
+title: blueprints
 desc: ''
-updated: 1705889006244
+updated: 1716946912970
 created: 1705631202768
 ---
 

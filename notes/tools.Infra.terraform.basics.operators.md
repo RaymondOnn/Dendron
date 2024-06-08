@@ -2,7 +2,7 @@
 id: 1zc6ynmp49ue22b9w2xn8tc
 title: operators
 desc: ''
-updated: 1711945193864
+updated: 1716977672125
 created: 1711945177201
 ---
 
@@ -67,7 +67,7 @@ created: 1711945177201
 
 #### `FOR_EACH`
 
-I am a big fan of using for_each on all of the resources, as you never know when you want to create multiple resources of the same kind.
+I am a big fan of using `for_each` on all of the resources, as you never know when you want to create multiple resources of the same kind.
 
 -   `For_Each` can be used with map and set variables
 -   `For_each` exposes one attribute called `each` which contains a key and value which can be referenced with `each.key` and `each.value`.

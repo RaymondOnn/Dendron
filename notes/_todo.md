@@ -2,13 +2,11 @@
 id: mz18hetbe5bdcoa0rp9jaff
 title: _todo
 desc: ''
-updated: 1710716462865
+updated: 1717817297216
 created: 1699491963127
 ---
 
 Bash Exercism
-Apply Job
-Income Insurance
 
 ### Project
 - NRT Streaming 
@@ -49,13 +47,13 @@ Income Insurance
   - docker scout, docker compose init
     - https://dwdraju.medium.com/development-made-easier-docker-compose-init-watch-29b9f8da1800
 - [ ] Airflow Notes
-  - [ ] Airflow Deferred Operators, Branching & Trigger Rules
+  - [ ] Airflow Deferred Operators, Branching
+  - [ ] templating, context variables
 - [ ] local tracking branch, git clone, upstream
 - [ ] Activity Schema, One big table
 - [ ] AWS IAM
 - [ ] Bash Positional Parameters
 - [ ] [xargs](https://www.youtube.com/watch?v=rp7jLi_kgPg)
-- polling app: https://www.youtube.com/watch?v=L5pszofCkCw
 - git submodules, git xync
 - makefile assignment: https://www.youtube.com/watch?v=z4uPHjxYyPs&list=PLtimIuw_6KzXti4B_Y6xIEj88YlstpCnk&index=2&t=134s
 - selenuim, js rendering site: https://www.youtube.com/watch?v=Irs6PG36qz8 
@@ -66,7 +64,15 @@ Income Insurance
 - https://medium.com/the-python-project/state-of-the-art-python-packaging-with-pyproject-toml-cf96ad136af5
 - REST API Design, Health check
 - https://www.youtube.com/watch?v=GHa4x7BO25I
+- https://medium.com/@sant1/flink-docker-kafka-faee9c0f1580
+- [Data Lake Storage Layers  ](https://www.youtube.com/watch?v=fryfx0Zg7KA)
+- Spark Thrift Server
 
+- functional reactive programming 
+
+- https://benbregman.medium.com/growth-accounting-walkthrough-cbeac63009a3
+- https://medium.com/on-data-architecture/a-vulgar-mechanicks-guide-to-automation-with-terraform-and-dbt-on-snowflake-and-aws-c2b80ae2adb3
+![alt text](image-9.png)
 ---
 
 ### [[root._todo.projects]]
@@ -92,4 +98,8 @@ Income Insurance
   - <https://www.youtube.com/watch?v=DzxtCxi4YaA&ab_channel=DatawithMarc> (Airflow, DBT, Soda)
 - CICD ()
   - <https://www.youtube.com/watch?v=gJ5vp0UptdA&ab_channel=SoumilShah>
-
+- Iceberg, trino
+  - https://github.com/zsvoboda/ngods-stocks?tab=readme-ov-file
+  - https://blog.devgenius.io/modern-data-stack-demo-5d75dcdfba50
+  - https://medium.com/@ongxuanhong/dataops-03-trino-dbt-spark-everything-everywhere-all-at-once-241932d27a6
+  - https://github.com/wirelessr/trino-iceberg-playground

@@ -2,7 +2,7 @@
 id: uus67uozis910s6idj3d96n
 title: spark
 desc: ''
-updated: 1712154408133
+updated: 1717295674261
 created: 1691351110602
 ---
 
@@ -19,6 +19,9 @@ created: 1691351110602
 - [spark-submit job template](https://github.com/js58/pyspark-template/tree/main)
 - https://towardsdatascience.com/successful-spark-submits-for-python-projects-53012ca7405a
 - https://mallikarjuna_g.gitbooks.io/spark/content/spark-standalone-master.html
+
+- [Metastore](https://medium.com/@sarfarazhussain211/metastore-in-apache-spark-9286097180a4)
+
 ## Spark
 
 ### What is Spark
@@ -213,3 +216,29 @@ df_with_total_income = df.withColumn('Total_Income', calculate_total_income_udf(
 df_with_total_income.show()
 ```
 
+---
+
+Think of Apache Spark like a basketball game! 
+
+There are 4 pieces: 
+
+- the driver who is the coach 
+- the data which is the basketball 
+- the executors who are the players 
+- the query plan which is the play 
+
+
+When a Spark job initially starts, the coach reads the play and tells the executors where to get the ball. 
+
+Only when a shot is taken (I.e. data is output somewhere), does the basketball do anything that matters. (in tech speak: Spark is lazily executed) 
+
+Things can break though: 
+
+- a player is asked to juggle 40 basketballs and fails. 
+This happens in Spark when there is data skew. Executors fail and you need to manage skew better. An option here is to have the coach distribute the basketballs more equitable with random numbers. (this is a technique called salting the GROUP BY) 
+
+- the play is too large and too complicated and the coaches head explodes 
+This is driver OOM that usually happens when half way through a play, a player starts throwing basketballs at the coach and asking him what they should do next. This is when you call collect(). The coach can handle an extremely light amount of basketballs only! 
+
+- the play takes too long and the shot clock (I.e. SLA) kills the job 
+Sometimes you don’t have enough initial players on the team for the job to run successful. A good strategy here is to bump up spark.sql.shuffle.partitions because unlike basketball each team can have more than 5 players! 

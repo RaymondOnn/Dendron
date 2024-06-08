@@ -2,7 +2,7 @@
 id: 82b9k345pkczm5ba4xlurcg
 title: import
 desc: ''
-updated: 1702050617094
+updated: 1713911990976
 created: 1694226568563
 ---
 
@@ -42,8 +42,8 @@ Python offers several ways to import modules:
 # math_pkg/__init__.py
 from .arithmetic import add, subtract, multiply, divide
 from .statistics import mean, median, mode
-Importing and Using
 
+# Importing and Using
 from math_pkg import add, mean
 
 result = add(10, 5)

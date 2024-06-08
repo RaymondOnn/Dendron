@@ -2,7 +2,7 @@
 id: c50jfpiu057q5z934e66wad
 title: variables
 desc: ''
-updated: 1702340464797
+updated: 1715884962629
 created: 1694737023808
 ---
 
@@ -77,7 +77,151 @@ echo "Your username is: $USER"
 ...
 >>> Your username is: jay
 ```
+#### Special Parameters: `$*`, `$@`, `$#`, `$$`, `$!`, `$?`, `$-`, `$_`
 
+##### `$*` and `$@` to Expand Positional Parameters
+- Can be used to access the whole list of positional parameters
+- Outside of double quotes, these two are equivalent: Both expand to the list of positional parameters starting with `$1` (separated by spaces).
+- Within double quotes, they differ: 
+    - `$*`: Equivalent to the list of positional parameters, separated by the first character of IFS `$1c$2c$3…`.
+    - `$@`: Equivalent to the list of positional parameters, separated by unquoted spaces, i.e., “$1” “$2″..”$N”.
+    ``` bash
+    # Example 1: Use Bash $* and $@ to Expand Positional Parameters
+
+    # First, create the expan.sh as shown below.
+    $ cat expan.sh
+    #!/bin/bash
+
+    export IFS='-'
+
+    cnt=1
+
+    # Printing the data available in $*
+    echo "Values of \"\$*\":"
+    for arg in "$*"
+    do
+    echo "Arg #$cnt= $arg"
+    let "cnt+=1"
+    done
+
+    cnt=1
+
+    # Printing the data available in $@
+    echo "Values of \"\$@\":"
+    for arg in "$@"
+    do
+    echo "Arg #$cnt= $arg"
+    let "cnt+=1"
+    done
+
+    # Next, execute the expan.sh as shown below to see how $* and $@ works.
+
+    $ ./expan.sh "This is" 2 3
+    Values of "$*":
+    Arg #1= This is-2-3
+    Values of "$@":
+    Arg #1= This is
+    Arg #2= 2
+    Arg #3= 3
+    ```
+    - The above script exported the value of IFS (Internal Field Separator) with the ‘-‘.
+    - There are three parameter passed to the script `expan.sh`: `$1=”This is”`,`$2=”2″` and `$3=”3″`.
+    - When printing the each value of special parameter `$*`, it gives only one value which is the whole positional parameter delimited by IFS.
+    - Whereas `$@` gives you each parameter as a separate word.
+
+##### `$#` to Count Positional Parameters
+- `$#` is the special parameter in bash which gives you the number of positional parameter in decimal.
+
+``` bash
+# Example 2: Use $# to Count Positional Parameters
+# First, create the arithmetic.sh as shown below.
+
+$ cat arithmetic.sh
+#!/bin/bash
+
+if [ $# -lt 2 ]
+then
+  echo "Usage: $0 arg1 arg2"
+  exit
+fi
+
+echo -e  "\$1=$1"
+echo -e "\$2=$2"
+
+let add=$1+$2
+let sub=$1-$2
+let mul=$1*$2
+let div=$1/$2
+
+echo -e "Addition=$add\nSubtraction=$sub\nMultiplication=$mul\nDivision=$div\n"
+
+# If the number of positional parameters is less than 2, it will throw the usage information as shown below,
+
+$ ./arithemetic.sh 10
+Usage: ./arithemetic.sh arg1 arg2
+```
+##### `$$` and `$!`: Process related Parameters
+
+- `$$` will give the process ID of the shell. 
+- `$!` gives you the process id of the most recently executed background process.
+
+``` bash
+# Example 3: Process related Parameters – $$ and $!
+# The following script prints the process id of the shell and last execute background process ID.
+
+$ cat proc.sh
+#!/bin/bash
+
+echo -e "Process ID=$$"
+
+sleep 1000 &
+
+echo -e "Background Process ID=$!"
+
+# Now, execute the above script, and check the process id which its printing.
+
+$ ./proc.sh
+Process ID=9502
+Background Process ID=9503
+$ ps
+  PID TTY          TIME CMD
+ 5970 pts/1    00:00:00 bash
+ 9503 pts/1    00:00:00 sleep
+ 9504 pts/1    00:00:00 ps
+$
+```
+
+
+##### Other Bash Special Parameters – `$?`, `$-`, `$_`
+- `$?` Gives the exit status of the most recently executed command.
+- `$-` Options set using set builtin command
+- `$_` Gives the last argument to the previous command. At the shell startup, it gives the absolute filename of the shell script being executed.
+
+- `$_` will give the value after expansion
+    - Note that the last echo statement `echo -e $_`  also prints `hB` which is the value of last argument of the previous command.
+    ``` bash
+    $ cat others.sh
+    #!/bin/bash
+
+    echo -e "$_"; ## Absolute name of the file which is being executed
+
+    /usr/local/bin/dbhome  # execute the command.
+    #check the exit status of dbhome
+    if [ "$?" -ne "0" ]; then
+    echo "Sorry, Command execution failed !"
+    fi
+
+    echo -e "$-"; #Set options - hB
+
+    echo -e $_  # Last argument of the previous command.
+
+    $ ./others.sh
+    ./others.sh
+    /home/oracle
+    Sorry, Command execution failed !
+    hB
+    hB
+    ```
 ---
 
 Positional parameters are variables that contain the contents of the command line. The variables are $0 through $9. The script itself is stored in $0, the first parameter is stored in $1, the second in $2, and so on. Let's take this command line as an example. The contents of $0 are "script.sh", $1 contains "parameter1", $2 contains "parameter2", and $3 contains "parameter3". This script called, archive_user.sh,

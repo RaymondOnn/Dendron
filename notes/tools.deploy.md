@@ -2,7 +2,7 @@
 id: 8e750posq9ge4dyuruba8y4
 title: Deploy
 desc: ''
-updated: 1706522451056
+updated: 1716386539953
 created: 1706140383210
 ---
 
@@ -24,3 +24,37 @@ created: 1706140383210
 9. observability & alerting & KPIs, logging
 10. data dictionaries / data catalogs / documentation
 11. error recovery
+
+
+
+Your data sets should spark joy!
+
+How do you do that?
+- your data sets are easy to find 
+- your data sets have nice column names 
+- your data sets have quality guarantees 
+- your data sets have freshness guarantees 
+- your data sets are generated quickly to provide business value 
+- your data sets have key metrics to summarize them 
+- your data sets have documentation and diagrams 
+- your data sets have lineage explaining where they came from 
+
+No data engineering team does all of these things well! 
+Facebook focused on pipeline dev speed, freshness guarantees and discovrability. 
+Airbnb focused on quality and documentation at the expense of development speed! 
+
+A data pipeline is more than a regularly refreshing SQL query! 
+
+Pipelines should be resilient along many dimensions: 
+
+- pipelines shouldn’t break when data distribution changes 
+Gracefully managing skew is an important part of this journey. 
+
+- pipelines shouldn’t break when ownership changes 
+Documented pipelines have much longer lifetimes than undocumented ones!
+
+- pipelines should be able to be updated with new fields and increased requirements 
+Adding the proper staging steps and upstream combinations will allow for easier change management of your pipeline. 
+
+- pipelines shouldn’t publish bad data!
+Bad data should be caught before it’s published. Write-audit-publish pattern is the best way to solve this! 

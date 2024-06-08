@@ -2,7 +2,7 @@
 id: puouu9nytpps6mx6hr4sqk6
 title: API
 desc: ''
-updated: 1712336222815
+updated: 1714370417537
 created: 1705284113026
 ---
 https://medium.com/@kamaleshs48/difference-between-put-post-and-patch-35ed362e05e9#:~:text=In%20summary%2C%20PUT%20is%20used,for%20partially%20updating%20existing%20resources.
@@ -116,3 +116,7 @@ Content-Length: 32
         -   Look for libraries that have been around for a while and with lots of users and contributors.
         -   Look for libraries with an active community, in which users raise issues often, but check that the issues are quickly addressed.
         -   It also helps if the library has good documentation.
+
+---
+https://www.youtube.com/watch?v=6QnTNKOJk5A
+![alt text](image-8.png)

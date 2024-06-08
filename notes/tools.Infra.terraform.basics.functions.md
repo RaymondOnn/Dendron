@@ -2,41 +2,43 @@
 id: j8rl41tm816whapxarthrr9
 title: functions
 desc: ''
-updated: 1712025975474
+updated: 1717011591880
 created: 1712025944766
 ---
 
 ### Functions
 
-- Functions are built-in, reusable code blocks that perform specific tasks within Terraform configurations. 
-- They make your code more dynamic and ensure your configuration is DRY. 
+- Functions are built-in, reusable code blocks that perform specific tasks within Terraform configurations.
+- They make your code more dynamic and ensure your configuration is DRY.
 - Functions allow you to perform various operations, such as converting expressions to different data types, calculating lengths, and building complex variables.
 - These functions are split into multiple categories:
-    - String
-    - Numeric
-    - Collection
-    - ate and Time
-    - Crypto and Hash
-    - Filesystem
-    - IP Network
-    - Encoding
-    - Type Conversion
+  - String
+  - Numeric
+  - Collection
+  - ate and Time
+  - Crypto and Hash
+  - Filesystem
+  - IP Network
+  - Encoding
+  - Type Conversion
 
 #### `ToType` Functions
+
 - ToType is not an actual function; rather, many functions can help you change the type of a variable to another type.
 
-    - `tonumber(argument)`:  String --> number If not number, errors to `null`
-    - `tostring(argument)`:  Number/bool/string/null --> string
-    - `tobool(argument)`:  “true"/"false”/bool/null --> bool
-    - `tolist(argument)`:  Set --> List
-    - `toset(argument)`:  List --> Set
-    - `tomap(argument)`:  Converts its argument to a map
-
+  - `tonumber(argument)`:  String --> number If not number, errors to `null`
+  - `tostring(argument)`:  Number/bool/string/null --> string
+  - `tobool(argument)`:  “true"/"false”/bool/null --> bool
+  - `tolist(argument)`:  Set --> List
+  - `toset(argument)`:  List --> Set
+  - `tomap(argument)`:  Converts its argument to a map
 
 ##### `format(string_format, unformatted_string)`
+
 - Similar to the printf function in C
-- works by formatting a number of values according to a specification string. 
-- It can be used to build different strings that may be used in conjunction with other variables. 
+- works by formatting a number of values according to a specification string.
+- It can be used to build different strings that may be used in conjunction with other variables.
+
     ``` sh
     # An example of how to use this function:
 
@@ -61,7 +63,9 @@ created: 1712025944766
     ```
 
 ##### `formatlist(string_format, unformatted_list)`
-- Uses the same syntax as the format function but changes the elements in a list. 
+
+- Uses the same syntax as the format function but changes the elements in a list.
+
     ``` sh
     # An example of how to use this function:
     locals {
@@ -76,7 +80,9 @@ created: 1712025944766
     ```
 
 ##### `length(list / string / map)`
+
 - Returns the length of a string, list, or map.
+
     ``` sh
     locals {
         list_length = length([10, 20, 30])
@@ -92,8 +98,9 @@ created: 1712025944766
     ```
 
 ##### `join(separator, list)`
-- Another useful function in Terraform is “join”. 
-- This function creates a string by concatenating together all elements of a list and a separator. 
+
+- Another useful function in Terraform is “join”.
+- This function creates a string by concatenating together all elements of a list and a separator.
 
     ``` sh
     locals {
@@ -107,7 +114,9 @@ created: 1712025944766
     ```
 
 ##### `try(value, fallback)`
+
 - Sometimes, you may want to use a value if it is usable, but fall back to another value if the first one is unusable. This can be achieved using the “try” function.
+
     ``` sh
     locals {
         map_var = {
@@ -123,7 +132,8 @@ created: 1712025944766
     ```
 
 ##### `can(expression)`
-- A useful function for validating variables is “can”. 
+
+- A useful function for validating variables is “can”.
 - It evaluates an expression and returns a boolean indicating if there is a problem with the expression.
 
     ``` sh
@@ -139,8 +149,10 @@ created: 1712025944766
     ```
 
 ##### `flatten(list)`
-- In Terraform, you may work with complex data types to manage your infrastructure. 
+
+- In Terraform, you may work with complex data types to manage your infrastructure.
 - In these cases, you may want to flatten a list of lists into a single list. This can be achieved using the “flatten” function, as in this example:
+
     ``` sh
     locals {
         unflatten_list = [[1, 2, 3], [4, 5], [6]]
@@ -155,8 +167,10 @@ created: 1712025944766
     ```
 
 ##### `keys(map)` & `values(map)`
-- It may be useful to extract the keys or values from a map as a list. 
+
+- It may be useful to extract the keys or values from a map as a list.
 - This can be achieved using the “keys” or “values” functions, respectively. For example:
+
     ``` sh
     locals {
         key_value_map = {
@@ -181,7 +195,9 @@ created: 1712025944766
     ```
 
 ##### `slice(list, startindex, endindex)`
+
 - Slice returns consecutive elements from a list from a `startindex` (inclusive) to an `endindex` (exclusive).
+
     ``` sh
     locals {
         slice_list = slice([1, 2, 3, 4], 2, 4)
@@ -194,10 +210,12 @@ created: 1712025944766
     ```
 
 ##### `range`
+
 - Creates a range of numbers:
-    - one argument(limit)
-    - two arguments(initial_value, limit)
-    - three arguments(initial_value, limit, step)
+  - one argument(limit)
+  - two arguments(initial_value, limit)
+  - three arguments(initial_value, limit, step)
+
     ``` sh
     locals {
         range_one_arg = range(3)
@@ -214,7 +232,8 @@ created: 1712025944766
     ```
 
 ##### `lookup(map, key, fallback_value)`
-- Retrieves a value from a map using its key. 
+
+- Retrieves a value from a map using its key.
 - If the value is not found, it will return the default value instead
 
     ``` sh
@@ -233,7 +252,9 @@ created: 1712025944766
     ```
 
 ##### `concat(lists)`
+
 - Takes two or more lists and combines them in a single one
+
     ``` sh
     locals {
         concat_list = concat([1, 2, 3], [4, 5, 6])
@@ -247,7 +268,8 @@ created: 1712025944766
     ```
 
 ##### `merge(maps)`
-- The merge function takes one or more maps and returns a single map that contains all of the elements from the input maps. 
+
+- The merge function takes one or more maps and returns a single map that contains all of the elements from the input maps.
 - The function can also take objects as input, but the output will always be a map.
 
     ``` sh
@@ -277,7 +299,9 @@ created: 1712025944766
     ```
 
 ##### `zipmap(key_list, value_list)`
+
 - Constructs a map from a list of keys and a list of values
+
     ``` sh
     locals {
         key_zip = ["a", "b", "c"]
@@ -298,8 +322,10 @@ created: 1712025944766
     ```
 
 ##### expanding function argument …
-- This special argument works only in function calls and expands a list into separate arguments. 
+
+- This special argument works only in function calls and expands a list into separate arguments.
 - Useful when you want to merge all maps from a list of maps
+
     ``` sh
     locals {
         list_of_maps = [
@@ -333,8 +359,11 @@ created: 1712025944766
         "f" = "f"
     }
     ```
+
 ##### `file(path_to_file)`
+
 - Reads the content of a file as a string and can be used in conjunction with other functions like `jsondecode` / `yamldecode`.
+
     ``` sh
     locals {
         a_file = file("./a_file.txt")
@@ -347,6 +376,7 @@ created: 1712025944766
     ```
 
 ##### `templatefile(path, vars)`
+
 - Reads the file from the specified path and changes the variables specified in the file between the interpolation syntax ${ … } with the ones from the vars map.
 
     ```  sh
@@ -362,7 +392,9 @@ created: 1712025944766
     ```
 
 ##### `jsondecode(string)`
+
 - Interprets a string as json.
+
     ```  sh
     locals {
         a_jsondecode = jsondecode("{\"hello\": \"world\"}")
@@ -378,7 +410,9 @@ created: 1712025944766
     ```
 
 ##### `jsonencode(string)`
+
 - Encodes a value to a string using json
+
     ```  sh
     locals {
         a_jsonencode = jsonencode({ "hello" = "world" })
@@ -391,9 +425,11 @@ created: 1712025944766
     # This results in:
     a_jsonencode = "{\"hello\":\"world\"}"
     ```
-    
+
 ##### `yamldecode(string)`
+
 - Parses a string as a subset of YAML, and produces a representation of its value.
+
     ```  sh
     locals {
         a_yamldecode = yamldecode("hello: world")
@@ -407,9 +443,10 @@ created: 1712025944766
     a_yamldecode = {
         "hello" = "world"
     }
-    ``` 
-    
+    ```
+
 ##### `yamlencode(value)`
+
 - Encodes a given value to a string using YAML.
 
     ``` sh

@@ -2,9 +2,16 @@
 id: ou60cbnwsyqdkgdm8tcr5ao
 title: jars
 desc: ''
-updated: 1700801766478
+updated: 1713613906190
 created: 1697930458189
 ---
+
+### What is Spark’s JAR Folder?
+- The repository of library files that Spark uses during its operations. - These library files or JAR files contain compiled Java classes and associated metadata that encapsulate the core functionalities of Spark. - - The location of the Spark JAR folder varies depending on the Spark installation method and the operating system in use.
+    - Usually found in the Spark home directory when working with a solo Spark installation. This method extracts the Spark tarball to the Spark home directory. It is commonly referred to as $SPARK_HOME in Spark’s documentation and shell scripts.
+      - Within the Spark home directory, we will find several subdirectories hosting JAR files:
+        - `$SPARK_HOME/jars`: This is the primary repository for Spark’s JAR files. We can place the individual JAR files here to include additional libraries, such as the MySQL Connector/J.
+        - `$SPARK_HOME/lib`: Some Spark distributions may store the JAR files using this directory.
 
 ### [Setting up dependencies](https://blog.devgenius.io/spark-installing-external-packages-2e752923392e)
 

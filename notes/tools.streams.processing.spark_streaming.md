@@ -2,7 +2,7 @@
 id: nynfu574smpumgx506ry1hn
 title: spark_streaming
 desc: ""
-updated: 1712212894632
+updated: 1713445186586
 created: 1695385154105
 tags: spark
 ---
@@ -332,7 +332,7 @@ window_agg_df = trade_df \
 
 output_df = window_agg_df.select("window.start", "window.end", "TotalBuy", "TotalSell")
 
-'''
+...
 # Batch processing code
 running_total_window = Window.orderBy("end") \
     .rowsBetween(Window.unboundedPreceding, Window.currentRow)
@@ -343,7 +343,7 @@ final_output_df = output_df \
     .withColumn("NetValue", expr("RTotalBuy - RTotalSell"))
 
 final_output_df.show(truncate=False)
-'''
+...
 window_query = output_df.writeStream \
     .format("console") \
     .outputMode("update") \

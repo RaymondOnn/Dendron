@@ -2,7 +2,7 @@
 id: oe8tbo6j3vp5fzvnzu9tm1s
 title: execution
 desc: ''
-updated: 1698892165107
+updated: 1717294673984
 created: 1697930821722
 ---
 
@@ -104,11 +104,11 @@ created: 1697930821722
 
 #### Action Phase
 
-- collect(): 
+- `collect()`: 
   - requires each task to send data back to the driver.
   - the tasks of the last stage will send the result back to the driver over the network.
   - The driver will collect data from all the tasks and present it to you.
-- write():
+- `write()`:
   - all the tasks will write a data file partition and send the partition details to the driver.
 - The driver considers the job done when all the tasks are successful.
   - If any task fails, the driver might want to restart the task at a different executor.

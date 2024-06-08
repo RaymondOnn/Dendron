@@ -2,7 +2,7 @@
 id: nw2bcxjvaakttpphjzbdxs7
 title: network
 desc: ''
-updated: 1707427190341
+updated: 1714637163296
 created: 1692155864934
 ---
 
@@ -10,6 +10,8 @@ created: 1692155864934
 <https://docs.docker.com/compose/networking/>
 <https://www.baeldung.com/ops/docker-communicating-with-containers-on-same-machine>
 https://earthly.dev/blog/docker-networking/
+
+https://pythonspeed.com/articles/docker-connection-refused/
 
 ## Docker Network
 

@@ -2,7 +2,7 @@
 id: i89wuyhxvgpu28belkabwbh
 title: deploy
 desc: ''
-updated: 1703650933549
+updated: 1713564091974
 created: 1697910335736
 ---
 
@@ -49,7 +49,7 @@ created: 1697910335736
 
 ![Alt text](spark_deploy_client.png)
 
-- the spark-submit command will start the driver JVM directly on the client machine.
+- the `spark-submit` command will start the driver JVM directly on the client machine.
 - Now the driver will reach out to the YARN resource manager requesting executor containers.
 - The YARN RM will start executor containers and handover them to the driver.
 - The driver will start executors in those containers to do the job.
@@ -78,9 +78,8 @@ created: 1697910335736
    - For submiting the application to the cluster and let it run.
    - Since the driver and the executors now run on the cluster, once the application is submitted, the client machine is not needed
 2. Better performance
-
-- In this mode, the driver is closer to the executors.
-- Since the driver and executor communicate heavily, being closer reduces the impact by network latency.
+   - In this mode, the driver is closer to the executors.
+   - Since the driver and executor communicate heavily, being closer reduces the impact by network latency.
 
 ##### Client Mode
 

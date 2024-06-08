@@ -2,7 +2,7 @@
 id: j5w77o2ntqocs787abp94wv
 title: Topics
 desc: ''
-updated: 1711790267521
+updated: 1717033964597
 created: 1698815739312
 ---
 
@@ -42,7 +42,6 @@ created: 1698815739312
 
 ### DATABASES & DATA WAREHOUSING
 
-- DBT
 - DATA VAULT
 - NOSQL Data Modeling
   - <https://www.youtube.com/watch?v=wElXFk9_9yQ&t=235s&ab_channel=CodeFirstwithHala>
@@ -60,8 +59,8 @@ created: 1698815739312
     Grafana
     Testing Code / Pipelines
     Neo4j
-    Terraform
+ 
     Kubernetes (Use k3D): https://www.youtube.com/watch?v=SeQevrW176A
     Apache Druid
     Presto
-    MinIO
+   

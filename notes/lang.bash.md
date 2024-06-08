@@ -2,7 +2,7 @@
 id: hba08e2flrm6n8y31riuh70
 title: bash
 desc: ''
-updated: 1707496018715
+updated: 1715480991782
 created: 1694732979398
 ---
 
@@ -30,44 +30,7 @@ https://www.youtube.com/watch?v=mSXOYhfDFYo
 -   `echo $SHELL`: Find out what is the default shell of the system
 -   `which bash`: Find out what command to use to start using bash
 
-### Data Streams
 
--   Allows us to control where normal output and errors are printed and user input is accepted
--   types of data streams
-    -   std output: output printed to the screen that is not error (exit code 0)
-    -   std err
-
-```bash
-find /etc -type f
-
-# Anything moved/copied into /dev/null is deleted
-# "2>" is instructed to redirect anything of exit code 2 to /dev/null
-# Hence all errors are hidden
-find /etc -type f 2> /dev/null
-```
-
-#### I/O redirection: `2>&1`
-- Syntax:
-  ``` bash
-  command 2>&1
-  # ‘command’ is the command that is being executed
-  # ‘2>&1’ is the I/O redirection operator that redirects stderr to stdout.
-  ```
-- `2>&1` is an I/O redirection operator used in Bash that **redirects the stderr stream to the same destination as the stdout stream**. 
-- It merges the error output with the regular output, making it easier to capture and handle errors.
--  Especially useful in scripts that require error handling, where you need to know if a command executed successfully or encountered an error.
--  An example:
-    ``` bash
-    #!/bin/bash
-    
-    ls /not_a_directory > /dev/null 2>&1   
-    if [ $? -ne 0 ]; then
-        echo "Error: Directory not found"
-    fi
-    
-    # /dev/null: discarding output (exit code) from ls
-    # 2>&1: redirect stderr to stdout, which allows if statment to read it
-    ```
 ---
 ## Here document
 

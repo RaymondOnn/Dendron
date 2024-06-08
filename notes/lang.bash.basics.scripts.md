@@ -2,7 +2,7 @@
 id: 9cov4wsktpr1ab92etvoju5
 title: scripts
 desc: ''
-updated: 1702700629519
+updated: 1714446214913
 created: 1698720590622
 ---
 
@@ -14,22 +14,37 @@ created: 1698720590622
 -   Commands contained in the script are executed by an interpreter.
 -   In the case of shell scripts, the shell acts as the interpreter and executes the commands listed in the script one after the other.
 -   Anything you can execute at the command line you can put into a shell script.
-    0 Shell scripts are great at automating tasks.
+    - Shell scripts are great at automating tasks.
 
     **`myscript.sh`**
 
+    ```bash
+    #!/bin/bash       # start with a shebang to indicate which interpreter to use
+
+    # echo: similar concept to 'print' in python
+    echo "Hello World!"
+
+    echo "My current working directory is:"
+    pwd    # current working directory
+    ```
 > **Always start the script with a shebang "#!/bin/bash"!!!**
 
-```bash
-#!/bin/bash       # start with a shebang to indicate which interpreter to use
+<br>
 
-# echo: similar concept to 'print' in python
-echo "Hello World!"
-
-echo "My current working directory is:"
-pwd    # current working directory
-
-```
+> [**Shebang Interpreter Directive**](https://linuxize.com/post/bash-shebang/)
+> The Shebang interpreter directive takes the following form: `#!interpreter [arguments]`
+> - The directive must be the first line in the script.
+> - The directive must start with shebang #!
+> - White space after the shebang characters is optional.
+> - Interpreter is the full path to a binary file (ex: /bin/sh, /bin/bash).
+> - Interpreter arguments are optional.
+> - Examples:
+>   ```
+>   #!/bin/bash - Uses bash to parse the file.
+>   #!/usr/bin/env perl - Uses the env command to find the path to the perl executable.
+>   #!/usr/bin/python Executes the file using the python binary.
+>   ```
+<br>
 
 ### Running a script
 

@@ -2,14 +2,21 @@
 id: v9nhpg0uh5mbosx6ftf3d5d
 title: testing
 desc: ''
-updated: 1712124398481
+updated: 1715686182400
 created: 1701681081530
 ---
 https://www.youtube.com/watch?v=Xu5EhKVZdV8&t=6s
 
+
+
+### Purpose of Unit Testing 
+- Assert that the Return Value is as expected
+- Change in State
+- Interaction with other objects
+
 > ### Laws of Unit Testing
 > 1. Always use interfaces
-> 2. Use dependeny injection
+> 2. Use dependency injection
 > 3. Only mock/fake the interfaces
 > 4. Only touch what is yours
 

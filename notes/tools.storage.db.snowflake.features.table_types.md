@@ -2,9 +2,10 @@
 id: w47ew4sxfhtuwmn1m7gr0h2
 title: Table_types
 desc: ''
-updated: 1670674654448
+updated: 1717803559827
 created: 1670668916504
 ---
+https://www.youtube.com/watch?v=LoE8tL_Uvxg
 
 ## Types of Tables
 

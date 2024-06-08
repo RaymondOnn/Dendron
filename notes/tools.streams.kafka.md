@@ -2,7 +2,7 @@
 id: of71gv186953yjr2hrqs4pc
 title: kafka
 desc: ''
-updated: 1695479131301
+updated: 1715154048746
 created: 1691444711422
 ---
 - [Docs for `kafka-python`](https://kafka-python.readthedocs.io/en/master/index.html)
@@ -28,22 +28,22 @@ created: 1691444711422
 - Apache Kafka is an open source distributed event streaming platform used to collect, process, store, and integrate data at scale
 
 ## Why Kafka?
-- Scalability: Kafka uses a log partition model that distributes the data across multiple servers which makes it highly scalable compared to a single server.
-- Fast: It is extremely fast as it decouples the data streams which results in lower latency.
-- Durability: It distributes partitions across many servers and all the data is written to disks. Thus, it protects against system failure which makes it durable and fault tolerant.
+- **Scalability**: Kafka uses a log partition model that distributes the data across multiple servers which makes it highly scalable compared to a single server.
+- **Fast**: It is extremely fast as it decouples the data streams which results in lower latency.
+- **Durability**: It distributes partitions across many servers and all the data is written to disks. Thus, it protects against system failure which makes it durable and fault tolerant.
 
 ## Components
 
-- Brokers: Servers of Kafka cluster that receive, sent and save messages
-- Producers: Pushes message/data to brokers
-- Consumers: Pulls messages/data from brokers. Will commit offet after processing data
-- Consumer Groups: Groups of consumers. Only one message pulled by consumer group
-- Topics: Grouping of messages. Internal topics save offset and schemas. External topics created to save ingress data
-- Partitions: Provides higher availability and performance
-- Replica: replication of partitions
-- Leaders & Followers: In replication, Followers copy from leaders. If the leader failed, one of the followers takes its place to keep service running
-- Controller: One of the brokers. Manages topics, Partit
-- ZooKeeper: Stores cluster metadata, status and assist controller execute leader election. Replaced after version 2.8 with KRaft
+- **Brokers**: Servers of Kafka cluster that receive, sent and save messages
+- **Producers**: Pushes message/data to brokers
+- **Consumers**: Pulls messages/data from brokers. Will commit offet after processing data
+- **Consumer Groups**: Groups of consumers. Only one message pulled by consumer group
+- **Topics**: Grouping of messages. Internal topics save offset and schemas. External topics created to save ingress data
+- **Partitions**: Provides higher availability and performance
+- **Replica**: replication of partitions
+- **Leaders & Followers**: In replication, Followers copy from leaders. If the leader failed, one of the followers takes its place to keep service running
+- **Controller**: One of the brokers. Manages topics, Partit
+- **ZooKeeper**: Stores cluster metadata, status and assist controller execute leader election. Replaced after version 2.8 with KRaft
 
 ![Alt text](kafka_structure.png)
 

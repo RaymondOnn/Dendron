@@ -2,11 +2,11 @@
 id: j4xuccg0lrj7h2xg7dw7l36
 title: yaml
 desc: ''
-updated: 1711218852183
+updated: 1713557810406
 created: 1694602245194
 ---
 https://www.cloudbees.com/blog/yaml-tutorial-everything-you-need-get-started
-
+https://stackoverflow.com/questions/3790454/how-do-i-break-a-string-in-yaml-over-multiple-lines
 ## What is YAML
 
 - a data serialization language i.e. standard format to transfer data e.g. XML, JSON
