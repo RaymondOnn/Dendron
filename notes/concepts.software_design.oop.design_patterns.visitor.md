@@ -2,15 +2,16 @@
 id: yty3fyehb44iakfaf34i54q
 title: visitor
 desc: ''
-updated: 1697358887761
+updated: 1720887459208
 created: 1680524650521
 ---
 
 # Visitor
+
 - Separate algorithms from the objects on which they operate. i.e different credit cards give different amounts of cashback on different type of expenses
   - Algorithms are stored on the different expense classes instead of the credit card classes
 - The classic technique for recovering lost type information.
-- Do the right thing based on the type of two objects. i.e. object implements the correct respoense based on itself and the visitor (expenses in this example)
+- Do the right thing based on the type of two objects. i.e. object implements the correct response based on itself and the visitor (expenses in this example)
 
 <br>
 
@@ -107,8 +108,6 @@ if __name__ == "__main__":
     main()
 ```
 
-
-
-
 References:
-- https://www.youtube.com/watch?v=UQP5XqMqtqQ&list=PLlsmxlJgn1HJpa28yHzkBmUY-Ty71ZUGc&index=16
+
+- <https://www.youtube.com/watch?v=UQP5XqMqtqQ&list=PLlsmxlJgn1HJpa28yHzkBmUY-Ty71ZUGc&index=16>

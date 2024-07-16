@@ -2,9 +2,12 @@
 id: 31h3d3pbzxadsvej1fbktsm
 title: Internal_registry
 desc: ''
-updated: 1697835655472
+updated: 1720886580229
 created: 1697835581067
 ---
+
+https://charlesreid1.github.io/python-patterns-the-registry.html
+https://github.com/faif/python-patterns/blob/master/patterns/behavioral/registry.py
 
 ### [Using Dynamic Registry and Python Decorators](https://medium.com/@geoffreykoh/implementing-the-factory-pattern-via-dynamic-registry-and-python-decorators-479fc1537bbe)
 
@@ -160,4 +163,13 @@ if __name__ == '__main__':
                                              pem=os.path.join(os.path.expanduser('~/.ssh'), 'keypair.pem'))
     remote_out = remote.run('ls -ltra')
     print(remote_out)
+
+# NOTE: To store classes in separate files, add this code to __init__.py
+import pkgutil
+import importlib
+
+__path__ = pkgutil.extend_path(__path__, __name__)
+
+for importer, modname, ispkg in pkgutil.walk_packages(path=__path__, prefix=__name__+'.'):
+    importlib.import_module(modname)
 ```
