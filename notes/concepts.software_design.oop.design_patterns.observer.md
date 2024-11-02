@@ -2,7 +2,7 @@
 id: b57axvy2ul1q8vu8gheybqt
 title: Observer
 desc: ''
-updated: 1692132545100
+updated: 1723365869270
 created: 1680349170488
 ---
 
@@ -10,6 +10,40 @@ created: 1680349170488
 
 Event-based programming works amazingly well with micro services and allows you to super easily scale asymmetrically
 
+``` mermaid
+classDiagram
+    direction LR
+    class IObservable{
+        <<Interface>>
+        +register(IObserver) None
+        +remove(IObserver) None
+        +notify() None
+    }
+    
+    class ConcreteObservable{
+        +register(IObserver) None
+        +remove(IObserver) None
+        +notify()
+
+        + getState()
+    }
+    
+    class ConcreteObserver {
+        +update() None
+    }
+    class IObserver {
+        <<Interface>>
+        +update() None
+    }
+    
+    
+    IObservable "1" --> "1..*" IObserver
+    ConcreteObservable --|> IObservable
+    IObserver <|-- ConcreteObserver
+    ConcreteObserver --> ConcreteObservable: references
+
+```
+<br>
 
 ``` python
 
@@ -113,3 +147,4 @@ if __name__ == "__main__":
 Reference
 - https://refactoring.guru/design-patterns/observer
 - https://www.youtube.com/watch?v=-oLDJ2dbadA&list=PLlsmxlJgn1HJpa28yHzkBmUY-Ty71ZUGc&index=12
+- https://www.youtube.com/watch?v=_BpmfnqjgzQ

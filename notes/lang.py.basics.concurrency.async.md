@@ -2,91 +2,16 @@
 id: mkm3qet6iphofdgwj0ile0p
 title: Async
 desc: ''
-updated: 1706246575715
+updated: 1723482241626
 created: 1693478993388
 ---
 <https://realpython.com/async-io-python/>
 <https://www.youtube.com/watch?v=ftmdDlwMwwQ&ab_channel=mCoding>
-https://www.youtube.com/watch?v=p8tnmEdeOU0
+<https://www.youtube.com/watch?v=p8tnmEdeOU0>
 
 ```py
 import asyncio
 ```
-
-## Coroutines
-<https://superfastpython.com/python-coroutine/>
-- Coroutines are functions that can be paused and resumed while other tasks are being executed.
-
-### Creating a Coroutine
-- To create a coroutine using the `async def` keywords.
-
-``` py
-async def my_coroutine():
-    print('coroutine started')
-    await asyncio.sleep(1)
-    print("coroutine ended")
-```
-- when a coroutine is called, it returns a coroutine object.
-- the coroutine object is passed to the event loop.
-- the event loop then schedules the coroutine to be executed when resources become available
-- `await asyncio.sleep(1)` pauses our coroutine for 1 second
-
-### Using our Coroutine
-asyncio itself provides quite a few functions for us to deal with coroutines. Notable examples include asyncio.gather() which allows us to run multiple coroutines concurrently, and asyncio.sleep() which makes our coroutine go to sleep for a while.
-
-``` py
-import asyncio
-
-async def my_coroutine():
-    print('coroutine started')
-    await asyncio.sleep(1)
-    print("coroutine ended")
-
-async def main():
-  await asyncio.gather(my_coroutine(), my_coroutine(), my_coroutine())
-
-asyncio.run(main())
-
-# coroutine started
-# coroutine started
-# coroutine started
-# coroutine ended
-# coroutine ended
-# coroutine ended
-```
-we use asyncio.gather to run my_coroutine 3 times concurrently
-we use asyncio.run to run our main coroutine
-the await keyword is used to pause main() until all 3 runs of my_coroutine() have been completed
-the coroutine started messages always appear AFTER the coroutine ended messages
-Here, 3 instances of my_coroutine are run concurrently. So the program sleeps for approximately 1 second instead of a total of 3 seconds.
-
-### Writing coroutines with arguments
-```py
-import asyncio
-
-async def my_coroutine(n):
-    print(f'coroutine started {n}')
-    await asyncio.sleep(1)
-    print(f"coroutine ended {n}")
-
-async def main():
-  await asyncio.gather(my_coroutine(1), my_coroutine(2), my_coroutine(3))
-
-asyncio.run(main())
-
-# coroutine started 1
-# coroutine started 2
-# coroutine started 3
-# coroutine ended 1
-# coroutine ended 2
-# coroutine ended 3
-```
-we simply need to add the arguments into the function calls as per normal
-
-
-
-
-
 
 ## Event Loops
 
@@ -102,7 +27,7 @@ we simply need to add the arguments into the function calls as per normal
 - Asyncio uses coroutines, functions that can be paused and resumed, to represent tasks that can be executed concurrently.
   - Coroutines are functions that can be paused and resumed while other tasks are being executed.
 - The event loop runs continuously, checking for events and scheduling tasks to run as appropriate.
-- In simpler words, instead of waiting for a response from a request, the program continues doing other stuff while waiting. 
+- In simpler words, instead of waiting for a response from a request, the program continues doing other stuff while waiting.
 
 #### how it works
 
@@ -210,3 +135,5 @@ async def main():
 if __name__ == '__main__':
     asyncio.run(main())
 ```
+
+---

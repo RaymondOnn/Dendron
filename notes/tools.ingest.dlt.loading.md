@@ -2,7 +2,7 @@
 id: fs22sacfqxcijavj89ota0s
 title: loading
 desc: ''
-updated: 1718746721544
+updated: 1729610166819
 created: 1718746382316
 ---
 
@@ -11,49 +11,62 @@ created: 1718746382316
 - Incremental loading is the act of loading only new or changed data and not old records that we already loaded. It enables low-latency and low cost data transfer.
 - The challenge of incremental pipelines is that if we do not keep track of the state of the load (i.e. which increments were loaded and which are to be loaded). Read more about state here.
 
-#### Choosing a write disposition
+### Choosing a write disposition
 
 - The 3 write dispositions:
-  - Full load: replaces the destination dataset with whatever the source produced on this run. To achieve this, use `write_disposition='replace'` in your resources. Learn more in the full loading docs
-  - Append: appends the new data to the destination. Use `write_disposition='append'`.
-  - Merge: Merges new data to the destination using merge_key and/or deduplicates/upserts new data using primary_key. Use `write_disposition='merge'`.
+  - **Full load**: replaces the destination dataset with whatever the source produced on this run. To achieve this, use `write_disposition='replace'` in your resources. Learn more in the full loading docs
+  - **Append**: appends the new data to the destination. Use `write_disposition='append'`.
+  - **Merge**: Merges new data to the destination using merge_key and/or deduplicates/upserts new data using primary_key. Use `write_disposition='merge'`.
 
 ![alt text](image-10.png)
 
 - The "write disposition" you choose depends on the data set and how you can extract it.
+- To find the "write disposition", consider these questions:
+  - "Is my data stateful or stateless"?
+    - Stateful data has a state that is subject to change - for example a user's profile Stateless data cannot change - for example, a recorded event, such as a page view.
+    - Because stateless data does not need to be updated, we can just append it.
+  - For stateful data, Can I extract it incrementally from the source?
+    - If yes, you should use slowly changing dimensions (Type-2), which allow you to maintain historical records of data changes over time.
+    - If not, then we need to replace the entire data set.
+    - If however we can request the data incrementally such as "all users added or modified since yesterday" then we can simply apply changes to our existing dataset with the merge write disposition.
 
-To find the "write disposition" you should use, the first question you should ask yourself is "Is my data stateful or stateless"? Stateful data has a state that is subject to change - for example a user's profile Stateless data cannot change - for example, a recorded event, such as a page view.
+### Merge incremental loading
 
-Because stateless data does not need to be updated, we can just append it.
+- The merge write disposition can be used with two different strategies:
+  1. delete-insert (default strategy)
+  2. scd2
 
-For stateful data, comes a second question - Can I extract it incrementally from the source? If yes, you should use slowly changing dimensions (Type-2), which allow you to maintain historical records of data changes over time.
+#### delete-insert strategy
 
-If not, then we need to replace the entire data set. If however we can request the data incrementally such as "all users added or modified since yesterday" then we can simply apply changes to our existing dataset with the merge write disposition.
+- The default delete-insert strategy is used in two scenarios:
+  1. You want to keep only one instance of certain record i.e. you receive updates of the user state from an API and want to keep just one record per user_id.
+  2. You receive data in daily batches, and you want to make sure that you always keep just a single instance of a record for each batch even in case you load an old batch or load the current batch several times a day (i.e. to receive "live" updates).
+- The delete-insert strategy
+  1. loads data to a staging dataset,
+  2. deduplicates the staging data if a primary_key is provided,
+  3. deletes the data from the destination using merge_key and primary_key,
+  4. and then inserts the new records.
+  - All of this happens in a single atomic transaction for a parent and all child tables.
 
-Merge incremental loading
-The merge write disposition can be used with two different strategies: 1) delete-insert (default strategy) 2) scd2
+- Example below loads all the GitHub events and updates them in the destination using "id" as primary key, making sure that only a single copy of event is present in github_repo_events table:
 
-delete-insert strategy
-The default delete-insert strategy is used in two scenarios:
-
-You want to keep only one instance of certain record i.e. you receive updates of the user state from an API and want to keep just one record per user_id.
-You receive data in daily batches, and you want to make sure that you always keep just a single instance of a record for each batch even in case you load an old batch or load the current batch several times a day (i.e. to receive "live" updates).
-The delete-insert strategy loads data to a staging dataset, deduplicates the staging data if a primary_key is provided, deletes the data from the destination using merge_key and primary_key, and then inserts the new records. All of this happens in a single atomic transaction for a parent and all child tables.
-
-Example below loads all the GitHub events and updates them in the destination using "id" as primary key, making sure that only a single copy of event is present in github_repo_events table:
-
+``` py
 @dlt.resource(primary_key="id", write_disposition="merge")
 def github_repo_events():
     yield from _get_event_pages()
 
-You can use compound primary keys:
+# You can use compound primary keys:
 
 @dlt.resource(primary_key=("id", "url"), write_disposition="merge")
 def resource():
     ...
+```
 
-By default, primary_key deduplication is arbitrary. You can pass the dedup_sort column hint with a value of desc or asc to influence which record remains after deduplication. Using desc, the records sharing the same primary_key are sorted in descending order before deduplication, making sure the record with the highest value for the column with the dedup_sort hint remains. asc has the opposite behavior.
+- By default, primary_key deduplication is arbitrary.
+  - You can pass the `dedup_sort` column hint with a value of desc or asc to influence which record remains after deduplication.
+  - Using `desc`, the records sharing the same primary_key are sorted in descending order before deduplication, making sure the record with the highest value for the column with the `dedup_sort` hint remains. asc has the opposite behavior.
 
+``` py
 @dlt.resource(
     primary_key="id",
     write_disposition="merge",
@@ -61,31 +74,40 @@ By default, primary_key deduplication is arbitrary. You can pass the dedup_sort 
 )
 def resource():
     ...
+```
 
-Example below merges on a column batch_day that holds the day for which given record is valid. Merge keys also can be compound:
+- Example below merges on a column `batch_day` that holds the day for which given record is valid.
+- Merge keys also can be compound:
 
-@dlt.resource(merge_key="batch_day", write_disposition="merge")
-def get_daily_batch(day):
-    yield_get_batch_from_bucket(day)
+    ``` py
+    @dlt.resource(merge_key="batch_day", write_disposition="merge")
+    def get_daily_batch(day):
+        yield_get_batch_from_bucket(day)
+    ```
 
-As with any other write disposition you can use it to load data ad hoc. Below we load issues with top reactions for duckdb repo. The lists have, obviously, many overlapping issues, but we want to keep just one instance of each.
+- As with any other write disposition you can use it to load data ad hoc.
+- Below we load issues with top reactions for duckdb repo. The lists have, obviously, many overlapping issues, but we want to keep just one instance of each.
 
-p = dlt.pipeline(destination="bigquery", dataset_name="github")
-issues = []
-reactions = ["%2B1", "-1", "smile", "tada", "thinking_face", "heart", "rocket", "eyes"]
-for reaction in reactions:
-    for page_no in range(1, 3):
-      page = requests.get(f"<https://api.github.com/repos/{repo}/issues?state=all&sort=reactions-{reaction}&per_page=100&page={page_no}>", headers=headers)
-      print(f"got page for {reaction} page {page_no}, requests left", page.headers["x-ratelimit-remaining"])
-      issues.extend(page.json())
-p.run(issues, write_disposition="merge", primary_key="id", table_name="issues")
+    ``` py
+    p = dlt.pipeline(destination="bigquery", dataset_name="github")
+    issues = []
+    reactions = ["%2B1", "-1", "smile", "tada", "thinking_face", "heart", "rocket", "eyes"]
+    for reaction in reactions:
+        for page_no in range(1, 3):
+        page = requests.get(f"<https://api.github.com/repos/{repo}/issues?state=all&sort=reactions-{reaction}&per_page=100&page={page_no}>", headers=headers)
+        print(f"got page for {reaction} page {page_no}, requests left", page.headers["x-ratelimit-remaining"])
+        issues.extend(page.json())
+    p.run(issues, write_disposition="merge", primary_key="id", table_name="issues")
+    ```
 
-Example below dispatches GitHub events to several tables by event type, keeps one copy of each event by "id" and skips loading of past records using "last value" incremental. As you can see, all of this we can just declare in our resource.
+- Example below dispatches GitHub events to several tables by event type, keeps one copy of each event by "id" and skips loading of past records using "last value" incremental. As you can see, all of this we can just declare in our resource.
 
+``` py
 @dlt.resource(primary_key="id", write_disposition="merge", table_name=lambda i: i['type'])
 def github_repo_events(last_created_at = dlt.sources.incremental("created_at", "1970-01-01T00:00:00Z")):
     """A resource taking a stream of github events and dispatching them to tables named by event type. Deduplicates be 'id'. Loads incrementally by 'created_at' """
     yield from_get_rest_pages("events")
+```
 
 NOTE
 If you use the merge write disposition, but do not specify merge or primary keys, merge will fallback to append. The appended data will be inserted from a staging table in one transaction for most destinations in this case.
@@ -203,7 +225,7 @@ pipeline.run(dim_customer())  # first run — 2024-04-09 18:27:53.734235
 
 dim_customer destination table after first run—inserted two records present in initial load and added validity columns:
 
-_dlt_valid_from _dlt_valid_to customer_key c1 c2
+_dlt_valid_from_dlt_valid_to customer_key c1 c2
 2024-04-09 18:27:53.734235 NULL 1 foo 1
 2024-04-09 18:27:53.734235 NULL 2 bar 2
 ...
@@ -218,7 +240,7 @@ pipeline.run(dim_customer())  # second run — 2024-04-09 22:13:07.943703
 
 dim_customer destination table after second run—inserted new record for customer_key 1 and retired old record by updating _dlt_valid_to:
 
-_dlt_valid_from _dlt_valid_to customer_key c1 c2
+_dlt_valid_from_dlt_valid_to customer_key c1 c2
 2024-04-09 18:27:53.734235 2024-04-09 22:13:07.943703 1 foo 1
 2024-04-09 18:27:53.734235 NULL 2 bar 2
 2024-04-09 22:13:07.943703 NULL 1 foo_updated 1
@@ -233,7 +255,7 @@ pipeline.run(dim_customer())  # third run — 2024-04-10 06:45:22.847403
 
 dim_customer destination table after third run—retired deleted record by updating_dlt_valid_to:
 
-_dlt_valid_from _dlt_valid_to customer_key c1 c2
+_dlt_valid_from_dlt_valid_to customer_key c1 c2
 2024-04-09 18:27:53.734235 2024-04-09 22:13:07.943703 1 foo 1
 2024-04-09 18:27:53.734235 2024-04-10 06:45:22.847403 2 bar 2
 2024-04-09 22:13:07.943703 NULL 1 foo_updated 1

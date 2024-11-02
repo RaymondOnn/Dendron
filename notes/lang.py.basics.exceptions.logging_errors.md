@@ -2,7 +2,7 @@
 id: 9jlvt6ig1ydg69xlhxaro5j
 title: Logging_errors
 desc: ''
-updated: 1693805900153
+updated: 1729314186051
 created: 1693805871679
 ---
 ## Exception Logging Decorator
@@ -14,22 +14,22 @@ from functools import wraps
 # Example from: https://www.geeksforgeeks.org/create-an-exception-logging-decorator-in-python/
 
 def create_logger(): 
-	
-	# create a logger object 
-	logger = logging.getLogger('exc_logger') 
-	logger.setLevel(logging.INFO) 
-	
-	# create a file to store all the 
-	# logged exceptions 
-	logfile = logging.FileHandler('exc_logger.log') 
-	
-	fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-	formatter = logging.Formatter(fmt) 
-	
-	logfile.setFormatter(formatter) 
-	logger.addHandler(logfile) 
-	
-	return logger 
+ 
+    # create a logger object 
+    logger = logging.getLogger('exc_logger') 
+    logger.setLevel(logging.INFO) 
+    
+    # create a file to store all the 
+    # logged exceptions 
+    logfile = logging.FileHandler('exc_logger.log') 
+    
+    fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    formatter = logging.Formatter(fmt) 
+    
+    logfile.setFormatter(formatter) 
+    logger.addHandler(logfile) 
+ 
+ return logger 
 
 logger = create_logger() 
 

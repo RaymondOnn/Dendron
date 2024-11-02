@@ -2,7 +2,7 @@
 id: 5pqq7hht52lm8phtxh3scr9
 title: access_control
 desc: ''
-updated: 1720314793600
+updated: 1727370113741
 created: 1720310285699
 ---
 <https://select.dev/posts/snowflake-roles>
@@ -277,15 +277,15 @@ create database role SOURCE_DB.READ_DB_ROLE; -- Database role
 
 #### Check default role for a user
 
+``` sql
 describe user select_dogfood;
+```
 Snowflake default role for user
-
 #### Set default role for a user
-
-To update the user’s default role, you can run the following command:
-
+- To update the user’s default role, you can run the following command:
+``` sql
 alter user select_dogfood set default_role=data_eng_role;
-
+```
 #### Show roles in your account
 
 show roles;

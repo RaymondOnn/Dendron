@@ -2,21 +2,21 @@
 id: pzjl783zy1ac3fk1wyyfoqx
 title: lazy_evaluation
 desc: ''
-updated: 1704425920106
+updated: 1729315780643
 created: 1704417687945
 ---
 
 ## What is Lazy Evaluation
 
--   Lazy evaluation is a programming implementation paradigm that defers evaluating necessary operations until it’s requested to do so.
--   Usually, lazy evaluation is the preferred implementation when the operation is expensive, requiring either extensive processing time or memory.
--   For example, in Python, one of the best-known techniques involving lazy evaluation is generators. Instead of creating whole sequences for the iteration, which can consume lots of memory, generators lazily evaluate the current need and yield one element at a time when requested.
+- Lazy evaluation is a programming implementation paradigm that defers evaluating necessary operations until it’s requested to do so.
+- Usually, lazy evaluation is the preferred implementation when the operation is expensive, requiring either extensive processing time or memory.
+- For example, in Python, one of the best-known techniques involving lazy evaluation is generators. Instead of creating whole sequences for the iteration, which can consume lots of memory, generators lazily evaluate the current need and yield one element at a time when requested.
 
 ### An example
 
--   Suppose we’re building a website that allows the user to interact with other users.
--   One functionality is to view one’s followers, presented in a list.
--   When we tap one user, we can view the user’s profile in a pop-up window. Let’s write some code to show a possible implementation.
+- Suppose we’re building a website that allows the user to interact with other users.
+- One functionality is to view one’s followers, presented in a list.
+- When we tap one user, we can view the user’s profile in a pop-up window. Let’s write some code to show a possible implementation.
 
     ```py
     # Define the needed data structure and helper functions
@@ -55,8 +55,8 @@ created: 1704417687945
 
 ### Using `@property`
 
--   Properties are decorated functions that provide an interface to ease data handling.
--   Implementation is more straightforward and easier to understand
+- Properties are decorated functions that provide an interface to ease data handling.
+- Implementation is more straightforward and easier to understand
 
 ```py
 # Updated User class with the property
@@ -104,10 +104,10 @@ test_lazy_attr("property", User1)
 
 ### Using `__getattr__`
 
--   With instance objects, their attributes saved in a dictionary, that can be accessed via `__dict__`.
--   In this dictionary, the attribute names are stored as keys and the corresponding attribute values as its values.
--   if the dictionary doesn’t contain the specified attribute, `__getattr__` will get called as a fallback mechanism.
--   Better if there are multiple lazy attributes since it provides a centralized place to manage these attributes 
+- With instance objects, their attributes saved in a dictionary, that can be accessed via `__dict__`.
+- In this dictionary, the attribute names are stored as keys and the corresponding attribute values as its values.
+- if the dictionary doesn’t contain the specified attribute, `__getattr__` will get called as a fallback mechanism.
+- Better if there are multiple lazy attributes since it provides a centralized place to manage these attributes
 
 ```py
 # Updated User class with the __getattr__
@@ -165,6 +165,7 @@ test_lazy_attr_getattr()
 ```
 
 ### Using `__getattribute__`: Possible but not recommended
+
 - Unlike the `__getattr__` method, which doesn’t get called when a particular attribute is in the instance dictionary, the `__getattribute__` method **gets called every time an attribute is retrieved.**
 - This feature is only useful when you expect the attribute to change very frequently and only the latest data are relevant. In these cases, we can achieve the effect by defining pertinent functions instead.
 - Not recommended since it’s tricky to make it function properly (see [here](https://stackoverflow.com/questions/3278077/difference-between-getattr-and-getattribute) for a brief discussion). For e.g., one particular problem you may run into is infinite recursive loops — the `__getattribute__` method gets called an infinite number of times and will crash your program.
