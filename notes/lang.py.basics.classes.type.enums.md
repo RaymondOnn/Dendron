@@ -2,7 +2,7 @@
 id: jenhhz36aquteh4p32u3qqe
 title: enums
 desc: ''
-updated: 1697526974800
+updated: 1742746601895
 created: 1697518532690
 ---
 
@@ -11,6 +11,10 @@ created: 1697518532690
 
 - Enum is useful when you need immutable name-value pairs enclosed in an iterable object.
 - Useful when you want to pick values from a list of constants
+- Avoid Enums when
+  - Frequent value changes — If your values change dynamically (e.g., roles stored in a database), a standard table is better.
+  - Too many values — If you need hundreds of options, a dictionary or a class might be more manageable.
+  - No behavior needed — If all you need is a list of values, a simple dictionary or named tuple might do the job.
 
 ``` py
 # Without Enums
@@ -61,7 +65,9 @@ df = create_total_spend_column(df, Departments.SALES)
 ```
 
 ### [Working with Enums](https://betterprogramming.pub/take-advantage-of-the-enum-class-to-implement-enumerations-in-python-1b65b530e1d)
-- https://python.plainenglish.io/meet-enums-the-hidden-power-of-python-7fc5621a4a89
+
+- <https://python.plainenglish.io/meet-enums-the-hidden-power-of-python-7fc5621a4a89>
+
 #### Declare an Enumeration Class
 
 ```py

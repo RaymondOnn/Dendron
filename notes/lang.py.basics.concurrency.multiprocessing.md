@@ -2,9 +2,11 @@
 id: f4806xr579xvdi49yr8rvlb
 title: multiprocessing
 desc: ''
-updated: 1728231897009
+updated: 1732430909598
 created: 1693476894020
 ---
+
+Different options for multiprocessing: <https://cosmiccoding.com.au/tutorials/multiprocessing/>
 
 ## A Synchronous Example
 
@@ -33,7 +35,7 @@ Here's a visual representation of what is happening under the hood.
 
 ![Alt-text](threading_sync_example.png)
 
-##  CPU bound vs IO Bound Tasks
+## CPU bound vs IO Bound Tasks
 
 - CPU bound tasks are tasks that do a lot of processing and capacity to do more is limited by the amount of CPU available
   - Better to use multi-processing to run processes in parallel instead
@@ -114,4 +116,3 @@ with concurrent.futures.ProcessPoolExecutor() as executor:
 # imap: return results based on starting order
 # imap_unordered: returns results in unspecified order
 ```
-

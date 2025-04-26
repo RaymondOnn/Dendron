@@ -2,7 +2,7 @@
 id: 3wkiqhqg7cw748xx3i2z1sr
 title: decorators
 desc: ''
-updated: 1697197912157
+updated: 1735378865393
 created: 1693821529395
 ---
 
@@ -11,6 +11,67 @@ created: 1693821529395
 - Takes an object and adds some behaviour to it
 - Great solution for cross-cutting concerns
   - E.g. Logging, Authentication, Benchmarking, User Tracking
+
+- Anatomy of a Decorator
+
+    ```python
+    from functools import wraps
+    from typing import ParamSpec, TypeVar
+
+    P, T = ParamSpec('P'), TypeVar('T')
+
+
+    def decorator(func: Callable[P, T]) -> Callable[P, T]:
+        """Decorates a function."""
+
+        @wraps(func)  # Make decorated_func look like func.
+        def decorated_func(*args: P.args, **kwargs: P.kwargs) -> T:
+            """Decorated function call."""
+            # ...
+            result = func(*args, **kwargs)
+            # ...
+            return result
+        
+        return decorated_func  # Return that decorated function.
+    ````
+
+- An basic example
+``` py
+from functools import wraps
+
+
+def basic_decorator(func):
+    print(f"<-> basic_decorator decorating {func.__name__}")
+
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        print(f"\n--> Running from wrapper with {args}, {kwargs}")
+
+        result = func(*args, **kwargs)
+
+        print(f"<-- Finished running wrapper, returning {result}")
+        return result
+
+    return wrapper
+
+
+@basic_decorator
+def example1(foo, bar=1):
+    print("    This is inside example1")
+
+
+if __name__ == "__main__":
+    print("    Starting __main__")
+
+    example1("hello there")
+    example1(True, bar=2)
+```
+
+
+
+
+
+---
 
 ``` py
 # Eapping a function with another function
@@ -83,7 +144,20 @@ if __name__ = "__main__":
 
 ## Using the '@' operator
 
-Syntactic sugar for decorators
+- Syntactic sugar for decorators
+- This...
+
+    ```python
+    @silence_exceptions  # <---
+    def my_activity():
+        ...
+    ```
+
+- Is the same as...
+
+    ```python
+    my_activity = silence_exceptions(my_activity)
+    ```
 
 ``` py
 import functools

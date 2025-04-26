@@ -2,23 +2,27 @@
 id: 18o45o02qk5zkz1d51cohsj
 title: commands
 desc: ''
-updated: 1705268883591
+updated: 1731216090882
 created: 1692059913921
 ---
 
-https://linuxsurvival.com/linux-home-directories/
+<https://linuxsurvival.com/linux-home-directories/>
 
 `cat ~/.bashrc` for checking environmental variables
 
 ### CLI Commands
+>
 >#### General
+>
 >- `clear`: clear up display
 >- `history`
 >
 >#### Directories: Navigation
+>
 >- `pwd`: print working directory
 >- `cd <folder_name>`: change directory
->   - `cd ..`: shift up one level of directory
+>   - `cd ..`: move to parent directory
+>   - `cd -`: move to previous directory
 >- `pushd`: On top of `cd`, tracks the directories in a stack.
 >- `popd`: travels the stack maintained by `pushd` in reverse
 >- `dirs`: Print directory stack
@@ -29,6 +33,7 @@ https://linuxsurvival.com/linux-home-directories/
 >- `ll`: alias for `ls -la`
 
 ### File Contents
+
 ```bash
 rm <file_name>            # delete file
 touch <file_name>         # create file
@@ -82,13 +87,14 @@ curl <url> > <local-file>    # download file
 sudo <command>              # SUperuser DO: run command with admin rights
 
 ```
+
 ##### [`curl`](https://phoenixnap.com/kb/curl-command)
-- curl (short for "Client URL") is a command line tool that enables data transfer over various network protocols. 
+
+- curl (short for "Client URL") is a command line tool that enables data transfer over various network protocols.
 - It communicates with a web or application server by specifying a relevant URL and the data that need to be sent or received.
-- curl is powered by libcurl, a portable client-side URL transfer library. You can use it directly on the command line or include it in a script. 
+- curl is powered by libcurl, a portable client-side URL transfer library. You can use it directly on the command line or include it in a script.
 - The most common use cases for curl are:
   - Downloading files from the internet
   - Endpoint testing
   - Debugging
   - Error logging
-

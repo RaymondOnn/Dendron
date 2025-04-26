@@ -1,8 +1,8 @@
 ---
 id: 9jlvt6ig1ydg69xlhxaro5j
-title: Logging_errors
+title: logging_errors
 desc: ''
-updated: 1729314186051
+updated: 1733066959543
 created: 1693805871679
 ---
 ## Exception Logging Decorator
