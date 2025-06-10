@@ -1,14 +1,19 @@
 ---
 id: b57axvy2ul1q8vu8gheybqt
-title: Observer
+title: observer
 desc: ''
-updated: 1723365869270
+updated: 1748788493944
 created: 1680349170488
 ---
 
-### Observer
+### What is the Observer pattern
 
-Event-based programming works amazingly well with micro services and allows you to super easily scale asymmetrically
+- The observer pattern is a design pattern where an object (the subject) maintains a list of dependents (observers) that are notified of state changes.
+- In Python, this is often implemented through an event system where components can subscribe to events without needing direct knowledge of the components that trigger them.
+- Key characteristics of this pattern include:
+  - Loose coupling: Components interact without direct references to each other
+  - One-to-many relationships: A single event can notify multiple listeners
+  - Plug-and-play architecture: New observers can be added without modifying existing code
 
 ``` mermaid
 classDiagram
@@ -43,6 +48,7 @@ classDiagram
     ConcreteObserver --> ConcreteObservable: references
 
 ```
+
 <br>
 
 ``` python
@@ -142,9 +148,136 @@ if __name__ == "__main__":
     >>> DecimalViewer: Subject Data 2 has data 15
 ```
 
-<br>
+### [Example: Observer Pattern in a Data Engineering ETL Job](https://pravash-techie.medium.com/python-observer-pattern-to-cut-your-python-codebase-complexity-9ac2c0084d4a)
+
+- Here’s a simplified implementation of the Observer Pattern in a data engineering context using Python:
+
+##### Core Interfaces and Classes
+
+``` py
+from abc import ABC, abstractmethod
+
+# Abstract Observer
+class Observer(ABC):
+    @abstractmethod
+    def update(self, event_type, message):
+        pass
+```
+
+``` py
+# The ETL job is the Subject (Observable)
+class ETLJob:
+    def __init__(self):
+        self.observers = []
+
+    def attach(self, observer: Observer):
+        self.observers.append(observer)
+
+    def detach(self, observer: Observer):
+        self.observers.remove(observer)
+
+    def notify(self, event_type, message):
+        for observer in self.observers:
+            observer.update(event_type, message)
+
+    def run(self):
+        self.notify("START", "ETL job started.")
+        try:
+            self.extract()
+            self.transform()
+            self.load()
+            self.notify("SUCCESS", "ETL job completed successfully.")
+        except Exception as e:
+            self.notify("FAILURE", f"ETL job failed: {e}")
+
+    def extract(self):
+        self.notify("EXTRACT", "Extracting data...")
+
+    def transform(self):
+        self.notify("TRANSFORM", "Transforming data...")
+
+    def load(self):
+        self.notify("LOAD", "Loading data...")
+```
+
+##### Observers: Logger, AlertService, and MetricsCollector
+
+``` py
+# Observer 1: Logger
+class Logger(Observer):
+    def update(self, event_type, message):
+        print(f"[LOG - {event_type}] {message}")
+
+# Observer 2: Alert system
+class AlertService(Observer):
+    def update(self, event_type, message):
+        if event_type == "FAILURE":
+            print(f"[ALERT] Sending alert: {message}")
+
+# Observer 3: Metrics collector
+class MetricsCollector(Observer):
+    def update(self, event_type, message):
+        print(f"[METRICS] Recording event: {event_type}")
+```
+
+##### Bringing It All Together
+
+``` py
+# Instantiate the ETL job
+etl = ETLJob()
+
+# Attach observers
+etl.attach(Logger())
+etl.attach(AlertService())
+etl.attach(MetricsCollector())
+
+# Run the job
+etl.run()
+```
+
+### Implementing a Simple Event Handler in Python
+
+- Here’s how you can build a basic event system to replace tightly coupled logic with event-based architecture:
+
+``` py
+class EventManager:
+    def __init__(self):
+        self.listeners = {}
+        
+    def subscribe(self, event_type, listener):
+        if event_type not in self.listeners:
+            self.listeners[event_type] = []
+        self.listeners[event_type].append(listener)
+        
+    def unsubscribe(self, event_type, listener):
+        if event_type in self.listeners and listener in self.listeners[event_type]:
+            self.listeners[event_type].remove(listener)
+            
+    def dispatch(self, event_type, data=None):
+        if event_type in self.listeners:
+            for listener in self.listeners[event_type]:
+                listener(data)
+```
+
+### Transforming to an Event-Based Approach
+
+- To refactor tightly coupled code into a more modular event-driven system:
+
+  - **Identify Events**: Determine which actions or stages in your system should emit events.
+  - **Implement Event Manager**: Centralize event subscription and dispatch logic.
+  - **Decouple Components**: Replace direct calls with event triggers and handlers.
+  - **Create Listeners**: Implement functions or classes that respond to specific events.
+
+#### Best Practices and Considerations
+
+- While the observer pattern offers many benefits, keep in mind the following:
+  - **Debugging Complexity**: Tracing event flows can be more difficult than tracing direct calls.
+  - **Performance Overhead**: There’s a slight performance cost due to indirection.
+  - **Memory Leaks**: Always ensure listeners are properly unsubscribed to avoid holding references.
+  - **Avoid Overuse**: Not every interaction needs to be event-based. Use this pattern when it adds clarity or extensibility.
 
 Reference
-- https://refactoring.guru/design-patterns/observer
-- https://www.youtube.com/watch?v=-oLDJ2dbadA&list=PLlsmxlJgn1HJpa28yHzkBmUY-Ty71ZUGc&index=12
-- https://www.youtube.com/watch?v=_BpmfnqjgzQ
+
+- <https://refactoring.guru/design-patterns/observer>
+- <https://www.youtube.com/watch?v=-oLDJ2dbadA&list=PLlsmxlJgn1HJpa28yHzkBmUY-Ty71ZUGc&index=12>
+- <https://www.youtube.com/watch?v=_BpmfnqjgzQ>

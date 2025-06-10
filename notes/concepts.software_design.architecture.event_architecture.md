@@ -2,12 +2,12 @@
 id: eabqmeg24lm6vtxcuhmevcu
 title: Event_architecture
 desc: ''
-updated: 1735374037606
+updated: 1749141079452
 created: 1693568184756
 ---
 <https://www.youtube.com/watch?v=en7ZlbcW0X4&ab_channel=AndreyIvanov%7CPython>
-
 <https://blog.bitsrc.io/5-essential-distributed-systems-design-patterns-for-event-driven-architectures-fbce0a51b886>
+<https://www.youtube.com/watch?v=FDjmWxETjn8>
 
 # [Events](https://github.com/dijital20/pytexas2024-plugins/blob/main/docs/bonus/1_events.md)
 
@@ -187,8 +187,8 @@ class Event:
 
 #### Use an "arguments dataclass" to make passing arguments easier
 
-- The class above assumes that all subscribers support a given signature. 
-- This carries a documentation requirement for the host application developer and a knowledge requirement for the subscriber developer. 
+- The class above assumes that all subscribers support a given signature.
+- This carries a documentation requirement for the host application developer and a knowledge requirement for the subscriber developer.
 - Also, the `deepcopy` of the `args` and `kwargs` is clunky. One way we could fix this up is to create a dataclass for the arguments.
 
 First, let's update our `Event` implementation to take and pass the class:

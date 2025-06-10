@@ -2,7 +2,7 @@
 id: v77hhgkg6zdp3h3ferrpy5g
 title: conditionals
 desc: ''
-updated: 1697907786622
+updated: 1749312056733
 created: 1697272386981
 ---
 
@@ -100,6 +100,7 @@ def validate_input(input_list):
 - With a dictionary, we can map each input value to its corresponding action or value.
 - Adding new cases only require modifying the dictionary
 - Dictionary lookups are usually faster than iterating through a series of if-else conditions.
+- Allows for default options and fallbacks via the `.get()` method
 
 ``` py
 # lots of if-elif
@@ -122,6 +123,9 @@ def determine_favorite_fruit_with_dict(color):
     }
     return color_to_fruit.get(color, "unknown")
 ```
+
+##### A more robustness implementation
+- Use an Enum for the different choices and use the enum values as dictionary keys
 
 #### Match
 

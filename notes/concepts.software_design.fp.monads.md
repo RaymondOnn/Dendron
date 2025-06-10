@@ -2,7 +2,7 @@
 id: trkqdbu0wgn2fzl1hf5avpm
 title: monads
 desc: ''
-updated: 1730533959670
+updated: 1746350036186
 created: 1730527395358
 ---
 
@@ -154,7 +154,7 @@ for i in range(5):
 ### Reader Monad
 
 - The Reader monad allows you to pass around an immutable environment to a function, so that the function can access values from the environment without having to explicitly pass them as arguments.
-- In the Reader monad, the environment is modeled as a function that takes a single argument and returns a value. 
+- In the Reader monad, the environment is modeled as a function that takes a single argument and returns a value.
 - The function that uses the environment is then wrapped in a monadic context, so that it can be composed with other monadic functions.
 - Here's an example that demonstrates the basic usage of the Reader monad in Python:
 
@@ -182,6 +182,7 @@ print(result) # output: "Hello, Alpha!"
 In this example, the reader function is a helper function that returns a wrapped function that takes a single argument. The wrapped function calls the original function with the argument.
 Here, greet function takes a single argument, name, and returns a string. The greet_reader function is created by calling the reader function with the greet function as an argument. The greet_reader function takes a single argument, name, and returns the result of calling greet with the name argument.
 Using Reader monad for Configuration:
+
 ``` py
 from typing import Dict, Callable, TypeVar
 
@@ -199,6 +200,7 @@ def greet(config: Dict[str, str]) -> str:
 result = greet(config={'name':'Beta'})
 print(result)
 ```
+
 In this example, the reader function takes a function as an argument and returns a wrapped function. The wrapped function takes an additional keyword argument, config, which is used to pass a configuration dictionary to the function.
 By decorating a function with the reader decorator, you are creating a new function that expects a config keyword argument and passes it to the decorated function. This allows you to separate the configuration data from the rest of your function's logic.
 In the example code, the greet function is decorated with the reader decorator. This means that when you call the greet function using greet(config={"name": "Beta"}), the config dictionary is passed to the decorated function, and the resulting string is returned.
@@ -207,8 +209,10 @@ These are just some simple examples of using the Reader monad in Python. The con
 Overall, the Reader monad can be a powerful tool for building functional programs in Python, especially when working with complex and nested data structures.
 
 ### Writer Monad
+
 The Writer Monad allows us to perform computations while accumulating a log or other auxiliary information. It is similar to the Reader monad in that it separates some aspect of your program's behavior (in this case, logging or accumulation) from the rest of your application logic.
 In Python, you can implement the Writer monad using a combination of a tuple and a function that takes a value and a log, and returns a new value and log. This function is usually called the "writer function".
+
 ``` py
 from typing import Tuple
 
@@ -238,11 +242,13 @@ print(f"Log: {log}")
 # log: Adding 2 and 3 to get 5
 # Multiplying 5 and 4 to get 20
 ```
+
 In this example, the writer function takes a value and a log as its arguments and returns a tuple containing the value and log. The add and multiply functions perform addition and multiplication, respectively, and also generate log messages using formatted strings.
 This demonstrates how the Writer monad can be used to accumulate log messages as your program runs, making it easier to debug and understand the behavior of your code.
 Another example of the Writer monad might involve accumulating a list of values as your program runs, or maintaining a running total of some quantity. The basic idea is the same: use a tuple and a writer function to accumulate values or logs, and chain together functions using the partial function to combine them into a larger computation.
 
 ### IO Monad
+
 The IO monad is a way of dealing with input and output in a purely functional way. In Python, the IO monad can be implemented using a class with a single method call that takes no arguments and returns the result of the IO operation.
 Here's an example of how you might use the IO monad in Python to read a file and print its contents:
 
@@ -272,4 +278,5 @@ def print_contents(contents):
 contents = read_file('example.txt')()
 print_contents(contents)()
 ```
+
 In this example, we call read_file() to create an IO object that reads the contents of a file. We then call the call() method of this object to execute the IO operation and retrieve the contents of the file. We store the contents in the contents variable and pass it as an argument to print_contents() which creates another IO object that prints the contents to the console. Finally, we call the call() method of the print_contents() object to execute the IO operation and print the contents of the file to the console.

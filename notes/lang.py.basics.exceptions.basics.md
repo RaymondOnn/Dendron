@@ -1,8 +1,8 @@
 ---
 id: abwui9mg4f5akyc7f9vpvnf
-title: Basics
+title: basics
 desc: ''
-updated: 1697279250509
+updated: 1748788503332
 created: 1693805646696
 ---
 - [Python Exception Docs](https://docs.python.org/3/library/exceptions.html)
@@ -35,6 +35,13 @@ Easier to ask forgiveness than permission
             pass
             
 ```
+
+### [`try-except` vs `if` checks](https://medium.com/pythoneers/try-except-vs-if-checks-smart-error-handling-in-python-2025-15ebe811b8c6)
+
+- `try … except` costs virtually nothing while no error occurs due to the pre-built map.
+- Use `try … except` when failures are unlikely and you value clear, linear code.
+- Use `if` checks when the “error” is expected to pop up often; exceptions then become expensive noise.
+- No silver bullet exists — choose the technique that matches the probability of failure and your performance budget.
 
 ### Custom Exceptions: Creating better error messages
 
