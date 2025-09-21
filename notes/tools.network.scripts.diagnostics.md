@@ -2,7 +2,7 @@
 id: s8r6a7o6pfz610rzsghenbc
 title: Diagnostics
 desc: ''
-updated: 1758380527102
+updated: 1758469763933
 created: 1758377694182
 ---
 
@@ -192,7 +192,9 @@ if __name__ == "__main__":
 ```
 
 ### How to use
+
 - Call from app when network error
+
     ``` python
     import requests
     from net_diag import quick_diagnose
@@ -219,7 +221,9 @@ if __name__ == "__main__":
         except Exception:
             print("App terminated due to network issue")
     ```
+
 - CLI usage
+
     ``` js
     $ python3 net_diag.py api.example.com 443 http://127.0.0.1:3128
     === Network Diagnostics for api.example.com:443 ===
@@ -231,3 +235,181 @@ if __name__ == "__main__":
     ⚠️ error: Proxy authentication required (CNTLM creds missing?)
     === Done ===
     ```
+
+Same script in Bash
+
+``` bash
+#!/usr/bin/env bash
+#
+# net_diag.sh - Network diagnostics for Python apps on Linux
+#
+# Usage:
+#   ./net_diag.sh <host> [port] [proxy]
+#
+# Examples:
+#   ./net_diag.sh pypi.org
+#   ./net_diag.sh google.com 443
+#   ./net_diag.sh example.com 443 http://127.0.0.1:3128
+#
+# What it checks:
+#   1. DNS resolution
+#   2. ICMP reachability (ping)
+#   3. TCP connectivity (firewall drop vs reset vs open)
+#   4. TLS certificate (expiry, SANs, validity, untrusted CA)
+#   5. Proxy issues (407 auth, 502 upstream, timeout)
+#   6. CNTLM-specific issues (auth, upstream, not running)
+#   7. Python dependencies (certifi, env vars)
+#   8. Final verdict (OK vs DNS vs firewall vs TLS vs proxy vs CNTLM vs Python)
+#
+
+HOST=$1
+PORT=${2:-443}
+PROXY=$3
+VERDICT="Unknown"
+
+if [ -z "$HOST" ]; then
+  echo "Usage: $0 <host> [port] [proxy]"
+  exit 1
+fi
+
+echo "=== Network Diagnostics for $HOST:$PORT ==="
+[ -n "$PROXY" ] && echo "Proxy: $PROXY"
+
+# ---------- DNS ----------
+if ! getent hosts "$HOST" >/dev/null; then
+  echo "[DNS] Resolution failed for $HOST"
+  VERDICT="DNS issue"
+  echo "Final Verdict: $VERDICT"
+  exit 1
+else
+  echo "[DNS] Resolution OK"
+fi
+
+# ---------- ICMP ----------
+if ping -c 1 -W 2 "$HOST" >/dev/null 2>&1; then
+  echo "[ICMP] Host responds to ping"
+else
+  echo "[ICMP] No ping reply (host down or ICMP blocked)"
+fi
+
+# ---------- TCP ----------
+if nc -z -w3 "$HOST" "$PORT" >/dev/null 2>&1; then
+  echo "[TCP] Port $PORT reachable on $HOST"
+else
+  if nc -zv -w3 "$HOST" "$PORT" 2>&1 | grep -q "refused"; then
+    echo "[TCP] Connection refused -> Firewall reset OR service not listening"
+    VERDICT="Firewall reset / closed port"
+  else
+    echo "[TCP] Timeout -> Firewall drop or host unreachable"
+    VERDICT="Firewall drop"
+  fi
+  echo "Final Verdict: $VERDICT"
+  exit 1
+fi
+
+# ---------- TLS ----------
+if [ "$PORT" -eq 443 ]; then
+  echo "[TLS] Checking certificate..."
+  CERT_INFO=$(echo | openssl s_client -connect "$HOST:$PORT" -servername "$HOST" 2>/dev/null | openssl x509 -noout -dates -subject -issuer -ext subjectAltName 2>/dev/null)
+  if [ -n "$CERT_INFO" ]; then
+    echo "$CERT_INFO"
+    EXPIRY=$(echo "$CERT_INFO" | grep "notAfter" | cut -d= -f2-)
+    if [ -n "$EXPIRY" ]; then
+      EXPIRY_TS=$(date -d "$EXPIRY" +%s 2>/dev/null)
+      NOW_TS=$(date +%s)
+      if [ "$EXPIRY_TS" -lt "$NOW_TS" ]; then
+        echo "[TLS] Certificate expired on $EXPIRY"
+        VERDICT="TLS expired"
+        echo "Final Verdict: $VERDICT"
+        exit 1
+      else
+        echo "[TLS] Certificate valid until $EXPIRY"
+      fi
+    fi
+  else
+    echo "[TLS] Failed to retrieve certificate (proxy intercept or TLS block?)"
+    VERDICT="TLS handshake failed"
+    echo "Final Verdict: $VERDICT"
+    exit 1
+  fi
+
+  # ----- TLS Trust Check -----
+  SYSTEM_CA="/etc/ssl/certs/ca-certificates.crt"
+  if [ -f "$SYSTEM_CA" ]; then
+    echo "[TLS] Verifying certificate trust..."
+    echo | openssl s_client -connect "$HOST:$PORT" -servername "$HOST" -showcerts 2>/dev/null \
+      | openssl x509 -outform pem \
+      | openssl verify -CAfile "$SYSTEM_CA" >/dev/null 2>&1
+    if [ $? -eq 0 ]; then
+      echo "[TLS] Certificate trusted by system CA"
+    else
+      echo "[TLS] WARNING: Certificate NOT trusted (possible proxy interception)"
+      VERDICT="TLS untrusted CA"
+    fi
+  else
+    echo "[TLS] System CA bundle not found, skipping trust check"
+  fi
+fi
+
+# ---------- Python dependencies ----------
+echo "[Python] Checking certifi and proxy environment variables..."
+python3 - <<'EOF' 2>/dev/null
+try:
+    import certifi
+    print("certifi installed:", certifi.where())
+except ImportError:
+    print("certifi NOT installed")
+EOF
+
+echo "HTTP_PROXY=$HTTP_PROXY"
+echo "HTTPS_PROXY=$HTTPS_PROXY"
+echo "NO_PROXY=$NO_PROXY"
+
+# ---------- Proxy ----------
+if [ -n "$PROXY" ]; then
+  echo "[Proxy] Testing via configured proxy: $PROXY"
+  RESP=$(curl -s -o /dev/null -w "%{http_code}" -x "$PROXY" "https://$HOST:$PORT/" --max-time 10)
+  case "$RESP" in
+    200) echo "Proxy OK (HTTP 200)" ;;
+    407) echo "Proxy AUTH ERROR (HTTP 407, bad credentials)"
+         VERDICT="Proxy auth error" ;;
+    502) echo "Proxy UPSTREAM ERROR (HTTP 502, cannot reach outside)"
+         VERDICT="Proxy upstream error" ;;
+    000) echo "Proxy FAILED (no response, timeout or blocked)"
+         VERDICT="Proxy no response" ;;
+    *)   echo "Proxy returned HTTP $RESP"
+         VERDICT="Proxy error $RESP" ;;
+  esac
+else
+  echo "[Proxy] No proxy configured."
+fi
+
+# ---------- CNTLM ----------
+if [ -n "$PROXY" ] && echo "$PROXY" | grep -q "127.0.0.1:3128"; then
+  echo "[CNTLM] Detected CNTLM proxy at $PROXY ..."
+  if nc -z -w2 127.0.0.1 3128 >/dev/null 2>&1; then
+    echo "CNTLM is running (127.0.0.1:3128 listening)"
+    CNTLM_RESP=$(curl -s -o /dev/null -w "%{http_code}" -x http://127.0.0.1:3128 https://example.com --max-time 10)
+    case "$CNTLM_RESP" in
+      200) echo "CNTLM OK (forwarding works)" ;;
+      407) echo "CNTLM AUTH ERROR (bad username/password in cntlm.conf)"
+           VERDICT="CNTLM auth error" ;;
+      502) echo "CNTLM UPSTREAM ERROR (cannot reach corporate proxy)"
+           VERDICT="CNTLM upstream error" ;;
+      000) echo "CNTLM FAILED (no response, firewall or dead upstream)"
+           VERDICT="CNTLM no response" ;;
+      *)   echo "CNTLM returned HTTP $CNTLM_RESP"
+           VERDICT="CNTLM error $CNTLM_RESP" ;;
+    esac
+  else
+    echo "CNTLM NOT RUNNING (connection refused on 127.0.0.1:3128)"
+    VERDICT="CNTLM not running"
+  fi
+fi
+
+# ---------- Final Verdict ----------
+if [ "$VERDICT" == "Unknown" ]; then
+  VERDICT="OK"
+fi
+echo "=== Final Verdict: $VERDICT ==="
+```
